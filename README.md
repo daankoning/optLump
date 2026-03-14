@@ -5,8 +5,6 @@
 
 <!-- badges: start -->
 
-[![Codecov test
-coverage](https://codecov.io/gh/daankoning/optLump/graph/badge.svg)](https://app.codecov.io/gh/daankoning/optLump)
 [![R-CMD-check](https://github.com/daankoning/optLump/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/daankoning/optLump/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
