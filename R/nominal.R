@@ -19,7 +19,6 @@
 #' @author Daan Koning
 #' @export
 maximum_mutual_information_nominal <- function(counts, threshold, adj_matrix, verbose = FALSE) {
-  # TODO: this function appears to be sensitive to the ordering of labels (and ignores the adj_matric labels (?))
   if (!is.numeric(counts) || any(is.na(counts)) || any(counts < 0) || is.null(names(counts))) {
     stop("Input 'counts' must be a named numeric vector with no missing or negative values.")
   }
@@ -37,9 +36,12 @@ maximum_mutual_information_nominal <- function(counts, threshold, adj_matrix, ve
   if (n < threshold) {
     stop("Total sample size must be greater than threshold for lumping to be possible.")
   }
-  if (!identical(rownames(adj_matrix), L) || !identical(colnames(adj_matrix), L)) {
-    stop("Adjacency matrix must match dimension and names of counts.")
+  if (!all(L %in% rownames(adj_matrix)) || !all(L %in% colnames(adj_matrix))) {
+    stop("Adjacency matrix must contain row and column names matching all levels in 'counts'.")
   }
+  # Reorder the adjacency matrix to match the order of levels in counts
+  adj_matrix <- adj_matrix[L, L, drop = FALSE]
+
   # TODO: should we default to completed graph?
   # TODO: change input + consider allowing directed first and then provessing to undirected
   # find cliques
