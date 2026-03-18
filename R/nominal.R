@@ -10,8 +10,9 @@
 #'
 #' @param counts     Named numeric vector containing the number of times each level is observed
 #' @param threshold  Minimum number of samples each level must contain
-#' @param adj_matrix Adjancency matrix of the preference graph.
+#' @param adj_matrix Adjacency matrix of the preference graph.
 #' @param verbose    Whether to print diagnostic messages or not. Default: `FALSE`
+#' @param timeout    Maximum time (in seconds) to allow for the ILP solver to run. Default: no timeout.
 #'
 #' @returns A list containing information about the optimal lumping:
 #' \describe{
@@ -19,16 +20,20 @@
 #'      \item{loss}{Double representing the amount of entropy lost in the lumping process.}
 #'      \item{lumping}{A list of character vectors, where each vector contains the names
 #'                     of the original levels that have been lumped together.}
+#'      \item{is_optimal}{Boolean indicating whether the solution is guaranteed to be optimal or if a timeout occured.}
 #'  }
 #'
 #' @author Daan Koning
 #' @export
-maximum_mutual_information_nominal <- function(counts, threshold, adj_matrix, verbose = FALSE) {
+maximum_mutual_information_nominal <- function(counts, threshold, adj_matrix, verbose = FALSE, timeout = 0L) {
   if (!is.numeric(counts) || any(is.na(counts)) || any(counts < 0) || is.null(names(counts))) {
     stop("Input 'counts' must be a named numeric vector with no missing or negative values.")
   }
   if (length(threshold) != 1 || !is.numeric(threshold) || threshold <= 0) {
     stop("Input 'threshold' must be a single positive numeric value.")
+  }
+  if (length(timeout) != 1 || !is.numeric(timeout) || timeout < 0) {
+    stop("Input 'timeout' must be a single positive numeric value.")
   }
 
   L <- names(counts)
@@ -95,7 +100,8 @@ maximum_mutual_information_nominal <- function(counts, threshold, adj_matrix, ve
     const.mat = constraint_matrix,
     const.dir = rep("==", m),
     const.rhs = rep(1, m),
-    all.bin = TRUE
+    all.bin = TRUE,
+    timeout = timeout
   )
 
   if (verbose) message("Decoding ILP result...")
@@ -112,10 +118,12 @@ maximum_mutual_information_nominal <- function(counts, threshold, adj_matrix, ve
   list(
     mutual_information = res$objval,
     loss = empirical_entropy(counts) - res$objval,
-    lumping = lumping
+    lumping = lumping,
+    is_optimal = TRUE
   )
 }
 
+# TODO: add timeout here too
 #' Maximum information preservable by hierarchical lumping
 #'
 #' Calculates the maximum amount of mutual information that can be preserved by

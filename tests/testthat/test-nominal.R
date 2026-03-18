@@ -16,6 +16,7 @@ test_that("Default happy path", {
 
   expect_equal(res$mutual_information, -log(1/2), tolerance = tolerance)
   expect_equal(res$loss, -1/2 * log(1/2), tolerance = tolerance)
+  expect_true(res$is_optimal)
   expect_true(lumping_equal(res$lumping,  list(c("A", "B"), "C")))
 })
 
@@ -27,6 +28,7 @@ test_that("Do not lump at all when all levels already meet threshold", {
 
   expect_equal(res$mutual_information, -log(1/3), tolerance = tolerance)
   expect_equal(res$loss, 0, tolerance = tolerance)
+  expect_true(res$is_optimal)
   expect_true(lumping_equal(res$lumping, list("A", "B", "C")))
 })
 
@@ -38,6 +40,7 @@ test_that("Lump all levels together when threshold is high", {
 
   expect_equal(res$mutual_information, 0, tolerance = tolerance)
   expect_equal(res$loss, -log(1/3), tolerance = tolerance)
+  expect_true(res$is_optimal)
   expect_true(lumping_equal(res$lumping, list(c("A", "B", "C"))))
 })
 
@@ -59,6 +62,8 @@ test_that("Order of columns in adjacency matrix does not matter", {
 
   expect_equal(res1$mutual_information, res2$mutual_information, tolerance = tolerance)
   expect_equal(res1$loss, res2$loss, tolerance = tolerance)
+  expect_true(res1$is_optimal)
+  expect_true(res2$is_optimal)
   expect_true(lumping_equal(res1$lumping,  res2$lumping))
 })
 
@@ -70,6 +75,7 @@ test_that("Zero counts are handled properly", {
 
   expect_equal(res$mutual_information, -log(1 / 2), tolerance = tolerance)
   expect_equal(res$loss, 0, tolerance = tolerance)
+  expect_true(res$is_optimal)
   # need to have or since ILP is non-deterministc and both have equal entropy
   expect_true(lumping_equal(res$lumping,  list(c("A", "B"), "C"))
                 || lumping_equal(res$lumping,  list("A", c("B", "C"))))
@@ -130,6 +136,10 @@ test_that("Input validation catches bad data", {
   expect_error(
     maximum_mutual_information_nominal(counts, -1, adj),
     "Input 'threshold' must"
+  )
+  expect_error(
+    maximum_mutual_information_nominal(counts, 2, adj, timeout = -1),
+    "Input 'timeout' must"
   )
   expect_error(
     maximum_mutual_information_nominal(c(A = 0, B = 0, C = 0), 2, adj),
