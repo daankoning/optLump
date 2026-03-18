@@ -39,3 +39,29 @@ test_that("Hierarchical matches normal for multiple clusters", {
   expect_equal(hierarchical_res$loss, normal_res$loss, tolerance = tolerance)
   expect_true(lumping_equal(hierarchical_res$lumping, normal_res$lumping))
 })
+
+test_that("Hierarchical handles non-identical clusters and counts", {
+  counts <- c(A = 1, B = 1, C = 2, D = 4, E = 2, F = 2)
+  threshold <- 4
+  clusters <- list(c("A", "X", "C"), c("D", "E", "F"))
+
+  expect_error(
+    maximum_mutual_information_hierarchical(counts, threshold, clusters),
+    "All levels in 'counts' must"
+  )
+})
+
+test_that("Input validation catches bad data", {
+    expect_error(
+        maximum_mutual_information_hierarchical(c(A = 1, B = -1, C = 2), 5, list(c("A", "B", "C"))),
+        "Input 'counts' must"
+    )
+    expect_error(
+        maximum_mutual_information_hierarchical(c(A = 1, B = NA, C = 2), 5, list(c("A", "B", "C"))),
+        "Input 'counts' must"
+    )
+    expect_error(
+        maximum_mutual_information_hierarchical(c(A = 1, B = 1, C = 2), -1, list(c("A", "B", "C"))),
+        "Input 'threshold' must"
+    )
+})

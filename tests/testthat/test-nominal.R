@@ -41,6 +41,27 @@ test_that("Lump all levels together when threshold is high", {
   expect_true(lumping_equal(res$lumping, list(c("A", "B", "C"))))
 })
 
+test_that("Order of columns in adjacency matrix does not matter", {
+  counts <- c(A = 1, B = 1, C = 2)
+  adj1 <- matrix(c(
+    1, 1, 0,
+    1, 1, 0,
+    0, 0, 1
+  ), nrow = 3, byrow = TRUE, dimnames = list(names(counts), names(counts)))
+  adj2 <- matrix(c(
+    1, 0, 1,
+    1, 0, 1,
+    0, 1, 0
+  ), nrow = 3, byrow = TRUE, dimnames = list(names(counts), c("A", "C", "B")))
+
+  res1 <- maximum_mutual_information_nominal(counts, 2, adj1)
+  res2 <- maximum_mutual_information_nominal(counts, 2, adj2)
+
+  expect_equal(res1$mutual_information, res2$mutual_information, tolerance = tolerance)
+  expect_equal(res1$loss, res2$loss, tolerance = tolerance)
+  expect_true(lumping_equal(res1$lumping,  res2$lumping))
+})
+
 test_that("Zero counts are handled properly", {
   counts <- c(A = 1, B = 0, C = 1)
   adj <- matrix(1, nrow = 3, ncol = 3, dimnames = list(names(counts), names(counts)))
@@ -89,4 +110,48 @@ test_that("Generic impossible case throws error", {
   )
 })
 
-#TODO: test input validation
+test_that("Input validation catches bad data", {
+  # standard data for reference:
+  counts <- c(A = 1, B = 1, C = 2)
+  adj <- matrix(c(
+    1, 1, 0,
+    1, 1, 0,
+    0, 0, 1
+  ), nrow = 3, byrow = TRUE, dimnames = list(names(counts), names(counts)))
+
+  expect_error(
+    maximum_mutual_information_nominal(c(A = 1, B = -1, C = 2), 2, adj),
+    "Input 'counts' must"
+  )
+  expect_error(
+    maximum_mutual_information_nominal(c(A = 1, B = NA, C = 2), 2, adj),
+    "Input 'counts' must"
+  )
+  expect_error(
+    maximum_mutual_information_nominal(counts, -1, adj),
+    "Input 'threshold' must"
+  )
+  expect_error(
+    maximum_mutual_information_nominal(c(A = 0, B = 0, C = 0), 2, adj),
+    "Total number of"
+  )
+  expect_error(
+    maximum_mutual_information_nominal(c(A = 1, B = 1, C = 2, D = 2), 2, adj),
+    "Adjacency matrix must"
+  )
+  expect_error(
+    maximum_mutual_information_nominal(c(A = 1, B = 1, D = 2), 2, adj),
+    "Adjacency matrix must"
+  )
+})
+
+test_that("Verbose generates messages", {
+  counts <- c(A = 1, B = 1, C = 2)
+  adj <- matrix(c(
+    1, 1, 0,
+    1, 1, 0,
+    0, 0, 1
+  ), nrow = 3, byrow = TRUE, dimnames = list(names(counts), names(counts)))
+
+  suppressMessages(expect_message(maximum_mutual_information_nominal(counts, 2, adj, verbose = TRUE)))
+})
