@@ -1,7 +1,12 @@
+#' Maximum information preservable by nominal lumping
+#'
 #' Calculates the maximum amount of mutual information that can be preserved by lumping a nominal variable.
 #'
 #' Since these two pursuits are equivalent, the actual quantity optimized for is the maximal empirical entropy
 #' of the lumped levels.
+#'
+#' Be advised that, since the problem is NP-hard, the implementation here has time complexity
+#' \eqn{O\left(2^{2^m}\right)}{O(2^2^m)}, where \eqn{m}{m} is the number of levels in the nominal variable.
 #'
 #' @param counts     Named numeric vector containing the number of times each level is observed
 #' @param threshold  Minimum number of samples each level must contain
@@ -111,10 +116,12 @@ maximum_mutual_information_nominal <- function(counts, threshold, adj_matrix, ve
   )
 }
 
+#' Maximum information preservable by hierarchical lumping
+#'
 #' Calculates the maximum amount of mutual information that can be preserved by
 #' lumping a nominal variable inherited from a hierarchy.
 #'
-#' This acts as a wrapper around `maximum_mutual_information_nominal`.
+#' This acts as a wrapper around `maximum_mutual_information_nominal()`.
 #' By  passing the hierarchical structure via the \code{clusters} argument,
 #' the algorithm divides the problem into independent sub-problems, speeding
 #' up the execution time for large datasets.

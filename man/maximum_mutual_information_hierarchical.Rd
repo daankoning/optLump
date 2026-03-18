@@ -2,8 +2,7 @@
 % Please edit documentation in R/nominal.R
 \name{maximum_mutual_information_hierarchical}
 \alias{maximum_mutual_information_hierarchical}
-\title{Calculates the maximum amount of mutual information that can be preserved by
-lumping a nominal variable inherited from a hierarchy.}
+\title{Maximum information preservable by hierarchical lumping}
 \usage{
 maximum_mutual_information_hierarchical(
   counts,
@@ -31,7 +30,11 @@ of the original levels that have been lumped together.}
 }
 }
 \description{
-This acts as a wrapper around \code{maximum_mutual_information_nominal}.
+Calculates the maximum amount of mutual information that can be preserved by
+lumping a nominal variable inherited from a hierarchy.
+}
+\details{
+This acts as a wrapper around \code{maximum_mutual_information_nominal()}.
 By  passing the hierarchical structure via the \code{clusters} argument,
 the algorithm divides the problem into independent sub-problems, speeding
 up the execution time for large datasets.
