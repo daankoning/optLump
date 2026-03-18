@@ -144,6 +144,11 @@ maximum_mutual_information_hierarchical <- function(counts, threshold, clusters,
     stop("Input 'threshold' must be a single positive numeric value.")
   }
 
+  L <- names(counts)
+  if (!all(L %in% unlist(clusters)) || !all(unlist(clusters) %in% L)) {
+    stop("All levels in 'counts' must be present in 'clusters' and vice versa.")
+  }
+
   lumping <- list()
   for (cluster in clusters) {
     current_counts <- counts[cluster]
