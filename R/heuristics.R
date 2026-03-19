@@ -97,5 +97,3 @@ maximum_mutual_information_nominal_heuristic <- function(counts, threshold, adj_
     lumping = unname(lumping)
   )
 }
-
-# TODO: test
