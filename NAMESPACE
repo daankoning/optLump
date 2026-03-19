@@ -2,4 +2,5 @@
 
 export(maximum_mutual_information_hierarchical)
 export(maximum_mutual_information_nominal)
+export(maximum_mutual_information_nominal_heuristic)
 export(maximum_mutual_information_ordinal)

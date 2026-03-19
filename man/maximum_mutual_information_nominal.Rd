@@ -39,6 +39,11 @@ of the lumped levels.
 Be advised that, since the problem is NP-hard, the implementation here has time complexity
 \eqn{O\left(2^{2^m}\right)}{O(2^2^m)}, where \eqn{m}{m} is the number of levels in the nominal variable.
 }
+\seealso{
+\code{\link[=maximum_mutual_information_nominal_heuristic]{maximum_mutual_information_nominal_heuristic()}} to approximate this function when the number of levels is too large.
+
+\code{\link[=maximum_mutual_information_hierarchical]{maximum_mutual_information_hierarchical()}} for a version of this function that takes advantage of hierarchical structure to speed up the execution time.
+}
 \author{
 Daan Koning
 }
