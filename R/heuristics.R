@@ -1,22 +1,23 @@
 lowest_cost_merge <- function(counts, pref_graph, threshold) {
-  #TODO: this should just take the graph and use the edge list
   L <- names(counts)
   n <- sum(counts)
   min_cost <- Inf
   best_pair <- NULL
 
-  for (edge in apply(igraph::as_edgelist(pref_graph), 1, c, simplify = FALSE)) {
-    i <- which(L == edge[1])
-    j <- which(L == edge[2])
+  edges <- igraph::as_edgelist(pref_graph, names = TRUE)
 
-    if (counts[i] >= threshold && counts[j] >= threshold) next
+  for (i in seq_len(nrow(edges))) {
+    a <- edges[i, 1]
+    b <- edges[i, 2]
 
-    merged_count <- counts[i] + counts[j]
-    cost <- safe_xlogx(merged_count / n) - safe_xlogx(counts[i] / n) - safe_xlogx(counts[j] / n)
+    if (counts[a] >= threshold && counts[b] >= threshold) next
+
+    merged_count <- counts[a] + counts[b]
+    cost <- safe_xlogx(merged_count / n) - safe_xlogx(counts[a] / n) - safe_xlogx(counts[b] / n)
 
     if (cost < min_cost) {
       min_cost <- cost
-      best_pair <- c(L[i], L[j])
+      best_pair <- c(a, b)
     }
   }
 
