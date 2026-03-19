@@ -27,6 +27,8 @@ jobs:
           extra-packages: devtools
           needs: build
 
+      - uses: paolobrasolin/setup-texlive-action@v1
+
       - name: Build PDF manual
         run: |
           devtools::build_manual(path='.')
