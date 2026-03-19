@@ -1,22 +1,22 @@
-lowest_cost_merge <- function(counts, adj_matrix) {
+lowest_cost_merge <- function(counts, pref_graph, threshold) {
   #TODO: this should just take the graph and use the edge list
   L <- names(counts)
-  m <- length(counts)
   n <- sum(counts)
   min_cost <- Inf
   best_pair <- NULL
 
-  for (i in 1:(m - 1)) {
-    for (j in (i + 1):m) {
-      if (adj_matrix[i, j] == 0) next
+  for (edge in apply(igraph::as_edgelist(pref_graph), 1, c, simplify = FALSE)) {
+    i <- which(L == edge[1])
+    j <- which(L == edge[2])
 
-      merged_count <- counts[i] + counts[j]
-      cost <- safe_xlogx(merged_count / n) - safe_xlogx(counts[i] / n) - safe_xlogx(counts[j] / n)
+    if (counts[i] >= threshold && counts[j] >= threshold) next
 
-      if (cost < min_cost) {
-        min_cost <- cost
-        best_pair <- c(L[i], L[j])
-      }
+    merged_count <- counts[i] + counts[j]
+    cost <- safe_xlogx(merged_count / n) - safe_xlogx(counts[i] / n) - safe_xlogx(counts[j] / n)
+
+    if (cost < min_cost) {
+      min_cost <- cost
+      best_pair <- c(L[i], L[j])
     }
   }
 
@@ -64,7 +64,7 @@ maximum_mutual_information_nominal_heuristic <- function(counts, threshold, adj_
   pref_graph <- igraph::graph_from_adjacency_matrix(adj_matrix, mode = "undirected", diag = FALSE)
 
   while (any(counts < threshold)) {
-    best_pair <- lowest_cost_merge(counts, igraph::as_adjacency_matrix(pref_graph, sparse = FALSE))
+    best_pair <- lowest_cost_merge(counts, pref_graph, threshold)
     if (is.null(best_pair)) {
       stop("No lumping exists that is able to satisfy all constraints.")
     }
@@ -96,4 +96,5 @@ maximum_mutual_information_nominal_heuristic <- function(counts, threshold, adj_
     lumping = unname(lumping)
   )
 }
+
 # TODO: test
