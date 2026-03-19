@@ -34,7 +34,7 @@ Calculates the maximum amount of mutual information that can be preserved by
 lumping a nominal variable inherited from a hierarchy.
 }
 \details{
-This acts as a wrapper around \code{maximum_mutual_information_nominal()}.
+This acts as a wrapper around \code{\link[=maximum_mutual_information_nominal]{maximum_mutual_information_nominal()}}.
 By  passing the hierarchical structure via the \code{clusters} argument,
 the algorithm divides the problem into independent sub-problems, speeding
 up the execution time for large datasets.
@@ -46,6 +46,9 @@ maximum_mutual_information_hierarchical(
      list(c("A", "B", "C"), c("D", "E", "F"))
 )
 
+}
+\seealso{
+\code{\link[=maximum_mutual_information_nominal]{maximum_mutual_information_nominal()}} for the fully general version of this function, which this one wraps.
 }
 \author{
 Daan Koning

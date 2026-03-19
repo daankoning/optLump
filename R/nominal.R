@@ -21,6 +21,11 @@
 #'                     of the original levels that have been lumped together.}
 #'  }
 #'
+#' @seealso
+#'  [maximum_mutual_information_nominal_heuristic()] to approximate this function when the number of levels is too large.
+#'
+#'  [maximum_mutual_information_hierarchical()] for a version of this function that takes advantage of hierarchical structure to speed up the execution time.
+#'
 #' @author Daan Koning
 #' @export
 maximum_mutual_information_nominal <- function(counts, threshold, adj_matrix, verbose = FALSE) {
@@ -121,7 +126,7 @@ maximum_mutual_information_nominal <- function(counts, threshold, adj_matrix, ve
 #' Calculates the maximum amount of mutual information that can be preserved by
 #' lumping a nominal variable inherited from a hierarchy.
 #'
-#' This acts as a wrapper around `maximum_mutual_information_nominal()`.
+#' This acts as a wrapper around [maximum_mutual_information_nominal()].
 #' By  passing the hierarchical structure via the \code{clusters} argument,
 #' the algorithm divides the problem into independent sub-problems, speeding
 #' up the execution time for large datasets.
@@ -132,6 +137,8 @@ maximum_mutual_information_nominal <- function(counts, threshold, adj_matrix, ve
 #' @param verbose    Whether to print diagnostic messages or not. Default: `FALSE`
 #'
 #' @inherit maximum_mutual_information_nominal return
+#'
+#' @seealso [maximum_mutual_information_nominal()] for the fully general version of this function, which this one wraps.
 #'
 #' @examples
 #' maximum_mutual_information_hierarchical(
