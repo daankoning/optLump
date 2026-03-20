@@ -22,6 +22,8 @@
 #'  }
 #'
 #' @seealso
+#'  [lump_nominal()] for a more user-friendly wrapper around this function that actually carries out the lumping.
+#'
 #'  [maximum_mutual_information_nominal_heuristic()] to approximate this function when the number of levels is too large.
 #'
 #'  [maximum_mutual_information_hierarchical()] for a version of this function that takes advantage of hierarchical structure to speed up the execution time.
@@ -138,7 +140,10 @@ maximum_mutual_information_nominal <- function(counts, threshold, adj_matrix, ve
 #'
 #' @inherit maximum_mutual_information_nominal return
 #'
-#' @seealso [maximum_mutual_information_nominal()] for the fully general version of this function, which this one wraps.
+#' @seealso
+#'  [lump_hierarchical()] for a more user-friendly wrapper around this function that actually carries out the lumping.
+#'
+#'  [maximum_mutual_information_nominal()] for the fully general version of this function, which this one wraps.
 #'
 #' @examples
 #' maximum_mutual_information_hierarchical(

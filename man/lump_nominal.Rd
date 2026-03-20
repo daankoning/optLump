@@ -22,13 +22,21 @@ A factor vector with the lumped levels.
 Perform lumping on a nominal variable
 }
 \examples{
-m <- 10
-n <- 100
+m <- 5
+n <- 50
+q <- 10
 data <- sample(LETTERS[1:m], n, replace = TRUE)
-# Use a complete graph, so all lumpings are possible.
+# Use a complete graph, so all lumpings are possible:
 adj <- matrix(1, nrow = m, ncol = m, dimnames = list(LETTERS[1:m], LETTERS[1:m]))
-lump_nominal(data, 15, adj)
+# Data before lumping:
+data
+lump_nominal(data, q, adj)
 
+}
+\seealso{
+\code{\link[=maximum_mutual_information_nominal]{maximum_mutual_information_nominal()}} for the underlying algorithm that this function wraps.
+
+\code{\link[=lump_hierarchical]{lump_hierarchical()}} for a version of this function that can take advantage of hierarchical structure in the data to speed up the execution time.
 }
 \author{
 Daan Koning

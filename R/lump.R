@@ -18,6 +18,11 @@
 #'      list(c("Germany", "Netherlands", "France"), c("China", "Vietnam", "Japan"))
 #' )
 #'
+#' @seealso
+#'  [maximum_mutual_information_hierarchical()] for the underlying algorithm that this function wraps.
+#'
+#'  [lump_nominal()] for a more general version of this function that does not need the hierarchical structure in the data, but may be slower.
+#'
 #' @author Daan Koning
 #' @export
 lump_hierarchical <- function(data, threshold, clusters, verbose = FALSE) {
@@ -30,12 +35,12 @@ lump_hierarchical <- function(data, threshold, clusters, verbose = FALSE) {
   lumpings <- res$lumping
   names(lumpings) <- sapply(lumpings, \(x) paste(x, collapse = "+"))
 
-  levels(data) <- lumpings #TODO: replace with forcats
+  levels(data) <- lumpings
 
   data
 }
 
-# TODO: this example can randomly break, so it should be tweaked
+#TODO: this should have an example of a non-complete pref graph
 #' Perform lumping on a nominal variable
 #'
 #' @param data Factor or character vector of the categorical data
@@ -46,12 +51,20 @@ lump_hierarchical <- function(data, threshold, clusters, verbose = FALSE) {
 #' @returns A factor vector with the lumped levels.
 #'
 #' @examples
-#' m <- 10
-#' n <- 100
+#' m <- 5
+#' n <- 50
+#' q <- 10
 #' data <- sample(LETTERS[1:m], n, replace = TRUE)
-#' # Use a complete graph, so all lumpings are possible.
+#' # Use a complete graph, so all lumpings are possible:
 #' adj <- matrix(1, nrow = m, ncol = m, dimnames = list(LETTERS[1:m], LETTERS[1:m]))
-#' lump_nominal(data, 15, adj)
+#' # Data before lumping:
+#' data
+#' lump_nominal(data, q, adj)
+#'
+#' @seealso
+#'  [maximum_mutual_information_nominal()] for the underlying algorithm that this function wraps.
+#'
+#'  [lump_hierarchical()] for a version of this function that can take advantage of hierarchical structure in the data to speed up the execution time.
 #'
 #' @author Daan Koning
 #' @export
@@ -65,7 +78,7 @@ lump_nominal <- function(data, threshold, adj_matrix, verbose = FALSE) {
   lumpings <- res$lumping
   names(lumpings) <- sapply(lumpings, \(x) paste(x, collapse = "+"))
 
-  levels(data) <- lumpings #TODO: replace with forcats
+  levels(data) <- lumpings
 
   data
 }

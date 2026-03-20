@@ -31,6 +31,11 @@ lump_hierarchical(
 )
 
 }
+\seealso{
+\code{\link[=maximum_mutual_information_hierarchical]{maximum_mutual_information_hierarchical()}} for the underlying algorithm that this function wraps.
+
+\code{\link[=lump_nominal]{lump_nominal()}} for a more general version of this function that does not need the hierarchical structure in the data, but may be slower.
+}
 \author{
 Daan Koning
 }
