@@ -22,10 +22,10 @@ A factor vector with the lumped levels.
 Perform lumping on a hierarchical nominal variable
 }
 \examples{
-data <- c("Germany", "Netherlands", "France", "France", "China", "China",
+country <- c("Germany", "Netherlands", "France", "France", "China", "China",
              "China", "China", "Vietnam", "Vietnam", "Japan", "Japan")
 lump_hierarchical(
-     data,
+     country,
      4,
      list(c("Germany", "Netherlands", "France"), c("China", "Vietnam", "Japan"))
 )
