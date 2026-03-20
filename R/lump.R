@@ -2,10 +2,10 @@
 
 #' Perform lumping on a hierarchical nominal variable
 #'
-#' @param data Factor or character vector of the categorical data
-#' @param threshold The minimum number of samples each lumped level should contain
+#' @param data Factor or character vector of the categorical data.
+#' @param threshold The minimum number of samples each lumped level should contain.
 #' @param clusters List of character vectors representing the levels that are allowed to be lumped together.
-#' @param verbose Logical value dictating if values should be printed. Default: `FALSE`
+#' @param verbose Logical value dictating if values should be printed. Default: `FALSE`.
 #'
 #' @returns A factor vector with the lumped levels.
 #'
@@ -43,10 +43,10 @@ lump_hierarchical <- function(data, threshold, clusters, verbose = FALSE) {
 #TODO: this should have an example of a non-complete pref graph
 #' Perform lumping on a nominal variable
 #'
-#' @param data Factor or character vector of the categorical data
-#' @param threshold The minimum number of samples each lumped level should contain
-#' @param adj_matrix Adjancency matrix of the preference graph
-#' @param verbose Logical value dictating if values should be printed. Default: `FALSE`
+#' @param data Factor or character vector of the categorical data.
+#' @param threshold The minimum number of samples each lumped level should contain.
+#' @param adj_matrix Adjancency matrix of the preference graph.
+#' @param verbose Logical value dictating if values should be printed. Default: `FALSE`.
 #'
 #' @returns A factor vector with the lumped levels.
 #'
@@ -83,8 +83,8 @@ lump_nominal <- function(data, threshold, adj_matrix, verbose = FALSE) {
   data
 }
 
-#' Transform a lumping from the format returned by the ordinal solver
-#' to that of the nominal solver
+# Transform a lumping from the format returned by the ordinal solver
+# to that of the nominal solver
 transform_lumping <- function(lumping, orig_levels) {
   new_lumping <- list()
 
@@ -103,8 +103,8 @@ transform_lumping <- function(lumping, orig_levels) {
 
 #' Perform lumping on an ordinal variable
 #'
-#' @param data Factor or character vector of the categorical data
-#' @param threshold The minimum number of samples each lumped level should contain
+#' @param data Factor or character vector of the categorical data.
+#' @param threshold The minimum number of samples each lumped level should contain.
 #' @param levels Character vector specifying the strict ordinal hierarchy of the levels (from lowest to highest). Required if `data` is not already an ordered factor.
 #'
 #' @returns An ordered factor vector with the lumped levels.

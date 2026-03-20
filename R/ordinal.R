@@ -31,6 +31,9 @@ empirical_entropy <- function(counts) {
 #'                      levels correspond to the levels [a_1, a_2), ..., [a_(k-1), a_k).}
 #'  }
 #'
+#' @seealso
+#'  [lump_ordinal()] for a more user-friendly wrapper around this function that actually carries out the lumping.
+#'
 #' @examples
 #' maximum_mutual_information_ordinal(c(10, 5, 2, 8, 15), 15)
 #'
