@@ -2,7 +2,7 @@
 % Please edit documentation in R/nominal.R
 \name{maximum_mutual_information_nominal}
 \alias{maximum_mutual_information_nominal}
-\title{Calculates the maximum amount of mutual information that can be preserved by lumping a nominal variable.}
+\title{Maximum information preservable by nominal lumping}
 \usage{
 maximum_mutual_information_nominal(
   counts,
@@ -30,8 +30,19 @@ of the original levels that have been lumped together.}
 }
 }
 \description{
+Calculates the maximum amount of mutual information that can be preserved by lumping a nominal variable.
+}
+\details{
 Since these two pursuits are equivalent, the actual quantity optimized for is the maximal empirical entropy
 of the lumped levels.
+
+Be advised that, since the problem is NP-hard, the implementation here has time complexity
+\eqn{O\left(2^{2^m}\right)}{O(2^2^m)}, where \eqn{m}{m} is the number of levels in the nominal variable.
+}
+\seealso{
+\code{\link[=maximum_mutual_information_nominal_heuristic]{maximum_mutual_information_nominal_heuristic()}} to approximate this function when the number of levels is too large.
+
+\code{\link[=maximum_mutual_information_hierarchical]{maximum_mutual_information_hierarchical()}} for a version of this function that takes advantage of hierarchical structure to speed up the execution time.
 }
 \author{
 Daan Koning

@@ -2,8 +2,7 @@
 % Please edit documentation in R/ordinal.R
 \name{maximum_mutual_information_ordinal}
 \alias{maximum_mutual_information_ordinal}
-\title{Calculates the way of lumping levels of an ordinal categorical covariate that preserves the maximum mutual
-information between the lumped and unlumped levels.}
+\title{Maximum information preservable by ordinal lumping}
 \usage{
 maximum_mutual_information_ordinal(counts, threshold)
 }
@@ -23,8 +22,14 @@ levels correspond to the levels [a_1, a_2), ..., [a_(k-1), a_k).}
 }
 }
 \description{
+Calculates the way of lumping levels of an ordinal categorical covariate that preserves the maximum mutual
+information between the lumped and unlumped levels.
+}
+\details{
 Since these two pursuits are equivalent, the actual quantity optimized for is the maximal empirical entropy
 of the lumped levels.
+
+The runtime complexity is cubic in the number of levels.
 }
 \examples{
 maximum_mutual_information_ordinal(c(10, 5, 2, 8, 15), 15)

@@ -81,4 +81,14 @@ test_that("Input validation catches bad data", {
     maximum_mutual_information_ordinal(c(0, 0, 0), 5),
     "Total number of samples"
   )
+
+  expect_error(
+    maximum_mutual_information_ordinal(c(0, 0, 0), c(1, 1)),
+    "Input 'threshold' must"
+  )
+
+  expect_error(
+    maximum_mutual_information_ordinal(c(0, 0, 0), -1),
+    "Input 'threshold' must"
+  )
 })

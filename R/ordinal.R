@@ -9,11 +9,15 @@ empirical_entropy <- function(counts) {
   -sum(safe_xlogx(counts/n))
 }
 
+#' Maximum information preservable by ordinal lumping
+#'
 #' Calculates the way of lumping levels of an ordinal categorical covariate that preserves the maximum mutual
 #' information between the lumped and unlumped levels.
 #'
 #' Since these two pursuits are equivalent, the actual quantity optimized for is the maximal empirical entropy
 #' of the lumped levels.
+#'
+#' The runtime complexity is cubic in the number of levels.
 #'
 #' @param counts     Numeric vector containing the number of times each level is observed
 #' @param threshold  Minimum number of samples each level must contain

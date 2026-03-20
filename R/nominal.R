@@ -1,7 +1,12 @@
+#' Maximum information preservable by nominal lumping
+#'
 #' Calculates the maximum amount of mutual information that can be preserved by lumping a nominal variable.
 #'
 #' Since these two pursuits are equivalent, the actual quantity optimized for is the maximal empirical entropy
 #' of the lumped levels.
+#'
+#' Be advised that, since the problem is NP-hard, the implementation here has time complexity
+#' \eqn{O\left(2^{2^m}\right)}{O(2^2^m)}, where \eqn{m}{m} is the number of levels in the nominal variable.
 #'
 #' @param counts     Named numeric vector containing the number of times each level is observed
 #' @param threshold  Minimum number of samples each level must contain
@@ -16,10 +21,14 @@
 #'                     of the original levels that have been lumped together.}
 #'  }
 #'
+#' @seealso
+#'  [maximum_mutual_information_nominal_heuristic()] to approximate this function when the number of levels is too large.
+#'
+#'  [maximum_mutual_information_hierarchical()] for a version of this function that takes advantage of hierarchical structure to speed up the execution time.
+#'
 #' @author Daan Koning
 #' @export
 maximum_mutual_information_nominal <- function(counts, threshold, adj_matrix, verbose = FALSE) {
-  # TODO: this function appears to be sensitive to the ordering of labels (and ignores the adj_matric labels (?))
   if (!is.numeric(counts) || any(is.na(counts)) || any(counts < 0) || is.null(names(counts))) {
     stop("Input 'counts' must be a named numeric vector with no missing or negative values.")
   }
@@ -37,9 +46,12 @@ maximum_mutual_information_nominal <- function(counts, threshold, adj_matrix, ve
   if (n < threshold) {
     stop("Total sample size must be greater than threshold for lumping to be possible.")
   }
-  if (!identical(rownames(adj_matrix), L) || !identical(colnames(adj_matrix), L)) {
-    stop("Adjacency matrix must match dimension and names of counts.")
+  if (!all(L %in% rownames(adj_matrix)) || !all(L %in% colnames(adj_matrix))) {
+    stop("Adjacency matrix must contain row and column names matching all levels in 'counts'.")
   }
+  # Reorder the adjacency matrix to match the order of levels in counts
+  adj_matrix <- adj_matrix[L, L, drop = FALSE]
+
   # TODO: should we default to completed graph?
   # TODO: change input + consider allowing directed first and then provessing to undirected
   # find cliques
@@ -109,10 +121,12 @@ maximum_mutual_information_nominal <- function(counts, threshold, adj_matrix, ve
   )
 }
 
+#' Maximum information preservable by hierarchical lumping
+#'
 #' Calculates the maximum amount of mutual information that can be preserved by
 #' lumping a nominal variable inherited from a hierarchy.
 #'
-#' This acts as a wrapper around `maximum_mutual_information_nominal`.
+#' This acts as a wrapper around [maximum_mutual_information_nominal()].
 #' By  passing the hierarchical structure via the `clusters` argument,
 #' the algorithm divides the problem into independent sub-problems, speeding
 #' up the execution time for large datasets.
@@ -123,6 +137,8 @@ maximum_mutual_information_nominal <- function(counts, threshold, adj_matrix, ve
 #' @param verbose    Whether to print diagnostic messages or not. Default: `FALSE`
 #'
 #' @inherit maximum_mutual_information_nominal return
+#'
+#' @seealso [maximum_mutual_information_nominal()] for the fully general version of this function, which this one wraps.
 #'
 #' @examples
 #' maximum_mutual_information_hierarchical(
@@ -140,6 +156,11 @@ maximum_mutual_information_hierarchical <- function(counts, threshold, clusters,
   }
   if (length(threshold) != 1 || !is.numeric(threshold) || threshold <= 0) {
     stop("Input 'threshold' must be a single positive numeric value.")
+  }
+
+  L <- names(counts)
+  if (!all(L %in% unlist(clusters)) || !all(unlist(clusters) %in% L)) {
+    stop("All levels in 'counts' must be present in 'clusters' and vice versa.")
   }
 
   lumping <- list()
