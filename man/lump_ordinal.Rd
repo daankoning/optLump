@@ -7,9 +7,9 @@
 lump_ordinal(data, threshold, levels = NULL)
 }
 \arguments{
-\item{data}{Factor or character vector of the categorical data}
+\item{data}{Factor or character vector of the categorical data.}
 
-\item{threshold}{The minimum number of samples each lumped level should contain}
+\item{threshold}{The minimum number of samples each lumped level should contain.}
 
 \item{levels}{Character vector specifying the strict ordinal hierarchy of the levels (from lowest to highest). Required if \code{data} is not already an ordered factor.}
 }

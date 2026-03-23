@@ -7,14 +7,14 @@
 maximum_mutual_information_ordinal(counts, threshold)
 }
 \arguments{
-\item{counts}{Numeric vector containing the number of times each level is observed}
+\item{counts}{Numeric vector containing the number of times each level is observed.}
 
-\item{threshold}{Minimum number of samples each level must contain}
+\item{threshold}{Minimum number of samples each level must contain.}
 }
 \value{
 A list containing information about the optimal lumping:
 \describe{
-\item{mutual_information}{Double representing the mutual information between the lumped and unlumped variable}
+\item{mutual_information}{Double representing the mutual information between the lumped and unlumped variable.}
 \item{loss}{Double representing the amount of entropy lost in the lumping process.}
 \item{lumping}{Integer vector containing, sequentially, the points at which the lumped levels are separated.
 Lower bound inclusive and upper bound exclusive, so that if a_1,...,a_k is returned, the lumped
@@ -34,6 +34,9 @@ The runtime complexity is cubic in the number of levels.
 \examples{
 maximum_mutual_information_ordinal(c(10, 5, 2, 8, 15), 15)
 
+}
+\seealso{
+\code{\link[=lump_ordinal]{lump_ordinal()}} for a more user-friendly wrapper around this function that actually carries out the lumping.
 }
 \author{
 Daan Koning

@@ -7,13 +7,13 @@
 lump_nominal(data, threshold, adj_matrix, verbose = FALSE)
 }
 \arguments{
-\item{data}{Factor or character vector of the categorical data}
+\item{data}{Factor or character vector of the categorical data.}
 
-\item{threshold}{The minimum number of samples each lumped level should contain}
+\item{threshold}{The minimum number of samples each lumped level should contain.}
 
-\item{adj_matrix}{Adjancency matrix of the preference graph}
+\item{adj_matrix}{Adjancency matrix of the preference graph.}
 
-\item{verbose}{Logical value dictating if values should be printed. Default: \code{FALSE}}
+\item{verbose}{Logical value dictating if values should be printed. Default: \code{FALSE}.}
 }
 \value{
 A factor vector with the lumped levels.

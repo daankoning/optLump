@@ -8,10 +8,10 @@
 #' Be advised that, since the problem is NP-hard, the implementation here has time complexity
 #' \eqn{O\left(2^{2^m}\right)}{O(2^2^m)}, where \eqn{m}{m} is the number of levels in the nominal variable.
 #'
-#' @param counts     Named numeric vector containing the number of times each level is observed
-#' @param threshold  Minimum number of samples each level must contain
+#' @param counts     Named numeric vector containing the number of times each level is observed.
+#' @param threshold  Minimum number of samples each level must contain.
 #' @param adj_matrix Adjancency matrix of the preference graph.
-#' @param verbose    Whether to print diagnostic messages or not. Default: `FALSE`
+#' @param verbose    Whether to print diagnostic messages or not. Default: `FALSE`.
 #'
 #' @returns A list containing information about the optimal lumping:
 #' \describe{
@@ -31,6 +31,7 @@
 #' @author Daan Koning
 #' @export
 maximum_mutual_information_nominal <- function(counts, threshold, adj_matrix, verbose = FALSE) {
+  #TODO: example
   if (!is.numeric(counts) || any(is.na(counts)) || any(counts < 0) || is.null(names(counts))) {
     stop("Input 'counts' must be a named numeric vector with no missing or negative values.")
   }
@@ -133,9 +134,9 @@ maximum_mutual_information_nominal <- function(counts, threshold, adj_matrix, ve
 #' the algorithm divides the problem into independent sub-problems, speeding
 #' up the execution time for large datasets.
 #'
-#' @param counts     Named numeric vector containing the number of times each level is observed
-#' @param threshold  Minimum number of samples each level must contain
-#' @param clusters   List of character vectors, each vector is the names of the levels that can be grouped together
+#' @param counts     Named numeric vector containing the number of times each level is observed.
+#' @param threshold  Minimum number of samples each level must contain.
+#' @param clusters   List of character vectors, each vector is the names of the levels that can be grouped together.
 #' @param verbose    Whether to print diagnostic messages or not. Default: `FALSE`
 #'
 #' @inherit maximum_mutual_information_nominal return
