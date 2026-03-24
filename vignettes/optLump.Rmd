@@ -1,0 +1,185 @@
+---
+title: "Introduction to optLump"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Introduction to optLump}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+Categorical variables with many rare levels can often cause problems for statistical modeling, leading to overfitting,
+high variance, or rank-deficient design matrices.
+A potential solution is to lump these rare categories together, to
+ensure every level meets a minimum sample size constraint.
+
+Unlike naive approaches that simply lump the smallest levels into a
+generic `Other` category, `optLump` uses information theory to
+find the combinations that preserve the maximum amount of mutual
+information from the original data distribution.
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+
+# Handling Different Types of Variables
+```{r, include = FALSE}
+# Generate simulated dataset
+set.seed(0)
+n <- 100
+
+country_of_origin <- factor(sample(
+  c("US", "Canada", "Mexico", "France", "Germany", "China", "Japan", "South Korea", "Vietnam"),
+  n, replace = TRUE
+))
+
+degrees <- c("<High School", "High School", "Bachelor's", "Master's", "PhD")
+education_level <- ordered(sample(degrees, n, replace = TRUE, prob = c(0.1, 0.4, 0.3, 0.15, 0.05)), levels = degrees)
+
+diagnosis <- factor(sample(
+  c("None", "Diabetes", "Hypertension", "Heart Disease"),
+  n, replace = TRUE, prob = c(0.4, 0.25, 0.25, 0.1))
+)
+
+data <- data.frame(
+    outcome = rpois(n, 1),
+    education_level = education_level,
+    diagnosis = diagnosis,
+    country_of_origin = country_of_origin
+    )
+```
+
+Suppose we are given some data containing a response variable `outcome`, based
+on some predictors, which are categorical:
+```{r}
+summary(data)
+```
+This means that we would be trying to model `outcome` as a function of
+the predictors.
+The goal we want to achieve is to lump the categories of the predictors together
+in order to reduce the dimensionality of the problem.
+The treatment for each type of variable is different, and optLump provides different methods for each type of variable.
+
+```{r setup}
+library(optLump)
+```
+
+## Ordinal Variables
+
+The simplest case is that of ordinal variables, which are variables that have a natural ordering of the categories.
+In our example, the variable `education_level` is an ordinal variable.
+We might decide that the smaller levels, `<High School` and `PhD` are too
+small to be useful, and
+that we want to lump them together with other levels.
+We would do this by specifying a threshold value, in this instance 15,
+which is the minimum number of observations that we want in each level after lumping.
+```{r}
+lumped_levels <- lump_ordinal(data$education_level, 15)
+summary(lumped_levels)
+```
+
+We see that the algorithm has lumped the level `<High School` with `High School`,
+and the level `PhD` with `Master's`.
+Of course, the interpretation of the levels has changed (the new levels should
+perhaps be interpreted as "High school or less" and "Postgraduate"),
+but we see that all levels meet the threshold of 15 observations now.
+
+## Nominal Variables
+
+When we lose the ordering, we can't rely on the computer to automatically
+know what levels can be lumped together.
+The simplest, and most common approach is to simply allow all
+levels to be lumped with all other levels.
+This corresponds to the preference graph^[The preference graph is a graph
+that encodes what lumpings are allowed; it has an edge between two levels
+if and only if those levels are allowed to be lumped together.] being a
+complete graph.
+Notice that the preference graph is taken in as its adjacency matrix.
+```{r}
+level_count <- nlevels(data$diagnosis)
+# Adjacency matrix for complete graph:
+preference_graph <- matrix(
+  1, nrow = level_count, ncol = level_count,
+  dimnames = list(levels(data$diagnosis), levels(data$diagnosis))
+)
+lumped_levels <- lump_nominal(data$diagnosis, 15, preference_graph)
+summary(lumped_levels)
+```
+
+A less common situation is when we have some prior knowledge about
+which levels can be lumped together.
+Suppose we know based on domain knowledge that `Heart Disease` should
+not be lumped with `Hypertension`, since they are too different.
+This information can also be encoded in the preference graph,
+by disallowing the corresponding pairing:
+```{r}
+preference_graph["Heart Disease", "Hypertension"] <- 0
+preference_graph["Hypertension", "Heart Disease"] <- 0
+lumped_levels <- lump_nominal(data$diagnosis, 15, preference_graph)
+summary(lumped_levels)
+```
+Of course, if the preference graph is more sparse, corresponding
+to a situation in which only a small number of pairings are admissible,
+it would make more sense to build the graph the other way around, by
+starting with an empty graph and adding edges for the pairings that are allowed.
+
+### Hierarchical Variables
+
+An important subclass of nominal variables are hierarchical variables,
+where we have some structure inherited a hierarchy.
+A common example -- and the one demonstrated here -- is that of geographical
+variables.
+We know, a priori, that countries belong to continents, naturally
+clustering countries together, so it makes more sense to lump countries
+together that exist within the same continent.
+It is simple to pass this knowledge in:
+```{r}
+clusters <- list(
+    c("US", "Canada", "Mexico"),
+    c("France", "Germany"),
+    c("China", "Japan", "South Korea", "Vietnam")
+)
+lumped_levels <- lump_hierarchical(data$country_of_origin, 15, clusters)
+summary(lumped_levels)
+```
+
+The reason this function exists separately from `lump_nominal()` -- which
+can achieve the exact same behaviour by passing an appropriate preference graph --
+is, in addition to the ergonomic gains, that it allows certain speedups that are
+not possible in the general case.
+
+# Dplyr Integration
+
+```{r, message = FALSE}
+library(dplyr)
+```
+
+The package works very naturally with dplyr pipelines.
+For instance, we can easily apply the `lump_ordinal()` function to the `education_level` variable in our dataset:
+```{r}
+data |>
+  mutate(education_level = lump_ordinal(education_level, 15)) |>
+  slice_head(n = 10)
+```
+
+# Computation and Large Datasets
+
+Due to inherent computational constraints,^[being that the nominal
+problem is NP-hard] `lump_nominal()` might be very slow.
+In fact, the algorithm has $O\left(2^{2^m}\right)$ runtime, where
+$m$ is the number of levels.
+To partially remedy this, `lump_hierarchical()` is substantially faster
+when it can be used, having $O\left(\frac{m}{c}2^{2^c}\right)$, where
+$c$ is the number of levels in the largest cluster.
+In our example, we would have $c = 4$, since we have 4 Asian countries.
+Since $c \leq m$, this is a substantial improvement.
+
+When even this is too slow, we can use `lump_nominal_heuristic()`, which
+approximates a solution in polynomial time, but does not guarantee an
+optimal solution.
+
+Note that `lump_ordinal()` does not suffer from the same issue and runs
+in polynomial time.

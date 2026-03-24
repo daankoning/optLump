@@ -12,11 +12,11 @@ maximum_mutual_information_hierarchical(
 )
 }
 \arguments{
-\item{counts}{Named numeric vector containing the number of times each level is observed}
+\item{counts}{Named numeric vector containing the number of times each level is observed.}
 
-\item{threshold}{Minimum number of samples each level must contain}
+\item{threshold}{Minimum number of samples each level must contain.}
 
-\item{clusters}{List of character vectors, each vector is the names of the levels that can be grouped together}
+\item{clusters}{List of character vectors, each vector is the names of the levels that can be grouped together.}
 
 \item{verbose}{Whether to print diagnostic messages or not. Default: \code{FALSE}}
 }

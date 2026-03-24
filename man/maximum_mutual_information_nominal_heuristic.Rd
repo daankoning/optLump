@@ -12,13 +12,13 @@ maximum_mutual_information_nominal_heuristic(
 )
 }
 \arguments{
-\item{counts}{Named numeric vector containing the number of times each level is observed}
+\item{counts}{Named numeric vector containing the number of times each level is observed.}
 
-\item{threshold}{Minimum number of samples each level must contain}
+\item{threshold}{Minimum number of samples each level must contain.}
 
 \item{adj_matrix}{Adjancency matrix of the preference graph.}
 
-\item{verbose}{Whether to print diagnostic messages or not. Default: \code{FALSE}}
+\item{verbose}{Whether to print diagnostic messages or not. Default: \code{FALSE}.}
 }
 \value{
 A list containing information about the optimal lumping:
