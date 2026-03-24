@@ -7,7 +7,15 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-TODO: intro
+Categorical variables with many rare levels can often cause problems for statistical modeling, leading to overfitting,
+high variance, or rank-deficient design matrices.
+A potential solution is to lump these rare categories together, to
+ensure every level meets a minimum sample size constraint.
+
+Unlike naive approaches that simply lump the smallest levels into a
+generic `Other` category, `optLump` uses information theory to
+find the combinations that preserve the maximum amount of mutual
+information from the original data distribution.
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
@@ -63,7 +71,7 @@ library(optLump)
 
 The simplest case is that of ordinal variables, which are variables that have a natural ordering of the categories.
 In our example, the variable `education_level` is an ordinal variable.
-We might decide that the smaller levels, `High School` and `PhD` are too
+We might decide that the smaller levels, `<High School` and `PhD` are too
 small to be useful, and
 that we want to lump them together with other levels.
 We would do this by specifying a threshold value, in this instance 15,
@@ -85,9 +93,11 @@ When we lose the ordering, we can't rely on the computer to automatically
 know what levels can be lumped together.
 The simplest, and most common approach is to simply allow all
 levels to be lumped with all other levels.
-
-TODO: explain prefernce graph
-
+This corresponds to the preference graph^[The preference graph is a graph
+that encodes what lumpings are allowed; it has an edge between two levels
+if and only if those levels are allowed to be lumped together.] being a
+complete graph.
+Notice that the preference graph is taken in as its adjacency matrix.
 ```{r}
 level_count <- nlevels(data$diagnosis)
 # Adjacency matrix for complete graph:
@@ -95,12 +105,26 @@ preference_graph <- matrix(
   1, nrow = level_count, ncol = level_count,
   dimnames = list(levels(data$diagnosis), levels(data$diagnosis))
 )
-lumped_data <- lump_nominal(data$diagnosis, 15, preference_graph)
-summary(lumped_data)
+lumped_levels <- lump_nominal(data$diagnosis, 15, preference_graph)
+summary(lumped_levels)
 ```
 
-A less common situation is when we have some prior knowledge about which levels can be lumped together.
-TODO: finish this paragraph + example
+A less common situation is when we have some prior knowledge about
+which levels can be lumped together.
+Suppose we know based on domain knowledge that `Heart Disease` should
+not be lumped with `Hypertension`, since they are too different.
+This information can also be encoded in the preference graph,
+by disallowing the corresponding pairing:
+```{r}
+preference_graph["Heart Disease", "Hypertension"] <- 0
+preference_graph["Hypertension", "Heart Disease"] <- 0
+lumped_levels <- lump_nominal(data$diagnosis, 15, preference_graph)
+summary(lumped_levels)
+```
+Of course, if the preference graph is more sparse, corresponding
+to a situation in which only a small number of pairings are admissible,
+it would make more sense to build the graph the other way around, by
+starting with an empty graph and adding edges for the pairings that are allowed.
 
 ### Hierarchical Variables
 
@@ -118,8 +142,8 @@ clusters <- list(
     c("France", "Germany"),
     c("China", "Japan", "South Korea", "Vietnam")
 )
-lumped_data <- lump_hierarchical(data$country_of_origin, 15, clusters)
-summary(lumped_data)
+lumped_levels <- lump_hierarchical(data$country_of_origin, 15, clusters)
+summary(lumped_levels)
 ```
 
 The reason this function exists separately from `lump_nominal()` -- which
@@ -129,7 +153,16 @@ not possible in the general case.
 
 # Dplyr Integration
 
-TODO
+```{r, message = FALSE}
+library(dplyr)
+```
+
+The package works very naturally with dplyr pipelines.
+For instance, we can easily apply the `lump_ordinal()` function to the `education_level` variable in our dataset:
+```{r}
+lumped_data <- data |> mutate(education_level = lump_ordinal(education_level, 15))
+head(lumped_data)
+```
 
 # Computation and Large Datasets
 
@@ -146,3 +179,6 @@ Since $c \leq m$, this is a substantial improvement.
 When even this is too slow, we can use `lump_nominal_heuristic()`, which
 approximates a solution in polynomial time, but does not guarantee an
 optimal solution.
+
+Note that `lump_ordinal()` does not suffer from the same issue and runs
+in polynomial time.
