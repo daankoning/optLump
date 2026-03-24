@@ -24,6 +24,28 @@ lowest_cost_merge <- function(counts, pref_graph, threshold) {
   best_pair
 }
 
+heuristic_largest <- function(counts, pref_graph, threshold) {
+  smallest <- names(counts)[which.min(counts)]
+
+  neighbours <- names(igraph::neighbors(pref_graph, smallest))
+  if (length(neighbours) == 0) return(NULL)
+
+  largest_neighbour <- names(counts[neighbours])[which.max(counts[neighbours])]
+
+  c(smallest, largest_neighbour)
+}
+
+heuristic_other <- function(counts, pref_graph, threshold) {
+  smallest <- names(counts)[which.min(counts)]
+
+  neighbours <- names(igraph::neighbors(pref_graph, smallest))
+  if (length(neighbours) == 0) return(NULL)
+
+  smallest_neighbour <- names(counts[neighbours])[which.min(counts[neighbours])]
+
+  c(smallest, smallest_neighbour)
+}
+
 #TODO: document
 #' Approximate maximum information preservable by nominal lumping
 #'
@@ -32,12 +54,14 @@ lowest_cost_merge <- function(counts, pref_graph, threshold) {
 #' The lumping found is guaranteed to satisfy the constraints, but the mutual information conserved is not guaranteed to be maximal.
 #'
 #' @inheritParams maximum_mutual_information_nominal
+#' @param heuristic Character string specifying the heuristic to use. TODO
 #'
 #' @inherit maximum_mutual_information_nominal return
 #'
 #' @author Daan Koning
 #' @export
-maximum_mutual_information_nominal_heuristic <- function(counts, threshold, adj_matrix, verbose = FALSE) {
+maximum_mutual_information_nominal_heuristic <- function(counts, threshold, adj_matrix, verbose = FALSE, heuristic = c("smart", "largest", "other")) {
+  #TODO: use verbose
   if (!is.numeric(counts) || any(is.na(counts)) || any(counts < 0) || is.null(names(counts))) {
     stop("Input 'counts' must be a named numeric vector with no missing or negative values.")
   }
@@ -57,6 +81,17 @@ maximum_mutual_information_nominal_heuristic <- function(counts, threshold, adj_
     stop("Adjacency matrix must contain row and column names matching all levels in 'counts'.")
   }
 
+  heuristic <- match.arg(heuristic)
+  if (heuristic == "smart") {
+    choice_function <- lowest_cost_merge
+  }
+  if (heuristic == "largest") {
+    choice_function <- heuristic_largest
+  } else if (heuristic == "other") {
+    print("peener")
+    choice_function <- heuristic_other
+  }
+
   original_entropy <- empirical_entropy(counts)
   lumping <- as.list(L)
   names(lumping) <- L
@@ -65,7 +100,7 @@ maximum_mutual_information_nominal_heuristic <- function(counts, threshold, adj_
   pref_graph <- igraph::graph_from_adjacency_matrix(adj_matrix, mode = "undirected", diag = FALSE)
 
   while (any(counts < threshold)) {
-    best_pair <- lowest_cost_merge(counts, pref_graph, threshold)
+    best_pair <- choice_function(counts, pref_graph, threshold)
     if (is.null(best_pair)) {
       stop("No lumping exists that is able to satisfy all constraints.")
     }

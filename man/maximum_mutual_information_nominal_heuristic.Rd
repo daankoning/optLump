@@ -8,7 +8,8 @@ maximum_mutual_information_nominal_heuristic(
   counts,
   threshold,
   adj_matrix,
-  verbose = FALSE
+  verbose = FALSE,
+  heuristic = c("smart", "largest", "other")
 )
 }
 \arguments{
@@ -19,6 +20,8 @@ maximum_mutual_information_nominal_heuristic(
 \item{adj_matrix}{Adjancency matrix of the preference graph.}
 
 \item{verbose}{Whether to print diagnostic messages or not. Default: \code{FALSE}}
+
+\item{heuristic}{Character string specifying the heuristic to use. TODO}
 }
 \value{
 A list containing information about the optimal lumping:
