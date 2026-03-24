@@ -8,7 +8,8 @@ maximum_mutual_information_nominal_heuristic(
   counts,
   threshold,
   adj_matrix,
-  verbose = FALSE
+  verbose = FALSE,
+  heuristic = c("smart", "largest", "other")
 )
 }
 \arguments{
@@ -19,6 +20,8 @@ maximum_mutual_information_nominal_heuristic(
 \item{adj_matrix}{Adjancency matrix of the preference graph.}
 
 \item{verbose}{Whether to print diagnostic messages or not. Default: \code{FALSE}.}
+
+\item{heuristic}{Character string specifying the algorithm to use. See Details for their behaviour. Default: \code{"smart"}.}
 }
 \value{
 A list containing information about the optimal lumping:
@@ -32,7 +35,29 @@ of the original levels that have been lumped together.}
 \description{
 Since the proper optimisation function, \code{\link[=maximum_mutual_information_nominal]{maximum_mutual_information_nominal()}}, has superpolynomial time complexity,
 this function provides a heuristic to find a good lumping in polynomial time.
-The lumping found is guaranteed to satisfy the constraints, but the mutual information conserved is not guaranteed to be maximal.
+}
+\details{
+The lumping returned is guaranteed to satisfy the constraints, but the mutual information conserved is not guaranteed to be maximal.
+Additionally, since the the clique cover problem is itself NP-complete, it is not guaranteed that a lumping is found at all,
+even when it exists.
+\subsection{Heuristics}{
+
+The different heuristics all operate differently.
+The options are:
+\itemize{
+\item \code{"smart"} TODO: document when done
+\item \code{"largest"} iteratively lumps the smallest level with the largest other level it can be lumped with.
+In practice, the algorithm results in one large hard to interpret group and probably ought be avoided.
+\item \code{"other"} can be seen as a re-implementation of \code{forcats::fct_lump_min}, in that
+it tries to lump the smallest levels together, with the
+added flexibility provided by support for non-complete preference graphs.
+}
+}
+}
+\seealso{
+\code{\link[=maximum_mutual_information_nominal]{maximum_mutual_information_nominal()}} for the non-approximate version of this function.
+
+\code{\link[=lump_nominal_heuristic]{lump_nominal_heuristic()}} for a more user-friendly wrapper around this function that actually carries out the lumping.
 }
 \author{
 Daan Koning

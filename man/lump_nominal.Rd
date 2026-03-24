@@ -37,6 +37,8 @@ lump_nominal(data, q, adj)
 \code{\link[=maximum_mutual_information_nominal]{maximum_mutual_information_nominal()}} for the underlying algorithm that this function wraps.
 
 \code{\link[=lump_hierarchical]{lump_hierarchical()}} for a version of this function that can take advantage of hierarchical structure in the data to speed up the execution time.
+
+\code{\link[=lump_nominal_heuristic]{lump_nominal_heuristic()}} to approximate this function when the runtime becomes infeasible.
 }
 \author{
 Daan Koning
