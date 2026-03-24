@@ -2,6 +2,7 @@
 
 export(lump_hierarchical)
 export(lump_nominal)
+export(lump_nominal_heuristic)
 export(lump_ordinal)
 export(maximum_mutual_information_hierarchical)
 export(maximum_mutual_information_nominal)

@@ -19,7 +19,7 @@ maximum_mutual_information_nominal_heuristic(
 
 \item{adj_matrix}{Adjancency matrix of the preference graph.}
 
-\item{verbose}{Whether to print diagnostic messages or not. Default: \code{FALSE}}
+\item{verbose}{Whether to print diagnostic messages or not. Default: \code{FALSE}.}
 
 \item{heuristic}{Character string specifying the heuristic to use. TODO}
 }
@@ -36,6 +36,11 @@ of the original levels that have been lumped together.}
 Since the proper optimisation function, \code{\link[=maximum_mutual_information_nominal]{maximum_mutual_information_nominal()}}, has superpolynomial time complexity,
 this function provides a heuristic to find a good lumping in polynomial time.
 The lumping found is guaranteed to satisfy the constraints, but the mutual information conserved is not guaranteed to be maximal.
+}
+\seealso{
+\code{\link[=maximum_mutual_information_nominal]{maximum_mutual_information_nominal()}} for the non-approximate version of this function.
+
+\code{\link[=lump_nominal_heuristic]{lump_nominal_heuristic()}} for a more user-friendly wrapper around this function that actually carries out the lumping.
 }
 \author{
 Daan Koning

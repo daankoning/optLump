@@ -66,6 +66,8 @@ lump_hierarchical <- function(data, threshold, clusters, verbose = FALSE) {
 #'
 #'  [lump_hierarchical()] for a version of this function that can take advantage of hierarchical structure in the data to speed up the execution time.
 #'
+#' [lump_nominal_heuristic()] to approximate this function when the runtime becomes infeasible.
+#'
 #' @author Daan Koning
 #' @export
 lump_nominal <- function(data, threshold, adj_matrix, verbose = FALSE) {
@@ -74,6 +76,35 @@ lump_nominal <- function(data, threshold, adj_matrix, verbose = FALSE) {
   counts <- table(data)
 
   res <- maximum_mutual_information_nominal(counts, threshold, adj_matrix, verbose = verbose)
+
+  lumping <- res$lumping
+  names(lumping) <- sapply(lumping, \(x) paste(x, collapse = "+"))
+
+  levels(data) <- lumping
+
+  data
+}
+
+#' Approximate the lumping on a nominal variable
+#'
+#' @inheritParams lump_nominal
+#' @param heuristic Character string specifying the heuristic to use. For explanation see [maximum_mutual_information_nominal_heuristic()].
+#'
+#' @inherit lump_nominal return
+#'
+#' @seealso
+#'  [maximum_mutual_information_nominal()] for the underlying algorithm that this function wraps.
+#'
+#'  [lump_nominal] for a non-approximate version of this function.
+#'
+#' @author Daan Koning
+#' @export
+lump_nominal_heuristic <- function(data, threshold, adj_matrix, verbose = FALSE, heuristic = c("smart", "largest", "other")) {
+  #TODO: validate inputs
+  data <- factor(data)
+  counts <- table(data)
+
+  res <- maximum_mutual_information_nominal_heuristic(counts, threshold, adj_matrix, verbose = verbose, heuristic = heuristic)
 
   lumping <- res$lumping
   names(lumping) <- sapply(lumping, \(x) paste(x, collapse = "+"))

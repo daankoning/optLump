@@ -58,6 +58,11 @@ heuristic_other <- function(counts, pref_graph, threshold) {
 #'
 #' @inherit maximum_mutual_information_nominal return
 #'
+#' @seealso
+#'  [maximum_mutual_information_nominal()] for the non-approximate version of this function.
+#'
+#'  [lump_nominal_heuristic()] for a more user-friendly wrapper around this function that actually carries out the lumping.
+#'
 #' @author Daan Koning
 #' @export
 maximum_mutual_information_nominal_heuristic <- function(counts, threshold, adj_matrix, verbose = FALSE, heuristic = c("smart", "largest", "other")) {
@@ -88,7 +93,6 @@ maximum_mutual_information_nominal_heuristic <- function(counts, threshold, adj_
   if (heuristic == "largest") {
     choice_function <- heuristic_largest
   } else if (heuristic == "other") {
-    print("peener")
     choice_function <- heuristic_other
   }
 
