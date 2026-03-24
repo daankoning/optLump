@@ -160,8 +160,9 @@ library(dplyr)
 The package works very naturally with dplyr pipelines.
 For instance, we can easily apply the `lump_ordinal()` function to the `education_level` variable in our dataset:
 ```{r}
-lumped_data <- data |> mutate(education_level = lump_ordinal(education_level, 15))
-head(lumped_data)
+data |>
+  mutate(education_level = lump_ordinal(education_level, 15)) |>
+  slice_head(n = 10)
 ```
 
 # Computation and Large Datasets
