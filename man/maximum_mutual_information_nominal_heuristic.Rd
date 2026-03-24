@@ -45,7 +45,7 @@ even when it exists.
 The different heuristics all operate differently.
 The options are:
 \itemize{
-\item \code{"smart"}
+\item \code{"smart"} TODO: document when done
 \item \code{"largest"} iteratively lumps the smallest level with the largest other level it can be lumped with.
 In practice, the algorithm results in one large hard to interpret group and probably ought be avoided.
 \item \code{"other"} can be seen as a re-implementation of \code{forcats::fct_lump_min}, in that

@@ -30,7 +30,7 @@ A factor vector with the lumped levels.
 Approximate the lumping on a nominal variable
 }
 \seealso{
-\code{\link[=maximum_mutual_information_nominal]{maximum_mutual_information_nominal()}} for the underlying algorithm that this function wraps.
+\code{\link[=maximum_mutual_information_nominal_heuristic]{maximum_mutual_information_nominal_heuristic()}} for the underlying algorithm that this function wraps.
 
 \code{\link[=lump_nominal]{lump_nominal()}} for a non-approximate version of this function.
 }

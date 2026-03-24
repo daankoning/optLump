@@ -93,7 +93,7 @@ lump_nominal <- function(data, threshold, adj_matrix, verbose = FALSE) {
 #' @inherit lump_nominal return
 #'
 #' @seealso
-#'  [maximum_mutual_information_nominal()] for the underlying algorithm that this function wraps.
+#'  [maximum_mutual_information_nominal_heuristic()] for the underlying algorithm that this function wraps.
 #'
 #'  [lump_nominal()] for a non-approximate version of this function.
 #'
