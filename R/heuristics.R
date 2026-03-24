@@ -51,10 +51,23 @@ heuristic_other <- function(counts, pref_graph, threshold) {
 #'
 #' Since the proper optimisation function, [maximum_mutual_information_nominal()], has superpolynomial time complexity,
 #' this function provides a heuristic to find a good lumping in polynomial time.
-#' The lumping found is guaranteed to satisfy the constraints, but the mutual information conserved is not guaranteed to be maximal.
+#'
+#' The lumping returned is guaranteed to satisfy the constraints, but the mutual information conserved is not guaranteed to be maximal.
+#' Additionally, since the the clique cover problem is itself NP-complete, it is not guaranteed that a lumping is found at all,
+#' even when it exists.
+#'
+#' ## Heuristics
+#' The different heuristics all operate differently.
+#' The options are:
+#' - `"smart"` TODO: document when done
+#' - `"largest"` iteratively lumps the smallest level with the largest other level it can be lumped with.
+#'      In practice, the algorithm results in one large hard to interpret group and probably ought be avoided.
+#' - `"other"` can be seen as a re-implementation of `forcats::fct_lump_min`, in that
+#'      it tries to lump the smallest levels together, with the
+#'      added flexibility provided by support for non-complete preference graphs.
 #'
 #' @inheritParams maximum_mutual_information_nominal
-#' @param heuristic Character string specifying the heuristic to use. TODO
+#' @param heuristic Character string specifying the algorithm to use. See Details for their behaviour. Default: `"smart"`.
 #'
 #' @inherit maximum_mutual_information_nominal return
 #'

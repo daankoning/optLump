@@ -95,7 +95,7 @@ lump_nominal <- function(data, threshold, adj_matrix, verbose = FALSE) {
 #' @seealso
 #'  [maximum_mutual_information_nominal()] for the underlying algorithm that this function wraps.
 #'
-#'  [lump_nominal] for a non-approximate version of this function.
+#'  [lump_nominal()] for a non-approximate version of this function.
 #'
 #' @author Daan Koning
 #' @export
