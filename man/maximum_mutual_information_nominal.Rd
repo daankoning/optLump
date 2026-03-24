@@ -12,13 +12,13 @@ maximum_mutual_information_nominal(
 )
 }
 \arguments{
-\item{counts}{Named numeric vector containing the number of times each level is observed}
+\item{counts}{Named numeric vector containing the number of times each level is observed.}
 
-\item{threshold}{Minimum number of samples each level must contain}
+\item{threshold}{Minimum number of samples each level must contain.}
 
 \item{adj_matrix}{Adjancency matrix of the preference graph.}
 
-\item{verbose}{Whether to print diagnostic messages or not. Default: \code{FALSE}}
+\item{verbose}{Whether to print diagnostic messages or not. Default: \code{FALSE}.}
 }
 \value{
 A list containing information about the optimal lumping:
@@ -40,6 +40,8 @@ Be advised that, since the problem is NP-hard, the implementation here has time 
 \eqn{O\left(2^{2^m}\right)}{O(2^2^m)}, where \eqn{m}{m} is the number of levels in the nominal variable.
 }
 \seealso{
+\code{\link[=lump_nominal]{lump_nominal()}} for a more user-friendly wrapper around this function that actually carries out the lumping.
+
 \code{\link[=maximum_mutual_information_nominal_heuristic]{maximum_mutual_information_nominal_heuristic()}} to approximate this function when the number of levels is too large.
 
 \code{\link[=maximum_mutual_information_hierarchical]{maximum_mutual_information_hierarchical()}} for a version of this function that takes advantage of hierarchical structure to speed up the execution time.

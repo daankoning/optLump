@@ -19,17 +19,20 @@ empirical_entropy <- function(counts) {
 #'
 #' The runtime complexity is cubic in the number of levels.
 #'
-#' @param counts     Numeric vector containing the number of times each level is observed
-#' @param threshold  Minimum number of samples each level must contain
+#' @param counts     Numeric vector containing the number of times each level is observed.
+#' @param threshold  Minimum number of samples each level must contain.
 #'
 #' @returns A list containing information about the optimal lumping:
 #' \describe{
-#'      \item{mutual_information}{Double representing the mutual information between the lumped and unlumped variable}
+#'      \item{mutual_information}{Double representing the mutual information between the lumped and unlumped variable.}
 #'      \item{loss}{Double representing the amount of entropy lost in the lumping process.}
 #'      \item{lumping}{Integer vector containing, sequentially, the points at which the lumped levels are separated.
 #'                      Lower bound inclusive and upper bound exclusive, so that if a_1,...,a_k is returned, the lumped
 #'                      levels correspond to the levels [a_1, a_2), ..., [a_(k-1), a_k).}
 #'  }
+#'
+#' @seealso
+#'  [lump_ordinal()] for a more user-friendly wrapper around this function that actually carries out the lumping.
 #'
 #' @examples
 #' maximum_mutual_information_ordinal(c(10, 5, 2, 8, 15), 15)

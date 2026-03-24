@@ -8,10 +8,10 @@
 #' Be advised that, since the problem is NP-hard, the implementation here has time complexity
 #' \eqn{O\left(2^{2^m}\right)}{O(2^2^m)}, where \eqn{m}{m} is the number of levels in the nominal variable.
 #'
-#' @param counts     Named numeric vector containing the number of times each level is observed
-#' @param threshold  Minimum number of samples each level must contain
+#' @param counts     Named numeric vector containing the number of times each level is observed.
+#' @param threshold  Minimum number of samples each level must contain.
 #' @param adj_matrix Adjancency matrix of the preference graph.
-#' @param verbose    Whether to print diagnostic messages or not. Default: `FALSE`
+#' @param verbose    Whether to print diagnostic messages or not. Default: `FALSE`.
 #'
 #' @returns A list containing information about the optimal lumping:
 #' \describe{
@@ -22,6 +22,8 @@
 #'  }
 #'
 #' @seealso
+#'  [lump_nominal()] for a more user-friendly wrapper around this function that actually carries out the lumping.
+#'
 #'  [maximum_mutual_information_nominal_heuristic()] to approximate this function when the number of levels is too large.
 #'
 #'  [maximum_mutual_information_hierarchical()] for a version of this function that takes advantage of hierarchical structure to speed up the execution time.
@@ -29,6 +31,7 @@
 #' @author Daan Koning
 #' @export
 maximum_mutual_information_nominal <- function(counts, threshold, adj_matrix, verbose = FALSE) {
+  #TODO: example
   if (!is.numeric(counts) || any(is.na(counts)) || any(counts < 0) || is.null(names(counts))) {
     stop("Input 'counts' must be a named numeric vector with no missing or negative values.")
   }
@@ -127,18 +130,21 @@ maximum_mutual_information_nominal <- function(counts, threshold, adj_matrix, ve
 #' lumping a nominal variable inherited from a hierarchy.
 #'
 #' This acts as a wrapper around [maximum_mutual_information_nominal()].
-#' By  passing the hierarchical structure via the \code{clusters} argument,
+#' By  passing the hierarchical structure via the `clusters` argument,
 #' the algorithm divides the problem into independent sub-problems, speeding
 #' up the execution time for large datasets.
 #'
-#' @param counts     Named numeric vector containing the number of times each level is observed
-#' @param threshold  Minimum number of samples each level must contain
-#' @param clusters   List of character vectors, each vector is the names of the levels that can be grouped together
+#' @param counts     Named numeric vector containing the number of times each level is observed.
+#' @param threshold  Minimum number of samples each level must contain.
+#' @param clusters   List of character vectors, each vector is the names of the levels that can be grouped together.
 #' @param verbose    Whether to print diagnostic messages or not. Default: `FALSE`
 #'
 #' @inherit maximum_mutual_information_nominal return
 #'
-#' @seealso [maximum_mutual_information_nominal()] for the fully general version of this function, which this one wraps.
+#' @seealso
+#'  [lump_hierarchical()] for a more user-friendly wrapper around this function that actually carries out the lumping.
+#'
+#'  [maximum_mutual_information_nominal()] for the fully general version of this function, which this one wraps.
 #'
 #' @examples
 #' maximum_mutual_information_hierarchical(
