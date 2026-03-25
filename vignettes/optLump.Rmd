@@ -107,7 +107,7 @@ not be lumped with `Hypertension`, since they are too different.
 This information can also be encoded in the preference graph,^[The preference
 graph is a graph that encodes what lumpings are allowed; it has an edge between
 two levels if and only if those levels are allowed to be lumped together.]
-by disallowing the corresponding pairing:
+by disallowing the corresponding pairing.
 Notice that the preference graph is taken in as its adjacency matrix.
 ```{r}
 preference_graph <- matrix(
@@ -117,6 +117,7 @@ preference_graph <- matrix(
 preference_graph["Heart Disease", "Hypertension"] <- 0
 preference_graph["Hypertension", "Heart Disease"] <- 0
 lumped_levels <- lump_nominal(data$diagnosis, 15, preference_graph)
+preference_graph
 summary(lumped_levels)
 ```
 Of course, if the preference graph is more sparse, corresponding
