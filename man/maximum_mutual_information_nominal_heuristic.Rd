@@ -7,7 +7,7 @@
 maximum_mutual_information_nominal_heuristic(
   counts,
   threshold,
-  adj_matrix,
+  adj_matrix = NULL,
   verbose = FALSE,
   heuristic = c("smart", "largest", "other")
 )
@@ -17,7 +17,7 @@ maximum_mutual_information_nominal_heuristic(
 
 \item{threshold}{Minimum number of samples each level must contain.}
 
-\item{adj_matrix}{Adjancency matrix of the preference graph.}
+\item{adj_matrix}{Adjancency matrix of the preference graph. Default: a complete graph, allowing all lumpings.}
 
 \item{verbose}{Whether to print diagnostic messages or not. Default: \code{FALSE}.}
 

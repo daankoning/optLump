@@ -45,7 +45,7 @@ lump_hierarchical <- function(data, threshold, clusters, verbose = FALSE) {
 #'
 #' @param data Factor or character vector of the categorical data.
 #' @param threshold The minimum number of samples each lumped level should contain.
-#' @param adj_matrix Adjancency matrix of the preference graph.
+#' @param adj_matrix Adjancency matrix of the preference graph. Default: a complete graph, allowing all lumpings.
 #' @param verbose Logical value dictating if values should be printed. Default: `FALSE`.
 #'
 #' @returns A factor vector with the lumped levels.
@@ -55,8 +55,6 @@ lump_hierarchical <- function(data, threshold, clusters, verbose = FALSE) {
 #' n <- 50
 #' q <- 10
 #' data <- sample(LETTERS[1:m], n, replace = TRUE)
-#' # Use a complete graph, so all lumpings are possible:
-#' adj <- matrix(1, nrow = m, ncol = m, dimnames = list(LETTERS[1:m], LETTERS[1:m]))
 #' # Data before lumping:
 #' data
 #' lump_nominal(data, q, adj)
@@ -70,7 +68,7 @@ lump_hierarchical <- function(data, threshold, clusters, verbose = FALSE) {
 #'
 #' @author Daan Koning
 #' @export
-lump_nominal <- function(data, threshold, adj_matrix, verbose = FALSE) {
+lump_nominal <- function(data, threshold, adj_matrix = NULL, verbose = FALSE) {
   #TODO: validate inputs
   data <- factor(data)
   counts <- table(data)
@@ -99,7 +97,7 @@ lump_nominal <- function(data, threshold, adj_matrix, verbose = FALSE) {
 #'
 #' @author Daan Koning
 #' @export
-lump_nominal_heuristic <- function(data, threshold, adj_matrix, verbose = FALSE, heuristic = c("smart", "largest", "other")) {
+lump_nominal_heuristic <- function(data, threshold, adj_matrix = NULL, verbose = FALSE, heuristic = c("smart", "largest", "other")) {
   #TODO: validate inputs
   data <- factor(data)
   counts <- table(data)

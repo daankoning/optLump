@@ -4,14 +4,14 @@
 \alias{lump_nominal}
 \title{Perform lumping on a nominal variable}
 \usage{
-lump_nominal(data, threshold, adj_matrix, verbose = FALSE)
+lump_nominal(data, threshold, adj_matrix = NULL, verbose = FALSE)
 }
 \arguments{
 \item{data}{Factor or character vector of the categorical data.}
 
 \item{threshold}{The minimum number of samples each lumped level should contain.}
 
-\item{adj_matrix}{Adjancency matrix of the preference graph.}
+\item{adj_matrix}{Adjancency matrix of the preference graph. Default: a complete graph, allowing all lumpings.}
 
 \item{verbose}{Logical value dictating if values should be printed. Default: \code{FALSE}.}
 }
@@ -26,8 +26,6 @@ m <- 5
 n <- 50
 q <- 10
 data <- sample(LETTERS[1:m], n, replace = TRUE)
-# Use a complete graph, so all lumpings are possible:
-adj <- matrix(1, nrow = m, ncol = m, dimnames = list(LETTERS[1:m], LETTERS[1:m]))
 # Data before lumping:
 data
 lump_nominal(data, q, adj)

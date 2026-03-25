@@ -7,7 +7,7 @@
 lump_nominal_heuristic(
   data,
   threshold,
-  adj_matrix,
+  adj_matrix = NULL,
   verbose = FALSE,
   heuristic = c("smart", "largest", "other")
 )
@@ -17,7 +17,7 @@ lump_nominal_heuristic(
 
 \item{threshold}{The minimum number of samples each lumped level should contain.}
 
-\item{adj_matrix}{Adjancency matrix of the preference graph.}
+\item{adj_matrix}{Adjancency matrix of the preference graph. Default: a complete graph, allowing all lumpings.}
 
 \item{verbose}{Logical value dictating if values should be printed. Default: \code{FALSE}.}
 
