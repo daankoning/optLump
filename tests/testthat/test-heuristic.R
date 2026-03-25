@@ -65,6 +65,18 @@ test_that("Order of columns in adjacency matrix does not matter", {
   expect_true(lumping_equal(res1$lumping,  res2$lumping))
 })
 
+test_that("Default to complete graph works", {
+  counts <- c(A = 1, B = 2, C = 5, D = 2, F = 2, G = 10)
+  adj <- matrix(1, nrow = 6, ncol = 6, dimnames = list(names(counts), names(counts)))
+
+  res1 <- maximum_mutual_information_nominal_heuristic(counts, 4, adj)
+  res2 <- maximum_mutual_information_nominal_heuristic(counts, 4)
+
+  expect_equal(res1$mutual_information, res2$mutual_information, tolerance = tolerance)
+  expect_equal(res1$loss, res2$loss, tolerance = tolerance)
+  expect_true(lumping_equal(res1$lumping,  res2$lumping))
+})
+
 test_that("Zero counts are handled properly", {
   counts <- c(A = 1, B = 0, C = 1)
   adj <- matrix(1, nrow = 3, ncol = 3, dimnames = list(names(counts), names(counts)))

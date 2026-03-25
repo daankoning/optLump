@@ -88,10 +88,11 @@ maximum_mutual_information_nominal_heuristic <- function(counts, threshold, adj_
   }
   L <- names(counts)
   n <- sum(counts)
+  m <- length(counts)
 
   # default to complete preference graph:
   if (is.null(adj_matrix)) {
-    adj_matrix <- matrix(1, nrow = m, m, dimnames = list(L, L))
+    adj_matrix <- matrix(1, nrow = m, ncol = m, dimnames = list(L, L))
   }
 
   if (n == 0) {

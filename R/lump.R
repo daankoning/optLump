@@ -57,7 +57,7 @@ lump_hierarchical <- function(data, threshold, clusters, verbose = FALSE) {
 #' data <- sample(LETTERS[1:m], n, replace = TRUE)
 #' # Data before lumping:
 #' data
-#' lump_nominal(data, q, adj)
+#' lump_nominal(data, q)
 #'
 #' @seealso
 #'  [maximum_mutual_information_nominal()] for the underlying algorithm that this function wraps.

@@ -28,7 +28,7 @@ q <- 10
 data <- sample(LETTERS[1:m], n, replace = TRUE)
 # Data before lumping:
 data
-lump_nominal(data, q, adj)
+lump_nominal(data, q)
 
 }
 \seealso{
