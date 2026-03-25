@@ -62,6 +62,53 @@ test_that("Order of columns in adjacency matrix does not matter", {
   expect_true(lumping_equal(res1$lumping,  res2$lumping))
 })
 
+test_that("Preference merging (larger graph) works", {
+  # complete:
+  m <- 14
+  threshold <- 5
+  counts <- c(setNames(1:m, LETTERS[1:m]))
+
+  res <- maximum_mutual_information_nominal(counts, threshold)
+  expect_equal(res$mutual_information, 2.421229, tolerance = tolerance)
+  expect_equal(res$loss, 0.05587686, tolerance = tolerance)
+  expect_true(lumping_equal(res$lumping, list(
+    c("A", "D"),
+    c("B", "C"),
+    c("E"),
+    c("F"),
+    c("G"),
+    c("H"),
+    c("I"),
+    c("J"),
+    c("K"),
+    c("L"),
+    c("M"),
+    c("N")
+  )))
+
+  # non-complete:
+  adj <- matrix(1, nrow = m, ncol = m, dimnames = list(names(counts), names(counts)))
+  adj["A", LETTERS[9:m]] <- 0
+  adj[LETTERS[9:m], "A"] <- 0
+  adj["B", "H"] <- 0
+  adj["H", "B"] <- 0
+
+  res <- maximum_mutual_information_nominal(counts, 10, adj)
+
+  # we are checking if it correctly merges A and B's constraings (since for A the lumping A+B+H is optimal, but B bans it)
+  expect_true(lumping_equal(res$lumping, list(
+    c("A", "C", "G"),
+    c("E", "F"),
+    c("D", "H"),
+    c("B", "I"),
+    c("N"),
+    c("M"),
+    c("L"),
+    c("K"),
+    c("J")
+  )))
+})
+
 test_that("Default to complete graph works", {
   counts <- c(A = 1, B = 2, C = 5, D = 2, F = 2, G = 10)
   adj <- matrix(1, nrow = 6, ncol = 6, dimnames = list(names(counts), names(counts)))
