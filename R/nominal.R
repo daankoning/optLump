@@ -10,7 +10,7 @@
 #'
 #' @param counts     Named numeric vector containing the number of times each level is observed.
 #' @param threshold  Minimum number of samples each level must contain.
-#' @param adj_matrix Adjancency matrix of the preference graph.
+#' @param adj_matrix Adjancency matrix of the preference graph. Default: a complete graph, allowing all lumpings.
 #' @param verbose    Whether to print diagnostic messages or not. Default: `FALSE`.
 #'
 #' @returns A list containing information about the optimal lumping:
@@ -30,7 +30,7 @@
 #'
 #' @author Daan Koning
 #' @export
-maximum_mutual_information_nominal <- function(counts, threshold, adj_matrix, verbose = FALSE) {
+maximum_mutual_information_nominal <- function(counts, threshold, adj_matrix = NULL, verbose = FALSE) {
   #TODO: example
   if (!is.numeric(counts) || any(is.na(counts)) || any(counts < 0) || is.null(names(counts))) {
     stop("Input 'counts' must be a named numeric vector with no missing or negative values.")
@@ -42,6 +42,11 @@ maximum_mutual_information_nominal <- function(counts, threshold, adj_matrix, ve
   L <- names(counts)
   n <- sum(counts)
   m <- length(counts)
+
+  # default to complete preference graph:
+  if (is.null(adj_matrix)) {
+    adj_matrix <- matrix(1, nrow = m, ncol = m, dimnames = list(L, L))
+  }
 
   if (n == 0) {
     stop("Total number of samples is 0. Cannot perform lumping.")
@@ -55,7 +60,6 @@ maximum_mutual_information_nominal <- function(counts, threshold, adj_matrix, ve
   # Reorder the adjacency matrix to match the order of levels in counts
   adj_matrix <- adj_matrix[L, L, drop = FALSE]
 
-  # TODO: should we default to completed graph?
   # TODO: change input + consider allowing directed first and then provessing to undirected
   # find cliques
   if (verbose) message("Starting clique finding...")
@@ -156,8 +160,7 @@ maximum_mutual_information_nominal <- function(counts, threshold, adj_matrix, ve
 #' @author Daan Koning
 #' @export
 maximum_mutual_information_hierarchical <- function(counts, threshold, clusters, verbose = FALSE) {
-  # TODO: does this need more error checking? does counts match clusters?
-    if (!is.numeric(counts) || any(is.na(counts)) || any(counts < 0) || is.null(names(counts))) {
+  if (!is.numeric(counts) || any(is.na(counts)) || any(counts < 0) || is.null(names(counts))) {
     stop("Input 'counts' must be a named numeric vector with no missing or negative values.")
   }
   if (length(threshold) != 1 || !is.numeric(threshold) || threshold <= 0) {
@@ -172,9 +175,7 @@ maximum_mutual_information_hierarchical <- function(counts, threshold, clusters,
   lumping <- list()
   for (cluster in clusters) {
     current_counts <- counts[cluster]
-    adj_matrix <- matrix(1, nrow = length(current_counts), ncol = length(current_counts), dimnames = list(cluster, cluster))
-
-    res <- maximum_mutual_information_nominal(current_counts, threshold, adj_matrix, verbose = verbose)
+    res <- maximum_mutual_information_nominal(current_counts, threshold, verbose = verbose)
     lumping <- append(lumping, res$lumping)
   }
 

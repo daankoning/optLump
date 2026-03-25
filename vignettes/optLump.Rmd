@@ -93,19 +93,10 @@ When we lose the ordering, we can't rely on the computer to automatically
 know what levels can be lumped together.
 The simplest, and most common approach is to simply allow all
 levels to be lumped with all other levels.
-This corresponds to the preference graph^[The preference graph is a graph
-that encodes what lumpings are allowed; it has an edge between two levels
-if and only if those levels are allowed to be lumped together.] being a
-complete graph.
-Notice that the preference graph is taken in as its adjacency matrix.
+This is the default behaviour:
 ```{r}
 level_count <- nlevels(data$diagnosis)
-# Adjacency matrix for complete graph:
-preference_graph <- matrix(
-  1, nrow = level_count, ncol = level_count,
-  dimnames = list(levels(data$diagnosis), levels(data$diagnosis))
-)
-lumped_levels <- lump_nominal(data$diagnosis, 15, preference_graph)
+lumped_levels <- lump_nominal(data$diagnosis, 15)
 summary(lumped_levels)
 ```
 
@@ -113,12 +104,20 @@ A less common situation is when we have some prior knowledge about
 which levels can be lumped together.
 Suppose we know based on domain knowledge that `Heart Disease` should
 not be lumped with `Hypertension`, since they are too different.
-This information can also be encoded in the preference graph,
-by disallowing the corresponding pairing:
+This information can also be encoded in the preference graph,^[The preference
+graph is a graph that encodes what lumpings are allowed; it has an edge between
+two levels if and only if those levels are allowed to be lumped together.]
+by disallowing the corresponding pairing.
+Notice that the preference graph is taken in as its adjacency matrix.
 ```{r}
+preference_graph <- matrix(
+  1, nrow = level_count, ncol = level_count,
+  dimnames = list(levels(data$diagnosis), levels(data$diagnosis))
+)
 preference_graph["Heart Disease", "Hypertension"] <- 0
 preference_graph["Hypertension", "Heart Disease"] <- 0
 lumped_levels <- lump_nominal(data$diagnosis, 15, preference_graph)
+preference_graph
 summary(lumped_levels)
 ```
 Of course, if the preference graph is more sparse, corresponding
