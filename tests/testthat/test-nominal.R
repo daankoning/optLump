@@ -96,17 +96,10 @@ test_that("Preference merging (larger graph) works", {
   res <- maximum_mutual_information_nominal(counts, 10, adj)
 
   # we are checking if it correctly merges A and B's constraings (since for A the lumping A+B+H is optimal, but B bans it)
-  expect_true(lumping_equal(res$lumping, list(
-    c("A", "C", "G"),
-    c("E", "F"),
-    c("D", "H"),
-    c("B", "I"),
-    c("N"),
-    c("M"),
-    c("L"),
-    c("K"),
-    c("J")
-  )))
+  expect_equal(res$mutual_information, 2.192416, tolerance = tolerance)
+  expect_equal(res$loss, 0.2846899, tolerance = tolerance)
+  # We don't check the lumping itself, since there are multiple optima and it is dependent on the lpSolve version
+  # which gets returned
 })
 
 test_that("Default to complete graph works", {
