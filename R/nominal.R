@@ -174,6 +174,7 @@ maximum_mutual_information_hierarchical <- function(counts, threshold, clusters,
 
   lumping <- list()
   for (cluster in clusters) {
+    if (verbose) message(paste("Examining cluster", paste(cluster, collapse = ", ")))
     current_counts <- counts[cluster]
     res <- maximum_mutual_information_nominal(current_counts, threshold, verbose = verbose)
     lumping <- append(lumping, res$lumping)

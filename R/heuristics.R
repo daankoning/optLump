@@ -79,7 +79,6 @@ heuristic_other <- function(counts, pref_graph, threshold) {
 #' @author Daan Koning
 #' @export
 maximum_mutual_information_nominal_heuristic <- function(counts, threshold, adj_matrix = NULL, verbose = FALSE, heuristic = c("smart", "largest", "other")) {
-  #TODO: use verbose
   if (!is.numeric(counts) || any(is.na(counts)) || any(counts < 0) || is.null(names(counts))) {
     stop("Input 'counts' must be a named numeric vector with no missing or negative values.")
   }
@@ -130,6 +129,8 @@ maximum_mutual_information_nominal_heuristic <- function(counts, threshold, adj_
     a <- best_pair[1]
     b <- best_pair[2]
     new_name <- paste(a, b, sep = "+")
+
+    if (verbose) message(paste("Merging levels", a, "and", b))
 
     # collapse counts
     counts[new_name] <- counts[a] + counts[b]
