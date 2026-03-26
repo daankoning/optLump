@@ -3,7 +3,7 @@ left_isolated <- function(counts, pref_graph, threshold, a, b) {
   neighbours_a <- names(igraph::neighbors(pref_graph, a))
   neighbours_b <- names(igraph::neighbors(pref_graph, b))
 
-  # The set of nodes that currently have an edge to either a or b, that will lose this after lumping
+  # The set of nodes that currently have an edge to either a or b, that will lose this after lumping (symm. diff.)
   cut <- union(setdiff(neighbours_a, neighbours_b), setdiff(neighbours_b, neighbours_a))
   #remove a and b from cut:
   cut <- setdiff(cut, c(a, b))
@@ -152,7 +152,7 @@ maximum_mutual_information_nominal_heuristic <- function(counts, threshold, adj_
   while (any(counts < threshold)) {
     best_pair <- choice_function(counts, pref_graph, threshold)
     if (is.null(best_pair)) {
-      stop("No lumping exists that is able to satisfy all constraints.")
+      stop("No lumping found that is able to satisfy all constraints.")
     }
     a <- best_pair[1]
     b <- best_pair[2]
