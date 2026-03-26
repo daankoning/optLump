@@ -7,7 +7,7 @@
 maximum_mutual_information_ordinal(counts, threshold)
 }
 \arguments{
-\item{counts}{Numeric vector containing the number of times each level is observed.}
+\item{counts}{Ordered numeric vector containing the number of times each level is observed.}
 
 \item{threshold}{Minimum number of samples each level must contain.}
 }

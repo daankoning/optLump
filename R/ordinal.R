@@ -19,7 +19,7 @@ empirical_entropy <- function(counts) {
 #'
 #' The runtime complexity is cubic in the number of levels.
 #'
-#' @param counts     Numeric vector containing the number of times each level is observed.
+#' @param counts     Ordered numeric vector containing the number of times each level is observed.
 #' @param threshold  Minimum number of samples each level must contain.
 #'
 #' @returns A list containing information about the optimal lumping:
