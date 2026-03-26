@@ -25,7 +25,7 @@
 #' @export
 lump_hierarchical <- function(data, threshold, clusters, verbose = FALSE) {
   #TODO: validate inputs
-  data <- factor(data)
+  data <- as.factor(data)
   counts <- table(data)
 
   res <- maximum_mutual_information_hierarchical(counts, threshold, clusters, verbose = verbose)
@@ -66,7 +66,7 @@ lump_hierarchical <- function(data, threshold, clusters, verbose = FALSE) {
 #' @export
 lump_nominal <- function(data, threshold, adj_matrix = NULL, verbose = FALSE) {
   #TODO: validate inputs
-  data <- factor(data)
+  data <- as.factor(data)
   counts <- table(data)
 
   res <- maximum_mutual_information_nominal(counts, threshold, adj_matrix, verbose = verbose)
@@ -95,7 +95,7 @@ lump_nominal <- function(data, threshold, adj_matrix = NULL, verbose = FALSE) {
 #' @export
 lump_nominal_heuristic <- function(data, threshold, adj_matrix = NULL, verbose = FALSE, heuristic = c("smart", "largest", "other")) {
   #TODO: validate inputs
-  data <- factor(data)
+  data <- as.factor(data)
   counts <- table(data)
 
   res <- maximum_mutual_information_nominal_heuristic(counts, threshold, adj_matrix, verbose = verbose, heuristic = heuristic)
