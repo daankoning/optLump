@@ -82,7 +82,7 @@ lump_nominal <- function(data, threshold, adj_matrix = NULL, verbose = FALSE) {
 #' Approximate the lumping on a nominal variable
 #'
 #' @inheritParams lump_nominal
-#' @param heuristic Character string specifying the heuristic to use. For explanation see [maximum_mutual_information_nominal_heuristic()].
+#' @param heuristic Character string specifying the heuristic to use. For explanation, see [maximum_mutual_information_nominal_heuristic()].
 #'
 #' @inherit lump_nominal return
 #'
@@ -171,5 +171,3 @@ lump_ordinal <- function(data, threshold, levels = NULL) {
 
   data
 }
-
-# TODO: test

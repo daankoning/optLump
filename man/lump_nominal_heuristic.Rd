@@ -21,7 +21,7 @@ lump_nominal_heuristic(
 
 \item{verbose}{Logical value dictating if values should be printed. Default: \code{FALSE}.}
 
-\item{heuristic}{Character string specifying the heuristic to use. For explanation see \code{\link[=maximum_mutual_information_nominal_heuristic]{maximum_mutual_information_nominal_heuristic()}}.}
+\item{heuristic}{Character string specifying the heuristic to use. For explanation, see \code{\link[=maximum_mutual_information_nominal_heuristic]{maximum_mutual_information_nominal_heuristic()}}.}
 }
 \value{
 A factor vector with the lumped levels.

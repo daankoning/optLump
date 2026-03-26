@@ -61,3 +61,16 @@ test_that("Nominal (complete) happy path", {
 
   expect_true(result_equal(res, c("A+J" = 14, "B+N" = 13, "C+L" = 13, "D+M" = 13, "E+H" = 13, F = 11, G = 10, "I+K" = 13)))
 })
+
+test_that("Hierarchical (complete) happy path", {
+  set.seed(0)
+  m <- 14
+  n <- 100
+  q <- 10
+  data <- sample(LETTERS[1:m], n, replace = TRUE)
+
+  res1 <- lump_nominal(data, q)
+  res2 <- lump_nominal_heuristic(data, q)
+
+  expect_true(result_equal(res1, res2))
+})
