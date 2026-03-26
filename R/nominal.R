@@ -1,4 +1,3 @@
-#TODO: example
 #' Maximum information preservable by nominal lumping
 #'
 #' Calculates the maximum amount of mutual information that can be preserved by lumping a nominal variable.
@@ -28,6 +27,25 @@
 #'  [maximum_mutual_information_nominal_heuristic()] to approximate this function when the number of levels is too large.
 #'
 #'  [maximum_mutual_information_hierarchical()] for a version of this function that takes advantage of hierarchical structure to speed up the execution time.
+#'
+#' @examples
+#' counts = c(A = 3, B = 1, C = 3, D = 2, E = 2)
+#' threshold <- 3
+#' maximum_mutual_information_nominal(counts, threshold)
+#'
+#' # Or ban certain pairings:
+#' preference_graph <- adjacency_from_edge_list(
+#'  names(counts),
+#'  disallow = list(c("B", "E"), c("D", "E"))
+#')
+#' maximum_mutual_information_nominal(counts, threshold, preference_graph)
+#'
+#' # Or only allow certain pairings
+#' preference_graph <- adjacency_from_edge_list(
+#'  names(counts),
+#'  allow = list(c("B", "E"), c("C", "D"), c("D", "E"))
+#')
+#' maximum_mutual_information_nominal(counts, threshold, preference_graph)
 #'
 #' @author Daan Koning
 #' @export
@@ -60,7 +78,6 @@ maximum_mutual_information_nominal <- function(counts, threshold, adj_matrix = N
   # Reorder the adjacency matrix to match the order of levels in counts
   adj_matrix <- adj_matrix[L, L, drop = FALSE]
 
-  # TODO: change input + consider allowing directed first and then provessing to undirected
   # find cliques
   if (verbose) message("Starting clique finding...")
   pref_graph <- igraph::graph_from_adjacency_matrix(adj_matrix, mode = "undirected")

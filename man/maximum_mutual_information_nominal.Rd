@@ -39,6 +39,26 @@ of the lumped levels.
 Be advised that, since the problem is NP-hard, the implementation here has time complexity
 \eqn{O\left(2^{2^m}\right)}{O(2^2^m)}, where \eqn{m}{m} is the number of levels in the nominal variable.
 }
+\examples{
+counts = c(A = 3, B = 1, C = 3, D = 2, E = 2)
+threshold <- 3
+maximum_mutual_information_nominal(counts, threshold)
+
+# Or ban certain pairings:
+preference_graph <- adjacency_from_edge_list(
+ names(counts),
+ disallow = list(c("B", "E"), c("D", "E"))
+)
+maximum_mutual_information_nominal(counts, threshold, preference_graph)
+
+# Or only allow certain pairings
+preference_graph <- adjacency_from_edge_list(
+ names(counts),
+ allow = list(c("B", "E"), c("C", "D"), c("D", "E"))
+)
+maximum_mutual_information_nominal(counts, threshold, preference_graph)
+
+}
 \seealso{
 \code{\link[=lump_nominal]{lump_nominal()}} for a more user-friendly wrapper around this function that actually carries out the lumping.
 

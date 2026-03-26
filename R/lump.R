@@ -38,7 +38,6 @@ lump_hierarchical <- function(data, threshold, clusters, verbose = FALSE) {
   data
 }
 
-#TODO: this should have an example of a non-complete pref graph
 #' Perform lumping on a nominal variable
 #'
 #' @param data Factor or character vector of the categorical data.
