@@ -25,7 +25,7 @@
 #' @export
 lump_hierarchical <- function(data, threshold, clusters, verbose = FALSE) {
   #TODO: validate inputs
-  data <- factor(data)
+  data <- as.factor(data)
   counts <- table(data)
 
   res <- maximum_mutual_information_hierarchical(counts, threshold, clusters, verbose = verbose)
@@ -66,7 +66,7 @@ lump_hierarchical <- function(data, threshold, clusters, verbose = FALSE) {
 #' @export
 lump_nominal <- function(data, threshold, adj_matrix = NULL, verbose = FALSE) {
   #TODO: validate inputs
-  data <- factor(data)
+  data <- as.factor(data)
   counts <- table(data)
 
   res <- maximum_mutual_information_nominal(counts, threshold, adj_matrix, verbose = verbose)
@@ -82,7 +82,7 @@ lump_nominal <- function(data, threshold, adj_matrix = NULL, verbose = FALSE) {
 #' Approximate the lumping on a nominal variable
 #'
 #' @inheritParams lump_nominal
-#' @param heuristic Character string specifying the heuristic to use. For explanation see [maximum_mutual_information_nominal_heuristic()].
+#' @param heuristic Character string specifying the heuristic to use. For explanation, see [maximum_mutual_information_nominal_heuristic()].
 #'
 #' @inherit lump_nominal return
 #'
@@ -95,7 +95,7 @@ lump_nominal <- function(data, threshold, adj_matrix = NULL, verbose = FALSE) {
 #' @export
 lump_nominal_heuristic <- function(data, threshold, adj_matrix = NULL, verbose = FALSE, heuristic = c("smart", "largest", "other")) {
   #TODO: validate inputs
-  data <- factor(data)
+  data <- as.factor(data)
   counts <- table(data)
 
   res <- maximum_mutual_information_nominal_heuristic(counts, threshold, adj_matrix, verbose = verbose, heuristic = heuristic)
@@ -171,5 +171,3 @@ lump_ordinal <- function(data, threshold, levels = NULL) {
 
   data
 }
-
-# TODO: test
