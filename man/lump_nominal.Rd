@@ -26,8 +26,6 @@ m <- 5
 n <- 50
 q <- 10
 data <- sample(LETTERS[1:m], n, replace = TRUE)
-# Data before lumping:
-data
 lump_nominal(data, q)
 
 }

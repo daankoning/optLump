@@ -1,3 +1,4 @@
+#TODO: example
 #' Maximum information preservable by nominal lumping
 #'
 #' Calculates the maximum amount of mutual information that can be preserved by lumping a nominal variable.
@@ -31,7 +32,6 @@
 #' @author Daan Koning
 #' @export
 maximum_mutual_information_nominal <- function(counts, threshold, adj_matrix = NULL, verbose = FALSE) {
-  #TODO: example
   if (!is.numeric(counts) || any(is.na(counts)) || any(counts < 0) || is.null(names(counts))) {
     stop("Input 'counts' must be a named numeric vector with no missing or negative values.")
   }

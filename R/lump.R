@@ -1,5 +1,3 @@
-#TODO: document
-
 #' Perform lumping on a hierarchical nominal variable
 #'
 #' @param data Factor or character vector of the categorical data.
@@ -55,8 +53,6 @@ lump_hierarchical <- function(data, threshold, clusters, verbose = FALSE) {
 #' n <- 50
 #' q <- 10
 #' data <- sample(LETTERS[1:m], n, replace = TRUE)
-#' # Data before lumping:
-#' data
 #' lump_nominal(data, q)
 #'
 #' @seealso

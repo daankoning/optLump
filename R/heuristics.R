@@ -46,7 +46,6 @@ heuristic_other <- function(counts, pref_graph, threshold) {
   c(smallest, smallest_neighbour)
 }
 
-#TODO: document
 #' Approximate maximum information preservable by nominal lumping
 #'
 #' Since the proper optimisation function, [maximum_mutual_information_nominal()], has superpolynomial time complexity,
