@@ -1,3 +1,26 @@
+# helper to check if a node that does not meet the threshold is left isolated
+left_isolated <- function(counts, pref_graph, threshold, a, b) {
+  neighbours_a <- names(igraph::neighbors(pref_graph, a))
+  neighbours_b <- names(igraph::neighbors(pref_graph, b))
+
+  # The set of nodes that currently have an edge to either a or b, that will lose this after lumping (symm. diff.)
+  cut <- union(setdiff(neighbours_a, neighbours_b), setdiff(neighbours_b, neighbours_a))
+  #remove a and b from cut:
+  cut <- setdiff(cut, c(a, b))
+
+  cut <- cut[counts[cut] < threshold]
+
+  for (level in cut) {
+    neighbours <- names(igraph::neighbors(pref_graph, level))
+
+    # reject if no viable partners left
+    if (length(setdiff(neighbours, c(a, b))) == 0) return(TRUE)
+  }
+
+  FALSE
+}
+
+# TODO: use heaps to speed up all these heuristics
 lowest_cost_merge <- function(counts, pref_graph, threshold) {
   L <- names(counts)
   n <- sum(counts)
@@ -14,6 +37,9 @@ lowest_cost_merge <- function(counts, pref_graph, threshold) {
 
     merged_count <- counts[a] + counts[b]
     cost <- safe_xlogx(merged_count / n) - safe_xlogx(counts[a] / n) - safe_xlogx(counts[b] / n)
+
+    # reject lumpings that lead to impossible outcomes
+    if (left_isolated(counts, pref_graph, threshold, a, b)) cost <- Inf
 
     if (cost < min_cost) {
       min_cost <- cost
@@ -56,14 +82,17 @@ heuristic_other <- function(counts, pref_graph, threshold) {
 #' even when it exists.
 #'
 #' ## Heuristics
-#' The different heuristics all operate differently.
+#' The different heuristics all operate differently and therefore also respond differently to an increase in the
+#' size of \eqn{m}{m}, the number of levels.
 #' The options are:
 #' - `"smart"` TODO: document when done
 #' - `"largest"` iteratively lumps the smallest level with the largest other level it can be lumped with.
 #'      In practice, the algorithm results in one large hard to interpret group and probably ought be avoided.
+#'      Has \eqn{O\left(m^2\right)}{m^2} runtime.
 #' - `"other"` can be seen as a re-implementation of `forcats::fct_lump_min`, in that
 #'      it tries to lump the smallest levels together, with the
 #'      added flexibility provided by support for non-complete preference graphs.
+#'      Has \eqn{O\left(m^2\right)}{m^2} runtime.
 #'
 #' @inheritParams maximum_mutual_information_nominal
 #' @param heuristic Character string specifying the algorithm to use. See Details for their behaviour. Default: `"smart"`.
@@ -123,7 +152,7 @@ maximum_mutual_information_nominal_heuristic <- function(counts, threshold, adj_
   while (any(counts < threshold)) {
     best_pair <- choice_function(counts, pref_graph, threshold)
     if (is.null(best_pair)) {
-      stop("No lumping exists that is able to satisfy all constraints.")
+      stop("No lumping found that is able to satisfy all constraints.")
     }
     a <- best_pair[1]
     b <- best_pair[2]

@@ -44,6 +44,24 @@ test_that("Lump all levels together when threshold is high", {
   expect_true(lumping_equal(res$lumping, list(c("A", "B", "C"))))
 })
 
+test_that("Lookahead works to prevent stranding", {
+  counts <- c(A = 2, B = 1, C = 1, D = 3)
+  adj <- matrix(c(
+    0, 1, 0, 0,
+    1, 0, 1, 0,
+    0, 1, 0, 1,
+    0, 0, 1, 0
+  ), nrow = 4, ncol = 4, dimnames = list(names(counts), names(counts)))
+
+  # this would fail without the look-ahead since it would merge B and C together, stranding A
+  res1 <- maximum_mutual_information_nominal_heuristic(counts, 3, adj)
+  res2 <- maximum_mutual_information_nominal(counts, 3, adj)
+
+  expect_equal(res1$mutual_information, res2$mutual_information, tolerance = tolerance)
+  expect_equal(res1$loss, res2$loss, tolerance = tolerance)
+  expect_true(lumping_equal(res1$lumping, res2$lumping))
+})
+
 test_that("Order of columns in adjacency matrix does not matter", {
   counts <- c(A = 1, B = 1, C = 2)
   adj1 <- matrix(c(
@@ -107,7 +125,7 @@ test_that("Error when no cliques meet threshold", {
 
   expect_error(
     maximum_mutual_information_nominal_heuristic(counts, 2, adj),
-    "No lumping exists that"
+    "No lumping found that"
   )
 })
 
@@ -121,7 +139,7 @@ test_that("Generic impossible case throws error", {
 
   expect_error(
     maximum_mutual_information_nominal_heuristic(counts, 2, adj),
-    "No lumping exists that is able to satisfy all constraints"
+    "No lumping found that is able to satisfy all constraints"
   )
 })
 
