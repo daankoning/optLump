@@ -1,11 +1,5 @@
 # This is largely copied from test-nominal.R, but adjusted to allow for suboptimal solutions
-# TODO: do this adjusting
 tolerance <- 10^-6
-
-# FIXME: this should not be duplicated
-lumping_equal <- function(A, B) {
-  setequal(lapply(A, sort), lapply(B, sort))
-}
 
 test_that("Default happy path", {
   counts <- c(A = 1, B = 1, C = 2)

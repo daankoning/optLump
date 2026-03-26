@@ -1,10 +1,5 @@
 tolerance <- 10^-6
 
-# FIXME: this should not be duplicated
-lumping_equal <- function(A, B) {
-  setequal(lapply(A, sort), lapply(B, sort))
-}
-
 test_that("Hierachical matches normal for only one cluster", {
   m <- 14
   threshold <- 5

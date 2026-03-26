@@ -1,9 +1,5 @@
 tolerance <- 10^-6
 
-lumping_equal <- function(A, B) {
-  setequal(lapply(A, sort), lapply(B, sort))
-}
-
 test_that("Default happy path", {
   counts <- c(A = 1, B = 1, C = 2)
   adj <- matrix(c(
