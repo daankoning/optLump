@@ -42,15 +42,18 @@ Additionally, since the the clique cover problem is itself NP-complete, it is no
 even when it exists.
 \subsection{Heuristics}{
 
-The different heuristics all operate differently.
+The different heuristics all operate differently and therefore also respond differently to an increase in the
+size of \eqn{m}{m}, the number of levels.
 The options are:
 \itemize{
 \item \code{"smart"} TODO: document when done
 \item \code{"largest"} iteratively lumps the smallest level with the largest other level it can be lumped with.
 In practice, the algorithm results in one large hard to interpret group and probably ought be avoided.
+Has \eqn{O\left(m^2\right)}{m^2} runtime.
 \item \code{"other"} can be seen as a re-implementation of \code{forcats::fct_lump_min}, in that
 it tries to lump the smallest levels together, with the
 added flexibility provided by support for non-complete preference graphs.
+Has \eqn{O\left(m^2\right)}{m^2} runtime.
 }
 }
 }
