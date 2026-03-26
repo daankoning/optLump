@@ -67,20 +67,17 @@ maximum_mutual_information_nominal <- function(counts, threshold, adj_matrix = N
   all_cliques <- igraph::cliques(pref_graph)
 
   # Filter out those cliques that do not meet the treshold
-  valid_cliques <- vector("list", length(all_cliques))
-  #TODO: use lapply here
   if (verbose) message("Filtering out cliques with insufficient sample count...")
-  for (i in seq_along(all_cliques)) {
-    clique <- all_cliques[[i]]
+  valid_cliques <- lapply(all_cliques, function (clique) {
     D_i <- sum(counts[as.numeric(clique)])
-    if (D_i < threshold) next
+    if (D_i < threshold) return(NULL)
 
     w_i <- -D_i / n * log(D_i / n)
-    valid_cliques[[i]] <- list(
+    list(
       clique = clique,
       weight = w_i
     )
-  }
+  })
   valid_cliques <- valid_cliques[!sapply(valid_cliques, is.null)]
   K <- length(valid_cliques)
 
