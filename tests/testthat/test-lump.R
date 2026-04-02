@@ -58,7 +58,6 @@ test_that("Nominal (complete) happy path", {
   data <- sample(LETTERS[1:m], n, replace = TRUE)
 
   res <- lump_nominal(data, q)
-  print(res)
 
   expect_true(
     result_equal(res, c("A+J" = 14, "B+N" = 13, "C+L" = 13, "D+M" = 13, "E+H" = 13, F = 11, G = 10, "I+K" = 13)) ||
