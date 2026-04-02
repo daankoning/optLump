@@ -24,25 +24,36 @@ lumping_equal <- function(A, B) {
 #' @author Daan Koning
 #' @export
 adjacency_from_edge_list <- function(levels, allow = NULL, disallow = NULL) {
-  # TODO: validate inputs
   if (!xor(is.null(allow), is.null(disallow))) {
     stop("Exactly one of `allow` or `disallow` must be specified")
   }
+
+  if (anyDuplicated(levels)) {
+    stop("Every entry of `levels` must be unique")
+  }
+
   m <- length(levels)
 
   default_symb <- if (!is.null(allow)) 0 else 1
   positive_symb <- 1 - default_symb
   edge_list <- if (!is.null(allow)) allow else disallow
 
+  if (!is.list(edge_list) || any(lengths(edge_list) != 2)) {
+    stop("The edge list must be a list of vectors, each of length 2")
+  }
+
   adj <- matrix(default_symb, nrow = m, ncol = m, dimnames = list(levels, levels))
 
-  # TODO: this feels like it could be vectorized
+  # TODO: this feels like it could be vectorized, but should be low priority
+  # since this function is not a performance bottleneck anyways
   for (edge in edge_list) {
+    if (!(edge[1] %in% levels) || !(edge[2] %in% levels)) {
+      stop("All nodes in the edge list must be present in `levels`")
+    }
+
     adj[edge[1], edge[2]] <- positive_symb
     adj[edge[2], edge[1]] <- positive_symb
   }
 
   adj
 }
-
-#TODO: test

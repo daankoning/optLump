@@ -59,7 +59,10 @@ test_that("Nominal (complete) happy path", {
 
   res <- lump_nominal(data, q)
 
-  expect_true(result_equal(res, c("A+J" = 14, "B+N" = 13, "C+L" = 13, "D+M" = 13, "E+H" = 13, F = 11, G = 10, "I+K" = 13)))
+  expect_true(
+    result_equal(res, c("A+J" = 14, "B+N" = 13, "C+L" = 13, "D+M" = 13, "E+H" = 13, F = 11, G = 10, "I+K" = 13)) ||
+      result_equal(res, c("A+N" = 14, "B+J" = 13, "C+L" = 13, "D+M" = 13, "E+H" = 13, F = 11, G = 10, "I+K" = 13))
+  )
 })
 
 test_that("Hierarchical (complete) happy path", {

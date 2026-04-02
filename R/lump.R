@@ -24,7 +24,6 @@
 #' @author Daan Koning
 #' @export
 lump_hierarchical <- function(data, threshold, clusters, verbose = FALSE) {
-  #TODO: validate inputs
   data <- as.factor(data)
   counts <- table(data)
 
@@ -64,7 +63,6 @@ lump_hierarchical <- function(data, threshold, clusters, verbose = FALSE) {
 #' @author Daan Koning
 #' @export
 lump_nominal <- function(data, threshold, adj_matrix = NULL, verbose = FALSE) {
-  #TODO: validate inputs
   data <- as.factor(data)
   counts <- table(data)
 
@@ -93,7 +91,6 @@ lump_nominal <- function(data, threshold, adj_matrix = NULL, verbose = FALSE) {
 #' @author Daan Koning
 #' @export
 lump_nominal_heuristic <- function(data, threshold, adj_matrix = NULL, verbose = FALSE, heuristic = c("smart", "largest", "other")) {
-  #TODO: validate inputs
   data <- as.factor(data)
   counts <- table(data)
 
@@ -151,7 +148,6 @@ transform_lumping <- function(lumping, orig_levels) {
 #' @author Daan Koning
 #' @export
 lump_ordinal <- function(data, threshold, levels = NULL) {
-  #TODO: more input validation
   if (is.ordered(data)) {
     levels <- levels(data)
   } else {
