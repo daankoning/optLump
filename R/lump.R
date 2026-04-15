@@ -4,6 +4,8 @@
 #' @param threshold The minimum number of samples each lumped level should contain.
 #' @param clusters List of character vectors representing the levels that are allowed to be lumped together.
 #' @param verbose Logical value dictating if values should be printed. Default: `FALSE`.
+#' @param alternative_metric The metric that should be optimised for, if it is different from the default,
+#'  the mutual information. For an explanation of the metrics see `vignette("metrics")`.
 #'
 #' @returns A factor vector with the lumped levels.
 #'
@@ -23,11 +25,11 @@
 #'
 #' @author Daan Koning
 #' @export
-lump_hierarchical <- function(data, threshold, clusters, verbose = FALSE) {
+lump_hierarchical <- function(data, threshold, clusters, verbose = FALSE, alternative_metric = c("mutual information", "bin count", "surplus")) {
   data <- as.factor(data)
   counts <- table(data)
 
-  res <- maximum_mutual_information_hierarchical(counts, threshold, clusters, verbose = verbose)
+  res <- maximum_mutual_information_hierarchical(counts, threshold, clusters, verbose = verbose, alternative_metric = alternative_metric)
 
   lumping <- res$lumping
   names(lumping) <- sapply(lumping, \(x) paste(x, collapse = "+"))
@@ -43,6 +45,8 @@ lump_hierarchical <- function(data, threshold, clusters, verbose = FALSE) {
 #' @param threshold The minimum number of samples each lumped level should contain.
 #' @param adj_matrix Adjancency matrix of the preference graph. Default: a complete graph, allowing all lumpings.
 #' @param verbose Logical value dictating if values should be printed. Default: `FALSE`.
+#' @param alternative_metric The metric that should be optimised for, if it is different from the default,
+#'  the mutual information. For an explanation of the metrics see `vignette("metrics")`.
 #'
 #' @returns A factor vector with the lumped levels.
 #'
@@ -62,11 +66,11 @@ lump_hierarchical <- function(data, threshold, clusters, verbose = FALSE) {
 #'
 #' @author Daan Koning
 #' @export
-lump_nominal <- function(data, threshold, adj_matrix = NULL, verbose = FALSE) {
+lump_nominal <- function(data, threshold, adj_matrix = NULL, verbose = FALSE, alternative_metric = c("mutual information", "bin count", "surplus")) {
   data <- as.factor(data)
   counts <- table(data)
 
-  res <- maximum_mutual_information_nominal(counts, threshold, adj_matrix, verbose = verbose)
+  res <- maximum_mutual_information_nominal(counts, threshold, adj_matrix, verbose = verbose, alternative_metric = alternative_metric)
 
   lumping <- res$lumping
   names(lumping) <- sapply(lumping, \(x) paste(x, collapse = "+"))
@@ -127,6 +131,8 @@ transform_lumping <- function(lumping, orig_levels) {
 #' @param data Factor or character vector of the categorical data.
 #' @param threshold The minimum number of samples each lumped level should contain.
 #' @param levels Character vector specifying the strict ordinal hierarchy of the levels (from lowest to highest). Required if `data` is not already an ordered factor.
+#' @param alternative_metric The metric that should be optimised for, if it is different from the default,
+#'  the mutual information. For an explanation of the metrics see `vignette("metrics")`.
 #'
 #' @returns An ordered factor vector with the lumped levels.
 #'
@@ -147,7 +153,7 @@ transform_lumping <- function(lumping, orig_levels) {
 #'
 #' @author Daan Koning
 #' @export
-lump_ordinal <- function(data, threshold, levels = NULL) {
+lump_ordinal <- function(data, threshold, levels = NULL, alternative_metric = c("mutual information", "bin count", "surplus")) {
   if (is.ordered(data)) {
     levels <- levels(data)
   } else {
@@ -159,7 +165,7 @@ lump_ordinal <- function(data, threshold, levels = NULL) {
   data <- ordered(data, levels = levels)
   counts <- table(data)
 
-  res <- maximum_mutual_information_ordinal(counts, threshold)
+  res <- maximum_mutual_information_ordinal(counts, threshold, alternative_metric = alternative_metric)
 
   lumping <- transform_lumping(res$lumping, levels)
   levels(data) <- lumping

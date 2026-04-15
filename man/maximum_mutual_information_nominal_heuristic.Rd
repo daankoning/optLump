@@ -21,7 +21,7 @@ maximum_mutual_information_nominal_heuristic(
 
 \item{verbose}{Whether to print diagnostic messages or not. Default: \code{FALSE}.}
 
-\item{heuristic}{Character string specifying the algorithm to use. See Details for their behaviour. Default: \code{"smart"}.}
+\item{heuristic}{Character string specifying the algorithm to use. See \code{vignette("metrics")} for their behaviour. Default: \code{"smart"}.}
 }
 \value{
 A list containing information about the optimal lumping:
@@ -40,22 +40,6 @@ this function provides a heuristic to find a good lumping in polynomial time.
 The lumping returned is guaranteed to satisfy the constraints, but the mutual information conserved is not guaranteed to be maximal.
 Additionally, since the the clique cover problem is itself NP-complete, it is not guaranteed that a lumping is found at all,
 even when it exists.
-\subsection{Heuristics}{
-
-The different heuristics all operate differently and therefore also respond differently to an increase in the
-size of \eqn{m}{m}, the number of levels.
-The options are:
-\itemize{
-\item \code{"smart"} TODO: document when done
-\item \code{"largest"} iteratively lumps the smallest level with the largest other level it can be lumped with.
-In practice, the algorithm results in one large hard to interpret group and probably ought be avoided.
-Has \eqn{O\left(m^2\right)}{m^2} runtime.
-\item \code{"other"} can be seen as a re-implementation of \code{forcats::fct_lump_min}, in that
-it tries to lump the smallest levels together, with the
-added flexibility provided by support for non-complete preference graphs.
-Has \eqn{O\left(m^2\right)}{m^2} runtime.
-}
-}
 }
 \seealso{
 \code{\link[=maximum_mutual_information_nominal]{maximum_mutual_information_nominal()}} for the non-approximate version of this function.

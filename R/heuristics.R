@@ -81,21 +81,8 @@ heuristic_other <- function(counts, pref_graph, threshold) {
 #' Additionally, since the the clique cover problem is itself NP-complete, it is not guaranteed that a lumping is found at all,
 #' even when it exists.
 #'
-#' ## Heuristics
-#' The different heuristics all operate differently and therefore also respond differently to an increase in the
-#' size of \eqn{m}{m}, the number of levels.
-#' The options are:
-#' - `"smart"` TODO: document when done
-#' - `"largest"` iteratively lumps the smallest level with the largest other level it can be lumped with.
-#'      In practice, the algorithm results in one large hard to interpret group and probably ought be avoided.
-#'      Has \eqn{O\left(m^2\right)}{m^2} runtime.
-#' - `"other"` can be seen as a re-implementation of `forcats::fct_lump_min`, in that
-#'      it tries to lump the smallest levels together, with the
-#'      added flexibility provided by support for non-complete preference graphs.
-#'      Has \eqn{O\left(m^2\right)}{m^2} runtime.
-#'
 #' @inheritParams maximum_mutual_information_nominal
-#' @param heuristic Character string specifying the algorithm to use. See Details for their behaviour. Default: `"smart"`.
+#' @param heuristic Character string specifying the algorithm to use. See `vignette("metrics")` for their behaviour. Default: `"smart"`.
 #'
 #' @inherit maximum_mutual_information_nominal return
 #'
@@ -135,8 +122,7 @@ maximum_mutual_information_nominal_heuristic <- function(counts, threshold, adj_
   heuristic <- match.arg(heuristic)
   if (heuristic == "smart") {
     choice_function <- lowest_cost_merge
-  }
-  if (heuristic == "largest") {
+  } else if (heuristic == "largest") {
     choice_function <- heuristic_largest
   } else if (heuristic == "other") {
     choice_function <- heuristic_other

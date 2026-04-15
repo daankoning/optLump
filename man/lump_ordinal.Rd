@@ -4,7 +4,12 @@
 \alias{lump_ordinal}
 \title{Perform lumping on an ordinal variable}
 \usage{
-lump_ordinal(data, threshold, levels = NULL)
+lump_ordinal(
+  data,
+  threshold,
+  levels = NULL,
+  alternative_metric = c("mutual information", "bin count", "surplus")
+)
 }
 \arguments{
 \item{data}{Factor or character vector of the categorical data.}
@@ -12,6 +17,9 @@ lump_ordinal(data, threshold, levels = NULL)
 \item{threshold}{The minimum number of samples each lumped level should contain.}
 
 \item{levels}{Character vector specifying the strict ordinal hierarchy of the levels (from lowest to highest). Required if \code{data} is not already an ordered factor.}
+
+\item{alternative_metric}{The metric that should be optimised for, if it is different from the default,
+the mutual information. For an explanation of the metrics see \code{vignette("metrics")}.}
 }
 \value{
 An ordered factor vector with the lumped levels.

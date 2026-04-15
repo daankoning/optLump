@@ -4,7 +4,13 @@
 \alias{lump_nominal}
 \title{Perform lumping on a nominal variable}
 \usage{
-lump_nominal(data, threshold, adj_matrix = NULL, verbose = FALSE)
+lump_nominal(
+  data,
+  threshold,
+  adj_matrix = NULL,
+  verbose = FALSE,
+  alternative_metric = c("mutual information", "bin count", "surplus")
+)
 }
 \arguments{
 \item{data}{Factor or character vector of the categorical data.}
@@ -14,6 +20,9 @@ lump_nominal(data, threshold, adj_matrix = NULL, verbose = FALSE)
 \item{adj_matrix}{Adjancency matrix of the preference graph. Default: a complete graph, allowing all lumpings.}
 
 \item{verbose}{Logical value dictating if values should be printed. Default: \code{FALSE}.}
+
+\item{alternative_metric}{The metric that should be optimised for, if it is different from the default,
+the mutual information. For an explanation of the metrics see \code{vignette("metrics")}.}
 }
 \value{
 A factor vector with the lumped levels.
