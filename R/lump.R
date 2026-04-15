@@ -43,6 +43,8 @@ lump_hierarchical <- function(data, threshold, clusters, verbose = FALSE) {
 #' @param threshold The minimum number of samples each lumped level should contain.
 #' @param adj_matrix Adjancency matrix of the preference graph. Default: a complete graph, allowing all lumpings.
 #' @param verbose Logical value dictating if values should be printed. Default: `FALSE`.
+#' @param alternative_metric The metric that should be optimised for, if it is different from the default,
+#'  the mutual information. For an explanation of the metrics see `vignette("metrics")`.
 #'
 #' @returns A factor vector with the lumped levels.
 #'
@@ -62,11 +64,11 @@ lump_hierarchical <- function(data, threshold, clusters, verbose = FALSE) {
 #'
 #' @author Daan Koning
 #' @export
-lump_nominal <- function(data, threshold, adj_matrix = NULL, verbose = FALSE) {
+lump_nominal <- function(data, threshold, adj_matrix = NULL, verbose = FALSE, alternative_metric = c("mutual information", "bin count", "surplus")) {
   data <- as.factor(data)
   counts <- table(data)
 
-  res <- maximum_mutual_information_nominal(counts, threshold, adj_matrix, verbose = verbose)
+  res <- maximum_mutual_information_nominal(counts, threshold, adj_matrix, verbose = verbose, alternative_metric = alternative_metric)
 
   lumping <- res$lumping
   names(lumping) <- sapply(lumping, \(x) paste(x, collapse = "+"))

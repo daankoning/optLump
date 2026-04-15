@@ -12,6 +12,8 @@
 #' @param threshold  Minimum number of samples each level must contain.
 #' @param adj_matrix Adjancency matrix of the preference graph. Default: a complete graph, allowing all lumpings.
 #' @param verbose    Whether to print diagnostic messages or not. Default: `FALSE`.
+#' @param alternative_metric The metric that should be optimised for, if it is different from the default,
+#'  the mutual information. For an explanation of the metrics see `vignette("metrics")`.
 #'
 #' @returns A list containing information about the optimal lumping:
 #' \describe{
@@ -49,7 +51,7 @@
 #'
 #' @author Daan Koning
 #' @export
-maximum_mutual_information_nominal <- function(counts, threshold, adj_matrix = NULL, verbose = FALSE) {
+maximum_mutual_information_nominal <- function(counts, threshold, adj_matrix = NULL, verbose = FALSE, alternative_metric = c("mutual information", "bin count", "surplus")) {
   if (!is.numeric(counts) || any(is.na(counts)) || any(counts < 0) || is.null(names(counts))) {
     stop("Input 'counts' must be a named numeric vector with no missing or negative values.")
   }
@@ -75,6 +77,16 @@ maximum_mutual_information_nominal <- function(counts, threshold, adj_matrix = N
   if (!all(L %in% rownames(adj_matrix)) || !all(L %in% colnames(adj_matrix))) {
     stop("Adjacency matrix must contain row and column names matching all levels in 'counts'.")
   }
+
+  alternative_metric <- match.arg(alternative_metric)
+  if (alternative_metric == "mutual information") {
+    weight_function <- \(D) -D / n * log(D / n)
+  } else if (alternative_metric == "bin count") {
+    weight_function <- \(D) 1
+  } else if (alternative_metric == "surplus") {
+    weight_function <- \(D) threshold - D
+  }
+
   # Reorder the adjacency matrix to match the order of levels in counts
   adj_matrix <- adj_matrix[L, L, drop = FALSE]
 
@@ -89,7 +101,7 @@ maximum_mutual_information_nominal <- function(counts, threshold, adj_matrix = N
     D_i <- sum(counts[as.numeric(clique)])
     if (D_i < threshold) return(NULL)
 
-    w_i <- -D_i / n * log(D_i / n)
+    w_i <- weight_function(D_i)
     list(
       clique = clique,
       weight = w_i
@@ -135,9 +147,12 @@ maximum_mutual_information_nominal <- function(counts, threshold, adj_matrix = N
     L[as.numeric(clique$clique)]
   })
 
+  lumped_counts <- sapply(lumping, \(lump) sum(counts[lump]))
+  mutual_information <- empirical_entropy(lumped_counts)
+
   list(
-    mutual_information = res$objval,
-    loss = empirical_entropy(counts) - res$objval,
+    mutual_information = mutual_information,
+    loss = empirical_entropy(counts) - mutual_information,
     lumping = lumping
   )
 }
