@@ -135,8 +135,7 @@ maximum_mutual_information_nominal_heuristic <- function(counts, threshold, adj_
   heuristic <- match.arg(heuristic)
   if (heuristic == "smart") {
     choice_function <- lowest_cost_merge
-  }
-  if (heuristic == "largest") {
+  } else if (heuristic == "largest") {
     choice_function <- heuristic_largest
   } else if (heuristic == "other") {
     choice_function <- heuristic_other

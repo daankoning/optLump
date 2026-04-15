@@ -9,6 +9,7 @@ empirical_entropy <- function(counts) {
   -sum(safe_xlogx(counts/n))
 }
 
+# TODO: TEST AND DOCUMENT WEIRD METRICS
 #' Maximum information preservable by ordinal lumping
 #'
 #' Calculates the way of lumping levels of an ordinal categorical covariate that preserves the maximum mutual
@@ -39,7 +40,7 @@ empirical_entropy <- function(counts) {
 #'
 #' @author Daan Koning
 #' @export
-maximum_mutual_information_ordinal <- function(counts, threshold) {
+maximum_mutual_information_ordinal <- function(counts, threshold, alternative_metric = c("mutual information", "bin count", "surplus")) {
   if (!is.numeric(counts) || any(is.na(counts)) || any(counts < 0)) {
     stop("Input 'counts' must be a numeric vector with no missing or negative values.")
   }
@@ -58,7 +59,15 @@ maximum_mutual_information_ordinal <- function(counts, threshold) {
   }
 
   C <- \(i, j) sum(counts[i:j])
-  J <- \(i, j) safe_xlogx(C(i, j) / n) - sum(safe_xlogx(counts[i:j] / n))
+
+  alternative_metric <- match.arg(alternative_metric)
+  if (alternative_metric == "mutual information") {
+    J <- \(i, j) safe_xlogx(C(i, j) / n) - sum(safe_xlogx(counts[i:j] / n))
+  } else if (alternative_metric == "bin count") {
+    J <- \(i, j) -1
+  } else if (alternative_metric == "surplus") {
+    J <- \(i, j) C(i, j) - threshold
+  }
 
   # Holds the minimum entropy loss found for lumping the prefixes of the levels
   f <- rep(Inf, m + 1)
@@ -89,9 +98,22 @@ maximum_mutual_information_ordinal <- function(counts, threshold) {
   }
   lumping <- c(lumping, m + 1)
 
+  # Calculate the information loss
+  if (alternative_metric == "mutual information") {
+    loss <- f[m + 1]
+  } else {
+    # walk through lumping and sum each loss
+    loss <- 0
+    for (k in 1:(length(lumping) - 1)) {
+      i <- lumping[k]
+      j <- lumping[k+1] - 1
+      loss <- loss + safe_xlogx(C(i, j) / n) - sum(safe_xlogx(counts[i:j] / n))
+    }
+  }
+
   list(
-    mutual_information = empirical_entropy(counts) - f[m + 1],
-    loss = f[m + 1],
+    mutual_information = empirical_entropy(counts) - loss,
+    loss = loss,
     lumping = lumping
   )
 }

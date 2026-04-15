@@ -4,7 +4,11 @@
 \alias{maximum_mutual_information_ordinal}
 \title{Maximum information preservable by ordinal lumping}
 \usage{
-maximum_mutual_information_ordinal(counts, threshold)
+maximum_mutual_information_ordinal(
+  counts,
+  threshold,
+  alternative_metric = c("mutual information", "bin count", "surplus")
+)
 }
 \arguments{
 \item{counts}{Ordered numeric vector containing the number of times each level is observed.}
