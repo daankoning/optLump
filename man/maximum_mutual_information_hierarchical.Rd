@@ -8,7 +8,8 @@ maximum_mutual_information_hierarchical(
   counts,
   threshold,
   clusters,
-  verbose = FALSE
+  verbose = FALSE,
+  alternative_metric = c("mutual information", "bin count", "surplus")
 )
 }
 \arguments{

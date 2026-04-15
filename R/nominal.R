@@ -190,7 +190,7 @@ maximum_mutual_information_nominal <- function(counts, threshold, adj_matrix = N
 #'
 #' @author Daan Koning
 #' @export
-maximum_mutual_information_hierarchical <- function(counts, threshold, clusters, verbose = FALSE) {
+maximum_mutual_information_hierarchical <- function(counts, threshold, clusters, verbose = FALSE, alternative_metric = c("mutual information", "bin count", "surplus")) {
   if (!is.numeric(counts) || any(is.na(counts)) || any(counts < 0) || is.null(names(counts))) {
     stop("Input 'counts' must be a named numeric vector with no missing or negative values.")
   }
@@ -207,7 +207,7 @@ maximum_mutual_information_hierarchical <- function(counts, threshold, clusters,
   for (cluster in clusters) {
     if (verbose) message(paste("Examining cluster", paste(cluster, collapse = ", ")))
     current_counts <- counts[cluster]
-    res <- maximum_mutual_information_nominal(current_counts, threshold, verbose = verbose, alternative_metric = c("mutual information", "bin count", "surplus"))
+    res <- maximum_mutual_information_nominal(current_counts, threshold, verbose = verbose, alternative_metric = alternative_metric)
     lumping <- append(lumping, res$lumping)
   }
 
