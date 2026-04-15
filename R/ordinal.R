@@ -22,6 +22,8 @@ empirical_entropy <- function(counts) {
 #'
 #' @param counts     Ordered numeric vector containing the number of times each level is observed.
 #' @param threshold  Minimum number of samples each level must contain.
+#' @param alternative_metric The metric that should be optimised for, if it is different from the default,
+#'  the mutual information. For an explanation of the metrics see `vignette("metrics")`.
 #'
 #' @returns A list containing information about the optimal lumping:
 #' \describe{

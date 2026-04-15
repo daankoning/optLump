@@ -1,0 +1,45 @@
+---
+title: "Lumping Metrics"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Lumping Metrics}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+#> TODO: WRITE THE ENTIRE THING
+
+# Mutual Information
+
+## Heuristics
+
+#> TODO: WRITE
+
+The different heuristics all operate differently and therefore also respond differently to an increase in the
+#' size of $m$, the number of levels.
+
+### Smart
+
+#> TODO: document when done
+
+### Largest
+Iteratively lumps the smallest level with the largest other level it can be lumped with.
+In practice, the algorithm results in one large hard to interpret group and probably ought be avoided.
+Has $O\left(m^2\right)$ runtime.
+
+### Other
+can be seen as a re-implementation of `forcats::fct_lump_min`, in that
+it tries to lump the smallest levels together, with the
+added flexibility provided by support for non-complete preference graphs.
+Has $O\left(m^2\right)$ runtime.
+
+# Alternative Metrics
+## Minimal Lumping
+## Surplus

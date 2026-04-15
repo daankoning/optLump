@@ -127,6 +127,8 @@ transform_lumping <- function(lumping, orig_levels) {
 #' @param data Factor or character vector of the categorical data.
 #' @param threshold The minimum number of samples each lumped level should contain.
 #' @param levels Character vector specifying the strict ordinal hierarchy of the levels (from lowest to highest). Required if `data` is not already an ordered factor.
+#' @param alternative_metric The metric that should be optimised for, if it is different from the default,
+#'  the mutual information. For an explanation of the metrics see `vignette("metrics")`.
 #'
 #' @returns An ordered factor vector with the lumped levels.
 #'
@@ -147,7 +149,7 @@ transform_lumping <- function(lumping, orig_levels) {
 #'
 #' @author Daan Koning
 #' @export
-lump_ordinal <- function(data, threshold, levels = NULL) {
+lump_ordinal <- function(data, threshold, levels = NULL, alternative_metric = c("mutual information", "bin count", "surplus")) {
   if (is.ordered(data)) {
     levels <- levels(data)
   } else {
@@ -159,7 +161,7 @@ lump_ordinal <- function(data, threshold, levels = NULL) {
   data <- ordered(data, levels = levels)
   counts <- table(data)
 
-  res <- maximum_mutual_information_ordinal(counts, threshold)
+  res <- maximum_mutual_information_ordinal(counts, threshold, alternative_metric = alternative_metric)
 
   lumping <- transform_lumping(res$lumping, levels)
   levels(data) <- lumping

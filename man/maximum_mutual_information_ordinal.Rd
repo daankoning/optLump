@@ -14,6 +14,9 @@ maximum_mutual_information_ordinal(
 \item{counts}{Ordered numeric vector containing the number of times each level is observed.}
 
 \item{threshold}{Minimum number of samples each level must contain.}
+
+\item{alternative_metric}{The metric that should be optimised for, if it is different from the default,
+the mutual information. For an explanation of the metrics see \code{vignette("metrics")}.}
 }
 \value{
 A list containing information about the optimal lumping:
