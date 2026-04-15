@@ -19,6 +19,9 @@ maximum_mutual_information_hierarchical(
 \item{clusters}{List of character vectors, each vector is the names of the levels that can be grouped together.}
 
 \item{verbose}{Whether to print diagnostic messages or not. Default: \code{FALSE}}
+
+\item{alternative_metric}{The metric that should be optimised for, if it is different from the default,
+the mutual information. For an explanation of the metrics see \code{vignette("metrics")}.}
 }
 \value{
 A list containing information about the optimal lumping:

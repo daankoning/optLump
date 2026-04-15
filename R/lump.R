@@ -4,6 +4,8 @@
 #' @param threshold The minimum number of samples each lumped level should contain.
 #' @param clusters List of character vectors representing the levels that are allowed to be lumped together.
 #' @param verbose Logical value dictating if values should be printed. Default: `FALSE`.
+#' @param alternative_metric The metric that should be optimised for, if it is different from the default,
+#'  the mutual information. For an explanation of the metrics see `vignette("metrics")`.
 #'
 #' @returns A factor vector with the lumped levels.
 #'
@@ -23,11 +25,11 @@
 #'
 #' @author Daan Koning
 #' @export
-lump_hierarchical <- function(data, threshold, clusters, verbose = FALSE) {
+lump_hierarchical <- function(data, threshold, clusters, verbose = FALSE, alternative_metric = c("mutual information", "bin count", "surplus")) {
   data <- as.factor(data)
   counts <- table(data)
 
-  res <- maximum_mutual_information_hierarchical(counts, threshold, clusters, verbose = verbose)
+  res <- maximum_mutual_information_hierarchical(counts, threshold, clusters, verbose = verbose, alternative_metric = alternative_metric)
 
   lumping <- res$lumping
   names(lumping) <- sapply(lumping, \(x) paste(x, collapse = "+"))

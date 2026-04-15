@@ -171,6 +171,8 @@ maximum_mutual_information_nominal <- function(counts, threshold, adj_matrix = N
 #' @param threshold  Minimum number of samples each level must contain.
 #' @param clusters   List of character vectors, each vector is the names of the levels that can be grouped together.
 #' @param verbose    Whether to print diagnostic messages or not. Default: `FALSE`
+#' @param alternative_metric The metric that should be optimised for, if it is different from the default,
+#'  the mutual information. For an explanation of the metrics see `vignette("metrics")`.
 #'
 #' @inherit maximum_mutual_information_nominal return
 #'
@@ -205,7 +207,7 @@ maximum_mutual_information_hierarchical <- function(counts, threshold, clusters,
   for (cluster in clusters) {
     if (verbose) message(paste("Examining cluster", paste(cluster, collapse = ", ")))
     current_counts <- counts[cluster]
-    res <- maximum_mutual_information_nominal(current_counts, threshold, verbose = verbose)
+    res <- maximum_mutual_information_nominal(current_counts, threshold, verbose = verbose, alternative_metric = c("mutual information", "bin count", "surplus"))
     lumping <- append(lumping, res$lumping)
   }
 

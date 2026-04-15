@@ -4,7 +4,13 @@
 \alias{lump_hierarchical}
 \title{Perform lumping on a hierarchical nominal variable}
 \usage{
-lump_hierarchical(data, threshold, clusters, verbose = FALSE)
+lump_hierarchical(
+  data,
+  threshold,
+  clusters,
+  verbose = FALSE,
+  alternative_metric = c("mutual information", "bin count", "surplus")
+)
 }
 \arguments{
 \item{data}{Factor or character vector of the categorical data.}
@@ -14,6 +20,9 @@ lump_hierarchical(data, threshold, clusters, verbose = FALSE)
 \item{clusters}{List of character vectors representing the levels that are allowed to be lumped together.}
 
 \item{verbose}{Logical value dictating if values should be printed. Default: \code{FALSE}.}
+
+\item{alternative_metric}{The metric that should be optimised for, if it is different from the default,
+the mutual information. For an explanation of the metrics see \code{vignette("metrics")}.}
 }
 \value{
 A factor vector with the lumped levels.
