@@ -5,6 +5,7 @@ vignette: >
   %\VignetteIndexEntry{Lumping Metrics}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
+bibliography: references.bib
 ---
 
 ```{r, include = FALSE}
@@ -14,20 +15,49 @@ knitr::opts_chunk$set(
 )
 ```
 
-#> TODO: WRITE THE ENTIRE THING
-
 # Mutual Information
+
+The main goal of the package is to optimize for mutual information.
+This is a very abridged outline of what the mutual information means
+and how to interpret it.
+For a more thorough treatment of information theory, see @cover1991.
+
+The *mutual information* between two random variables expresses how much knowing the value of one of them
+reveals about the distribution of the other.
+Mathematically, it is expressed as
+$$
+    I(X; Y) = \sum_{x \in \mathcal{X}} \sum_{y \in \mathcal{Y}} \mathbb{P}(X = x, Y = y) \log \frac{\mathbb{P}(X = x, Y = y)}{\mathbb{P}(X = x) \mathbb{P}( Y = y)}
+$$
+where, if the logarithm is taken to be natural, we have units of nats.
+
+Another useful quantity from information theory is the *entropy*, which can intuitively be thought of
+as the information content of a random variable, or how much 'suprise' the distribution contains.
+It has a similar form to the mutual information, being
+$$
+    H(X) = -\sum_{x \in \mathcal{X}} \mathbb{P}(X = x) \log \mathbb{P}(X = x).
+$$
+
+It turns out that, for our application, the mutual information and entropy are identical, since if we take $X$ to be
+the distribution of the variable before the lumping and $Y$ to be the distribution after, we have $I(X;Y) = H(Y)$.
+This means we get two ways of interpreting optimizing for the mutual information:
+
+* When we regard ourselves as optimizing for the mutual information, we try to find a lumping such that,
+    uppon knowing the value of the variable after lumping, we know as much as possible about the value before lumping.
+    In other words, it should be possible to recover the original value with as much certainty as possible.
+* When we look at the entropy, we are trying to find a lumping that is as disordered as possible.
+    This is desirable, since the more disordered the variable is, the more information it contains.
+
 
 ## Heuristics
 
-#> TODO: WRITE
-
+Since computing the actual entropy is in general computationally infeasible (see `lump_nominal_heuristic()`),
+there is a choice of multiple different heuristics to approximate the optimal solution.
 The different heuristics all operate differently and therefore also respond differently to an increase in the
-#' size of $m$, the number of levels.
+size of $m$, the number of levels.
 
 ### Smart
 
-#> TODO: document when done
+TODO: document when done
 
 ### Largest
 Iteratively lumps the smallest level with the largest other level it can be lumped with.
@@ -35,11 +65,24 @@ In practice, the algorithm results in one large hard to interpret group and prob
 Has $O\left(m^2\right)$ runtime.
 
 ### Other
-can be seen as a re-implementation of `forcats::fct_lump_min`, in that
+Can be seen as a re-implementation of `forcats::fct_lump_min`, in that
 it tries to lump the smallest levels together, with the
 added flexibility provided by support for non-complete preference graphs.
 Has $O\left(m^2\right)$ runtime.
 
 # Alternative Metrics
-## Minimal Lumping
+
+For the sake of a simpler interpretation, it is also possible to use metrics other than the mutual information.
+
+## Bin Count
+
+One option is to aim for the lowest number of levels after lumping is complete.
+This is equivalent to minimizing the number of 'lumping actions', or amount of times multiple levels are combined together.
+
 ## Surplus
+
+The other option is having the lowest surplus contents in each level.
+The surplus is calculated as the amount of samples each level contains in excess of the threshhold.
+These surplusses are aggregated using a simple sum, yielding the cost function being optimized for.
+
+# References
