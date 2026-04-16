@@ -8,19 +8,16 @@ vignette: >
 bibliography: references.bib
 ---
 
-```{r, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
-)
-```
+OptLump is able to lump based on a variety of metrics.
+Usually, mutual information will be the correct choice, but this
+document also outlines the alternatives.
 
 # Mutual Information
 
 The main goal of the package is to optimize for mutual information.
 This is a very abridged outline of what the mutual information means
 and how to interpret it.
-For a more thorough treatment of information theory, see @cover1991.
+For a more thorough treatment of information theory, see @cover1991, particularly chapter 2.
 
 The *mutual information* between two random variables expresses how much knowing the value of one of them
 reveals about the distribution of the other.

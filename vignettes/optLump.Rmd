@@ -7,8 +7,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-Categorical variables with many rare levels can often cause problems for statistical modeling, leading to overfitting,
-high variance, or rank-deficient design matrices.
+Categorical variables with many rare levels can often cause problems such as overfitting.
 A potential solution is to lump these rare categories together, to
 ensure every level meets a minimum sample size constraint.
 
@@ -16,6 +15,7 @@ Unlike naive approaches that simply lump the smallest levels into a
 generic `Other` category, `optLump` uses information theory to
 find the combinations that preserve the maximum amount of mutual
 information from the original data distribution.
+For an (abridged) explanation of mutual information, see `vignette("metrics")`.
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
