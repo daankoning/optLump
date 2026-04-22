@@ -25,7 +25,9 @@ Mathematically, it is expressed as
 $$
     I(X; Y) = \sum_{x \in \mathcal{X}} \sum_{y \in \mathcal{Y}} \mathbb{P}(X = x, Y = y) \log \frac{\mathbb{P}(X = x, Y = y)}{\mathbb{P}(X = x) \mathbb{P}( Y = y)}
 $$
-where, if the logarithm is taken to be natural, we have units of nats.
+where, if the logarithm is taken to be natural, we have units of nats. ^[It might be more intuitive to think in terms
+of bits, which we get when the logarithm is taken to be base 2. However, since the base of the logarithm only changes the
+mutual information by a constant factor, it does not affect the optimization process.]
 
 Another useful quantity from information theory is the *entropy*, which can intuitively be thought of
 as the information content of a random variable, or how much 'suprise' the distribution contains.
@@ -39,10 +41,12 @@ the distribution of the variable before the lumping and $Y$ to be the distributi
 This means we get two ways of interpreting optimizing for the mutual information:
 
 * When we regard ourselves as optimizing for the mutual information, we try to find a lumping such that,
-    uppon knowing the value of the variable after lumping, we know as much as possible about the value before lumping.
+    upon knowing the value of the variable after lumping, we know as much as possible about the value before lumping.
     In other words, it should be possible to recover the original value with as much certainty as possible.
 * When we look at the entropy, we are trying to find a lumping that is as disordered as possible.
     This is desirable, since the more disordered the variable is, the more information it contains.
+    In practice, this means we try to find a lumping such that the distribution of the variable after lumping is as
+    close to uniform as possible. ^[This happens because the uniform distribution is the distribution with maximal entropy.]
 
 
 ## Heuristics
@@ -54,7 +58,11 @@ size of $m$, the number of levels.
 
 ### Smart
 
-TODO: document when done
+Usually the best choice, as it tends to approximate the optimal solution more closely.
+Works by greedily lumping the smallest level with the other level that results in the least information loss.
+On top of this greedy approach, a simple look-ahead is also implemented, which usually allows it to prevent
+getting stuck in unsolvable situations.
+Has $O\left(m^2\right)$ runtime.
 
 ### Largest
 Iteratively lumps the smallest level with the largest other level it can be lumped with.

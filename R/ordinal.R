@@ -9,7 +9,6 @@ empirical_entropy <- function(counts) {
   -sum(safe_xlogx(counts/n))
 }
 
-# TODO: TEST AND DOCUMENT WEIRD METRICS
 #' Maximum information preservable by ordinal lumping
 #'
 #' Calculates the way of lumping levels of an ordinal categorical covariate that preserves the maximum mutual
