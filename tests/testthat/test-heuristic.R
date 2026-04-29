@@ -171,3 +171,19 @@ test_that("Input validation catches bad data", {
     "Adjacency matrix must"
   )
 })
+
+test_that("Heuristics handle cascading merges in a larger graph with disjoint cliques", {
+  counts <- c(A = 1, B = 1, C = 3, D = 2, E = 1, F = 2)
+
+  adj <- adjacency_from_edge_list(
+    levels = names(counts),
+    allow = list(c("A", "B"), c("A", "C"), c("B", "C"), c("D", "E"), c("E", "F"), c("D", "F"))
+  )
+
+  res <- maximum_mutual_information_nominal_heuristic(counts, 4, adj, heuristic = "largest")
+
+  expected_lumping <- list(c("A", "B", "C"), c("D", "E", "F"))
+
+  expect_true(lumping_equal(res$lumping, expected_lumping) ||
+              lumping_equal(res$lumping, list(c("D", "E", "F"), c("A", "B", "C"))))
+})
