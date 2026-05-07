@@ -19,3 +19,4 @@ Imports:
     igraph,
     lpSolve
 VignetteBuilder: knitr
+URL: https://daankoning.github.io/optLump/

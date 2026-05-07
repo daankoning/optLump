@@ -1,5 +1,6 @@
-url: ~
+url: https://daankoning.github.io/optLump/
 template:
   bootstrap: 5
   math-rendering: katex
-  light-switch: true
+  light-switch: yes
+
