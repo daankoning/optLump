@@ -9,7 +9,8 @@ lump_nominal(
   threshold,
   adj_matrix = NULL,
   verbose = FALSE,
-  alternative_metric = c("mutual information", "bin count", "surplus")
+  alternative_metric = c("mutual information", "bin count", "surplus"),
+  level_namer = default_level_namer
 )
 }
 \arguments{
@@ -23,6 +24,9 @@ lump_nominal(
 
 \item{alternative_metric}{The metric that should be optimised for, if it is different from the default,
 the mutual information. For an explanation of the metrics see \code{vignette("metrics")}.}
+
+\item{level_namer}{Function that takes a character vector of the original levels in a lump and returns the name of
+the new lumped level. Default: concatenating the original levels with a "+" in between.}
 }
 \value{
 A factor vector with the lumped levels.

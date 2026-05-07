@@ -9,7 +9,8 @@ lump_nominal_heuristic(
   threshold,
   adj_matrix = NULL,
   verbose = FALSE,
-  heuristic = c("smart", "largest", "other")
+  heuristic = c("smart", "largest", "other"),
+  level_namer = default_level_namer
 )
 }
 \arguments{
@@ -22,6 +23,9 @@ lump_nominal_heuristic(
 \item{verbose}{Logical value dictating if values should be printed. Default: \code{FALSE}.}
 
 \item{heuristic}{Character string specifying the heuristic to use. For explanation, see \code{\link[=maximum_mutual_information_nominal_heuristic]{maximum_mutual_information_nominal_heuristic()}}.}
+
+\item{level_namer}{Function that takes a character vector of the original levels in a lump and returns the name of
+the new lumped level. Default: concatenating the original levels with a "+" in between.}
 }
 \value{
 A factor vector with the lumped levels.

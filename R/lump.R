@@ -1,3 +1,7 @@
+default_level_namer <- function(x) {
+  paste(x, collapse = "+")
+}
+
 #' Perform lumping on a hierarchical nominal variable
 #'
 #' @param data Factor or character vector of the categorical data.
@@ -6,6 +10,8 @@
 #' @param verbose Logical value dictating if values should be printed. Default: `FALSE`.
 #' @param alternative_metric The metric that should be optimised for, if it is different from the default,
 #'  the mutual information. For an explanation of the metrics see `vignette("metrics")`.
+#' @param level_namer Function that takes a character vector of the original levels in a lump and returns the name of
+#'  the new lumped level. Default: concatenating the original levels with a "+" in between.
 #'
 #' @returns A factor vector with the lumped levels.
 #'
@@ -25,14 +31,14 @@
 #'
 #' @author Daan Koning
 #' @export
-lump_hierarchical <- function(data, threshold, clusters, verbose = FALSE, alternative_metric = c("mutual information", "bin count", "surplus")) {
+lump_hierarchical <- function(data, threshold, clusters, verbose = FALSE, alternative_metric = c("mutual information", "bin count", "surplus"), level_namer = default_level_namer) {
   data <- as.factor(data)
   counts <- table(data)
 
   res <- maximum_mutual_information_hierarchical(counts, threshold, clusters, verbose = verbose, alternative_metric = alternative_metric)
 
   lumping <- res$lumping
-  names(lumping) <- sapply(lumping, \(x) paste(x, collapse = "+"))
+  names(lumping) <- sapply(lumping, level_namer)
 
   levels(data) <- lumping
 
@@ -47,6 +53,8 @@ lump_hierarchical <- function(data, threshold, clusters, verbose = FALSE, altern
 #' @param verbose Logical value dictating if values should be printed. Default: `FALSE`.
 #' @param alternative_metric The metric that should be optimised for, if it is different from the default,
 #'  the mutual information. For an explanation of the metrics see `vignette("metrics")`.
+#' @param level_namer Function that takes a character vector of the original levels in a lump and returns the name of
+#'  the new lumped level. Default: concatenating the original levels with a "+" in between.
 #'
 #' @returns A factor vector with the lumped levels.
 #'
@@ -66,14 +74,14 @@ lump_hierarchical <- function(data, threshold, clusters, verbose = FALSE, altern
 #'
 #' @author Daan Koning
 #' @export
-lump_nominal <- function(data, threshold, adj_matrix = NULL, verbose = FALSE, alternative_metric = c("mutual information", "bin count", "surplus")) {
+lump_nominal <- function(data, threshold, adj_matrix = NULL, verbose = FALSE, alternative_metric = c("mutual information", "bin count", "surplus"), level_namer = default_level_namer) {
   data <- as.factor(data)
   counts <- table(data)
 
   res <- maximum_mutual_information_nominal(counts, threshold, adj_matrix, verbose = verbose, alternative_metric = alternative_metric)
 
   lumping <- res$lumping
-  names(lumping) <- sapply(lumping, \(x) paste(x, collapse = "+"))
+  names(lumping) <- sapply(lumping, level_namer)
 
   levels(data) <- lumping
 
@@ -94,14 +102,14 @@ lump_nominal <- function(data, threshold, adj_matrix = NULL, verbose = FALSE, al
 #'
 #' @author Daan Koning
 #' @export
-lump_nominal_heuristic <- function(data, threshold, adj_matrix = NULL, verbose = FALSE, heuristic = c("smart", "largest", "other")) {
+lump_nominal_heuristic <- function(data, threshold, adj_matrix = NULL, verbose = FALSE, heuristic = c("smart", "largest", "other"), level_namer = default_level_namer) {
   data <- as.factor(data)
   counts <- table(data)
 
   res <- maximum_mutual_information_nominal_heuristic(counts, threshold, adj_matrix, verbose = verbose, heuristic = heuristic)
 
   lumping <- res$lumping
-  names(lumping) <- sapply(lumping, \(x) paste(x, collapse = "+"))
+  names(lumping) <- sapply(lumping, level_namer)
 
   levels(data) <- lumping
 
@@ -110,7 +118,7 @@ lump_nominal_heuristic <- function(data, threshold, adj_matrix = NULL, verbose =
 
 # Transform a lumping from the format returned by the ordinal solver
 # to that of the nominal solver
-transform_lumping <- function(lumping, orig_levels) {
+transform_lumping <- function(lumping, orig_levels, level_namer) {
   new_lumping <- list()
 
   for (i in seq_len(length(lumping) - 1)) {
@@ -118,7 +126,7 @@ transform_lumping <- function(lumping, orig_levels) {
     end_idx <- lumping[i + 1] - 1
 
     group_levels <- orig_levels[start_idx:end_idx]
-    new_name <- paste(group_levels, collapse = "+")
+    new_name <- level_namer(group_levels)
 
     new_lumping[[new_name]] <- group_levels
   }
@@ -133,6 +141,8 @@ transform_lumping <- function(lumping, orig_levels) {
 #' @param levels Character vector specifying the strict ordinal hierarchy of the levels (from lowest to highest). Required if `data` is not already an ordered factor.
 #' @param alternative_metric The metric that should be optimised for, if it is different from the default,
 #'  the mutual information. For an explanation of the metrics see `vignette("metrics")`.
+#' @param level_namer Function that takes a character vector of the original levels in a lump and returns the name of
+#'  the new lumped level. Default: concatenating the original levels with a "+" in between.
 #'
 #' @returns An ordered factor vector with the lumped levels.
 #'
@@ -153,7 +163,7 @@ transform_lumping <- function(lumping, orig_levels) {
 #'
 #' @author Daan Koning
 #' @export
-lump_ordinal <- function(data, threshold, levels = NULL, alternative_metric = c("mutual information", "bin count", "surplus")) {
+lump_ordinal <- function(data, threshold, levels = NULL, alternative_metric = c("mutual information", "bin count", "surplus"), level_namer = default_level_namer) {
   if (is.ordered(data)) {
     levels <- levels(data)
   } else {
@@ -167,7 +177,7 @@ lump_ordinal <- function(data, threshold, levels = NULL, alternative_metric = c(
 
   res <- maximum_mutual_information_ordinal(counts, threshold, alternative_metric = alternative_metric)
 
-  lumping <- transform_lumping(res$lumping, levels)
+  lumping <- transform_lumping(res$lumping, levels, level_namer)
   levels(data) <- lumping
 
   data

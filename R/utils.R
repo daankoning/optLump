@@ -57,3 +57,4 @@ adjacency_from_edge_list <- function(levels, allow = NULL, disallow = NULL) {
 
   adj
 }
+
