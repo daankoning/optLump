@@ -8,7 +8,7 @@ vignette: >
 bibliography: references.bib
 ---
 
-OptLump is able to lump based on a variety of metrics.
+optLump is able to lump based on a variety of metrics.
 Usually, mutual information will be the correct choice, but this
 document also outlines the alternatives.
 
@@ -37,7 +37,8 @@ $$
 $$
 
 It turns out that, for our application, the mutual information and entropy are identical, since if we take $X$ to be
-the distribution of the variable before the lumping and $Y$ to be the distribution after, we have $I(X;Y) = H(Y)$.
+the distribution of the variable before the lumping and $Y$ to be the distribution after, we have $I(X;Y) = H(Y)$, so
+the actual quantity optimized for is $H(Y)$.
 This means we get two ways of interpreting optimizing for the mutual information:
 
 * When we regard ourselves as optimizing for the mutual information, we try to find a lumping such that,
@@ -87,7 +88,7 @@ This is equivalent to minimizing the number of 'lumping actions', or amount of t
 ## Surplus
 
 The other option is having the lowest surplus contents in each level.
-The surplus is calculated as the amount of samples each level contains in excess of the threshhold.
-These surplusses are aggregated using a simple sum, yielding the cost function being optimized for.
+The surplus is calculated as the amount of samples each level contains in excess of the threshold.
+These surpluses are aggregated using a simple sum, yielding the cost function being optimized for.
 
 # References

@@ -37,8 +37,8 @@ of the original levels that have been lumped together.}
 Calculates the maximum amount of mutual information that can be preserved by lumping a nominal variable.
 }
 \details{
-Since these two pursuits are equivalent, the actual quantity optimized for is the maximal empirical entropy
-of the lumped levels.
+Since these two pursuits are equivalent, the actual quantity optimized for is not the mutual information,
+but the empirical entropy of the lumped levels.
 
 Be advised that, since the problem is NP-hard, the implementation here has time complexity
 \eqn{O\left(2^{2^m}\right)}{O(2^2^m)}, where \eqn{m}{m} is the number of levels in the nominal variable.
