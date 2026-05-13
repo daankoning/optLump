@@ -1,6 +1,6 @@
 # Lumping Metrics
 
-OptLump is able to lump based on a variety of metrics. Usually, mutual
+optLump is able to lump based on a variety of metrics. Usually, mutual
 information will be the correct choice, but this document also outlines
 the alternatives.
 
@@ -28,8 +28,8 @@ similar form to the mutual information, being H(X) = -\sum\_{x \in
 It turns out that, for our application, the mutual information and
 entropy are identical, since if we take X to be the distribution of the
 variable before the lumping and Y to be the distribution after, we have
-I(X;Y) = H(Y). This means we get two ways of interpreting optimizing for
-the mutual information:
+I(X;Y) = H(Y), so the actual quantity optimized for is H(Y). This means
+we get two ways of interpreting optimizing for the mutual information:
 
 - When we regard ourselves as optimizing for the mutual information, we
   try to find a lumping such that, upon knowing the value of the
@@ -91,7 +91,7 @@ actions’, or amount of times multiple levels are combined together.
 
 The other option is having the lowest surplus contents in each level.
 The surplus is calculated as the amount of samples each level contains
-in excess of the threshhold. These surplusses are aggregated using a
+in excess of the threshold. These surpluses are aggregated using a
 simple sum, yielding the cost function being optimized for.
 
 ## References

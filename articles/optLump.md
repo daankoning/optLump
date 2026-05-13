@@ -67,10 +67,10 @@ that all levels meet the threshold of 15 observations now.
 
 ### Nominal Variables
 
-When we lose the ordering, we can’t rely on the computer to
-automatically know what levels can be lumped together. The simplest, and
-most common approach is to simply allow all levels to be lumped with all
-other levels. This is the default behaviour:
+For nominal variables, we lose the ordering and thus we can’t rely on
+the computer to automatically know what levels can be lumped together.
+The simplest, and most common approach is to simply allow all levels to
+be lumped with all other levels. This is the default behaviour:
 
 ``` r
 

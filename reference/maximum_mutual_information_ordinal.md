@@ -54,7 +54,8 @@ A list containing information about the optimal lumping:
 ## Details
 
 Since these two pursuits are equivalent, the actual quantity optimized
-for is the maximal empirical entropy of the lumped levels.
+for is not the mutual information, but the empirical entropy of the
+lumped levels.
 
 The runtime complexity is cubic in the number of levels.
 
