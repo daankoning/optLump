@@ -8,6 +8,7 @@ lump_ordinal(
   data,
   threshold,
   levels = NULL,
+  verbose = FALSE,
   alternative_metric = c("mutual information", "bin count", "surplus"),
   level_namer = default_level_namer
 )
@@ -18,6 +19,8 @@ lump_ordinal(
 \item{threshold}{The minimum number of samples each lumped level should contain.}
 
 \item{levels}{Character vector specifying the strict ordinal hierarchy of the levels (from lowest to highest). Required if \code{data} is not already an ordered factor.}
+
+\item{verbose}{Logical value dictating if values should be printed. Default: \code{FALSE}.}
 
 \item{alternative_metric}{The metric that should be optimised for, if it is different from the default,
 the mutual information. For an explanation of the metrics see \code{vignette("metrics")}.}

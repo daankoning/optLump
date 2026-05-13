@@ -2,6 +2,23 @@ default_level_namer <- function(x) {
   paste(x, collapse = "+")
 }
 
+lumping_printer <- function(lumping) {
+  col_1_width <- max(nchar(c("name", names(lumping))))
+  col_1_padding <- col_1_width - nchar("name")
+
+  entries <- sapply(lumping, \(x) paste(x, collapse = ","))
+  col_2_width <- max(nchar(c("original levels", entries)))
+  col_2_padding <- col_2_width - nchar("original levels")
+
+  message(paste0("name", strrep(" ", col_1_padding), " | original levels"))
+  message(strrep("-", col_1_width + col_2_width + 3))
+
+  for (name in names(lumping)) {
+    entry <- entries[name]
+    message(paste0(name, strrep(" ", col_1_width - nchar(name)), " | ", entry, strrep(" ", col_2_width - nchar(entry))))
+  }
+}
+
 #' Perform lumping on a hierarchical nominal variable
 #'
 #' @param data Factor or character vector of the categorical data.
@@ -41,6 +58,11 @@ lump_hierarchical <- function(data, threshold, clusters, verbose = FALSE, altern
   names(lumping) <- sapply(lumping, level_namer)
 
   levels(data) <- lumping
+
+  if (verbose) {
+    message(paste("Optimal lumping found with mutual information ", round(res$mutual_information, 4), "and loss", round(res$loss, 4)))
+    lumping_printer(lumping)
+  }
 
   data
 }
@@ -85,6 +107,11 @@ lump_nominal <- function(data, threshold, adj_matrix = NULL, verbose = FALSE, al
 
   levels(data) <- lumping
 
+  if (verbose) {
+    message(paste("Optimal lumping found with mutual information", round(res$mutual_information, 4), "and loss", round(res$loss, 4)))
+    lumping_printer(lumping)
+  }
+
   data
 }
 
@@ -113,6 +140,11 @@ lump_nominal_heuristic <- function(data, threshold, adj_matrix = NULL, verbose =
 
   levels(data) <- lumping
 
+  if (verbose) {
+    message(paste("Lumping found with mutual information", round(res$mutual_information, 4), "and loss", round(res$loss, 4)))
+    lumping_printer(lumping)
+  }
+
   data
 }
 
@@ -139,6 +171,7 @@ transform_lumping <- function(lumping, orig_levels, level_namer) {
 #' @param data Factor or character vector of the categorical data.
 #' @param threshold The minimum number of samples each lumped level should contain.
 #' @param levels Character vector specifying the strict ordinal hierarchy of the levels (from lowest to highest). Required if `data` is not already an ordered factor.
+#' @param verbose Logical value dictating if values should be printed. Default: `FALSE`.
 #' @param alternative_metric The metric that should be optimised for, if it is different from the default,
 #'  the mutual information. For an explanation of the metrics see `vignette("metrics")`.
 #' @param level_namer Function that takes a character vector of the original levels in a lump and returns the name of
@@ -163,7 +196,7 @@ transform_lumping <- function(lumping, orig_levels, level_namer) {
 #'
 #' @author Daan Koning
 #' @export
-lump_ordinal <- function(data, threshold, levels = NULL, alternative_metric = c("mutual information", "bin count", "surplus"), level_namer = default_level_namer) {
+lump_ordinal <- function(data, threshold, levels = NULL, verbose = FALSE, alternative_metric = c("mutual information", "bin count", "surplus"), level_namer = default_level_namer) {
   if (is.ordered(data)) {
     levels <- levels(data)
   } else {
@@ -179,6 +212,11 @@ lump_ordinal <- function(data, threshold, levels = NULL, alternative_metric = c(
 
   lumping <- transform_lumping(res$lumping, levels, level_namer)
   levels(data) <- lumping
+
+  if (verbose) {
+    message(paste("Optimal lumping found with mutual information", round(res$mutual_information, 4), "and loss", round(res$loss, 4)))
+    lumping_printer(lumping)
+  }
 
   data
 }
