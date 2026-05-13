@@ -59,7 +59,10 @@ lump_hierarchical <- function(data, threshold, clusters, verbose = FALSE, altern
 
   levels(data) <- lumping
 
-  if (verbose) lumping_printer(lumping)
+  if (verbose) {
+    message(paste("Optimal lumping found with mutual information ", round(res$mutual_information, 4), "and loss", round(res$loss, 4)))
+    lumping_printer(lumping)
+  }
 
   data
 }
@@ -104,7 +107,10 @@ lump_nominal <- function(data, threshold, adj_matrix = NULL, verbose = FALSE, al
 
   levels(data) <- lumping
 
-  if (verbose) lumping_printer(lumping)
+  if (verbose) {
+    message(paste("Optimal lumping found with mutual information", round(res$mutual_information, 4), "and loss", round(res$loss, 4)))
+    lumping_printer(lumping)
+  }
 
   data
 }
@@ -134,7 +140,10 @@ lump_nominal_heuristic <- function(data, threshold, adj_matrix = NULL, verbose =
 
   levels(data) <- lumping
 
-  if (verbose) lumping_printer(lumping)
+  if (verbose) {
+    message(paste("Lumping found with mutual information", round(res$mutual_information, 4), "and loss", round(res$loss, 4)))
+    lumping_printer(lumping)
+  }
 
   data
 }
@@ -204,7 +213,10 @@ lump_ordinal <- function(data, threshold, levels = NULL, verbose = FALSE, altern
   lumping <- transform_lumping(res$lumping, levels, level_namer)
   levels(data) <- lumping
 
-  if (verbose) lumping_printer(lumping)
+  if (verbose) {
+    message(paste("Optimal lumping found with mutual information", round(res$mutual_information, 4), "and loss", round(res$loss, 4)))
+    lumping_printer(lumping)
+  }
 
   data
 }
