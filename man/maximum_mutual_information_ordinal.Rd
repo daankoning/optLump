@@ -33,8 +33,8 @@ Calculates the way of lumping levels of an ordinal categorical covariate that pr
 information between the lumped and unlumped levels.
 }
 \details{
-Since these two pursuits are equivalent, the actual quantity optimized for is the maximal empirical entropy
-of the lumped levels.
+Since these two pursuits are equivalent, the actual quantity optimized for is not the mutual information,
+but the empirical entropy of the lumped levels.
 
 The runtime complexity is cubic in the number of levels.
 }
