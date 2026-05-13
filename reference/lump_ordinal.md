@@ -9,6 +9,7 @@ lump_ordinal(
   data,
   threshold,
   levels = NULL,
+  verbose = FALSE,
   alternative_metric = c("mutual information", "bin count", "surplus"),
   level_namer = default_level_namer
 )
@@ -29,6 +30,10 @@ lump_ordinal(
   Character vector specifying the strict ordinal hierarchy of the levels
   (from lowest to highest). Required if `data` is not already an ordered
   factor.
+
+- verbose:
+
+  Logical value dictating if values should be printed. Default: `FALSE`.
 
 - alternative_metric:
 

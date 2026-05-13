@@ -51,6 +51,7 @@
 <span>  <span class="va">data</span>,</span>
 <span>  <span class="va">threshold</span>,</span>
 <span>  levels <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  verbose <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  alternative_metric <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"mutual information"</span>, <span class="st">"bin count"</span>, <span class="st">"surplus"</span><span class="op">)</span>,</span>
 <span>  level_namer <span class="op">=</span> <span class="va">default_level_namer</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -70,6 +71,10 @@
 
 <dt id="arg-levels">levels<a class="anchor" aria-label="anchor" href="#arg-levels"></a></dt>
 <dd><p>Character vector specifying the strict ordinal hierarchy of the levels (from lowest to highest). Required if <code>data</code> is not already an ordered factor.</p></dd>
+
+
+<dt id="arg-verbose">verbose<a class="anchor" aria-label="anchor" href="#arg-verbose"></a></dt>
+<dd><p>Logical value dictating if values should be printed. Default: <code>FALSE</code>.</p></dd>
 
 
 <dt id="arg-alternative-metric">alternative_metric<a class="anchor" aria-label="anchor" href="#arg-alternative-metric"></a></dt>
