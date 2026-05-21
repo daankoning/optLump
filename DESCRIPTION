@@ -1,8 +1,12 @@
 Package: optLump
-Title: Tools for Lumping Categorical Covariates in a Way that Preserves Information
-Version: 0.0.0.9000
-Authors@R: 
-    person("Daan Olivier", "Koning", , "daanolivierkoning@gmail.com", role = c("aut", "cre"))
+Title: Lumping Categorical Covariates in a Way that Preserves Information
+Version: 0.0.1.9000
+Authors@R: c(
+    person(given = "Daan Olivier", family = "Koning", email = "daanolivierkoning@gmail.com", role = c("aut", "cre")),
+    person(given = "Martijn", family = "Ruppert", email = "m.ruppert@lapp.nl", role = "rev"),
+    person(given = "Leiden Advanced Pharmacokinetics & Pharmacodynamics", role = c("cph", "fnd")),
+    person(given = "Valentina", family = "Masarotto", email = "v.masarotto@math.leidenuniv.nl", role = "ths"),
+    person(given = "Arno", family = "Knobbe", email = "a.j.knobbe@liacs.leidenuniv.nl", role = "ths"))
 Description: Takes a categorical covariate and lumps (combines) multiple of the levels together. The way it chooses to do this is by optimizing for the preservation of mutual information between the pre- and post-lumping variables. Support exists for ordinal, hierarchical, and fully nominal variables.
 License: file LICENSE
 Encoding: UTF-8
@@ -18,5 +22,6 @@ Imports:
     igraph,
     lpSolve
 VignetteBuilder: knitr
-URL: https://daankoning.github.io/optLump/
+URL: https://daankoning.github.io/optLump/, https://daankoning.github.io/optLump/
+BugReports: https://github.com/daankoning/optLump/issues
 Config/roxygen2/version: 8.0.0
