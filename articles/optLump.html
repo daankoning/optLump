@@ -143,8 +143,7 @@ the computer to automatically know what levels can be lumped together.
 The simplest, and most common approach is to simply allow all levels to
 be lumped with all other levels. This is the default behaviour:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">level_count</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/nlevels.html" class="external-link">nlevels</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">diagnosis</span><span class="op">)</span></span>
-<span><span class="va">lumped_levels</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lump_nominal.html">lump_nominal</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">diagnosis</span>, <span class="fl">15</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">lumped_levels</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lump_nominal.html">lump_nominal</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">diagnosis</span>, <span class="fl">15</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">lumped_levels</span><span class="op">)</span></span>
 <span><span class="co">#&gt;                       None Heart Disease+Hypertension </span></span>
 <span><span class="co">#&gt;                         49                         29 </span></span>

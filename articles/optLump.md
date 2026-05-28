@@ -74,7 +74,6 @@ be lumped with all other levels. This is the default behaviour:
 
 ``` r
 
-level_count <- nlevels(data$diagnosis)
 lumped_levels <- lump_nominal(data$diagnosis, 15)
 summary(lumped_levels)
 #>                       None Heart Disease+Hypertension 
