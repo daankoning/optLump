@@ -24,3 +24,4 @@ reference:
       - maximum_mutual_information_nominal
       - maximum_mutual_information_hierarchical
       - maximum_mutual_information_nominal_heuristic
+      - maximum_mutual_information_ordinal_supervised
