@@ -8,7 +8,7 @@ Authors@R: c(
     person(given = "Valentina", family = "Masarotto", email = "v.masarotto@math.leidenuniv.nl", role = "ths"),
     person(given = "Arno", family = "Knobbe", email = "a.j.knobbe@liacs.leidenuniv.nl", role = "ths"))
 Description: Takes a categorical covariate and lumps (combines) multiple of the levels together. The way it chooses to do this is by optimizing for the preservation of mutual information between the pre- and post-lumping variables. Support exists for ordinal, hierarchical, and fully nominal variables.
-License: file LICENSE
+License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 Suggests: 
