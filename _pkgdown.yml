@@ -20,8 +20,4 @@ reference:
       Underlying functions that compute the optimal lumping.
       Used internally by the lumping functions, but can be used by the user to get additional information.
     contents:
-      - maximum_mutual_information_ordinal
-      - maximum_mutual_information_nominal
-      - maximum_mutual_information_hierarchical
-      - maximum_mutual_information_nominal_heuristic
-      - maximum_mutual_information_ordinal_supervised
+      - starts_with('maximum_mutual_information_')

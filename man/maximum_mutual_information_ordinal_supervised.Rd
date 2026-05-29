@@ -14,13 +14,13 @@ covariate level k and outcome y.}
 \item{threshold}{Minimum number of samples each lumped level must contain.}
 }
 \value{
-A list containing:
+A list containing information about the optimal lumping:
 \describe{
-\item{mutual_information}{Mutual information between the lumped covariate
-and the outcome, in nats.}
-\item{loss}{Mutual information lost by the lumping.}
-\item{lumping}{Integer vector of cut points; lumped levels correspond to
-[a_1, a_2), ..., [a_{k-1}, a_k).}
+\item{mutual_information}{Double representing the mutual information between the lumped and unlumped variable.}
+\item{loss}{Double representing the amount of entropy lost in the lumping process.}
+\item{lumping}{Integer vector containing, sequentially, the points at which the lumped levels are separated.
+Lower bound inclusive and upper bound exclusive, so that if a_1,...,a_k is returned, the lumped
+levels correspond to the levels [a_1, a_2), ..., [a_(k-1), a_k).}
 }
 }
 \description{
