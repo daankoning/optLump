@@ -8,10 +8,7 @@ reference:
     desc: >
         User-friendly wrappers to lump a vector of factors. These functions are the main interface for users of the package.
     contents:
-      - lump_ordinal
-      - lump_nominal
-      - lump_hierarchical
-      - lump_nominal_heuristic
+      - starts_with('lump_')
   - title: "Helper Functions"
     contents:
       - adjacency_from_edge_list

@@ -8,7 +8,6 @@ lumping_printer <- function(lumping) {
 
   entries <- sapply(lumping, \(x) paste(x, collapse = ","))
   col_2_width <- max(nchar(c("original levels", entries)))
-  col_2_padding <- col_2_width - nchar("original levels")
 
   message(paste0("name", strrep(" ", col_1_padding), " | original levels"))
   message(strrep("-", col_1_width + col_2_width + 3))
@@ -209,6 +208,138 @@ lump_ordinal <- function(data, threshold, levels = NULL, verbose = FALSE, altern
   counts <- table(data)
 
   res <- maximum_mutual_information_ordinal(counts, threshold, alternative_metric = alternative_metric)
+
+  lumping <- transform_lumping(res$lumping, levels, level_namer)
+  levels(data) <- lumping
+
+  if (verbose) {
+    message(paste("Optimal lumping found with mutual information", round(res$mutual_information, 4), "and loss", round(res$loss, 4)))
+    lumping_printer(lumping)
+  }
+
+  data
+}
+
+# Supervised methods
+
+#TODO: examples + implement continuous variables
+#TODO: reorder reference index
+#' Perform supvervised lumping on a nominal variable
+#'
+#' @param data Factor or character vector of the categorical data.
+#' @param outcome Factor or character vector. Variable to be used as a source of information about `data`.
+#' @param threshold The minimum number of samples each lumped level should contain.
+#' @param adj_matrix Adjancency matrix of the preference graph. Default: a complete graph, allowing all lumpings.
+#' @param verbose Logical value dictating if values should be printed. Default: `FALSE`.
+#' @param level_namer Function that takes a character vector of the original levels in a lump and returns the name of
+#'  the new lumped level. Default: concatenating the original levels with a "+" in between.
+#'
+#' @returns A factor vector with the lumped levels.
+#'
+#' @examples
+
+#' @seealso
+#'  [maximum_mutual_information_nominal_supervised()] for the underlying algorithm that this function wraps.
+#'
+#'  [lump_hierarchical_supervised()] for a version of this function that can take advantage of hierarchical structure in the data to speed up the execution time.
+#'
+#' @author Daan Koning
+#' @export
+lump_nominal_supervised <- function(data, outcome, threshold, adj_matrix = NULL, verbose = FALSE, level_namer = default_level_namer) {
+  data <- as.factor(data)
+  outcome <- as.factor(outcome)
+  counts <- table(data, outcome)
+
+  res <- maximum_mutual_information_nominal_supervised(counts, threshold, adj_matrix, verbose = verbose)
+
+  lumping <- res$lumping
+  names(lumping) <- sapply(lumping, level_namer)
+
+  levels(data) <- lumping
+
+  if (verbose) {
+    message(paste("Optimal lumping found with mutual information", round(res$mutual_information, 4), "and loss", round(res$loss, 4)))
+    lumping_printer(lumping)
+  }
+
+  data
+}
+
+#' Perform lumping on a hierarchical nominal variable
+#'
+#' @param data Factor or character vector of the categorical data.
+#' @param outcome Factor or character vector. Variable to be used as a source of information about `data`.
+#' @param threshold The minimum number of samples each lumped level should contain.
+#' @param clusters List of character vectors representing the levels that are allowed to be lumped together.
+#' @param verbose Logical value dictating if values should be printed. Default: `FALSE`.
+#' @param level_namer Function that takes a character vector of the original levels in a lump and returns the name of
+#'  the new lumped level. Default: concatenating the original levels with a "+" in between.
+#'
+#' @returns A factor vector with the lumped levels.
+#'
+#' @examples
+
+#' @seealso
+#'  [maximum_mutual_information_hierarchical_supervised()] for the underlying algorithm that this function wraps.
+#'
+#'  [lump_nominal_supervised()] for a more general version of this function that does not need the hierarchical structure in the data, but may be slower.
+#'
+#' @author Daan Koning
+#' @export
+lump_hierarchical_supervised <- function(data, outcome, threshold, clusters, verbose = FALSE, level_namer = default_level_namer) {
+  data <- as.factor(data)
+  outcome <- as.factor(outcome)
+  counts <- table(data, outcome)
+
+  res <- maximum_mutual_information_hierarchical_supervised(counts, threshold, clusters, verbose = verbose)
+
+  lumping <- res$lumping
+  names(lumping) <- sapply(lumping, level_namer)
+
+  levels(data) <- lumping
+
+  if (verbose) {
+    message(paste("Optimal lumping found with mutual information ", round(res$mutual_information, 4), "and loss", round(res$loss, 4)))
+    lumping_printer(lumping)
+  }
+
+  data
+}
+
+#' Perform lumping on an ordinal variable
+#'
+#' @param data Factor or character vector of the categorical data.
+#' @param outcome Factor or character vector. Variable to be used as a source of information about `data`.
+#' @param threshold The minimum number of samples each lumped level should contain.
+#' @param levels Character vector specifying the strict ordinal hierarchy of the levels (from lowest to highest). Required if `data` is not already an ordered factor.
+#' @param verbose Logical value dictating if values should be printed. Default: `FALSE`.
+#' @param level_namer Function that takes a character vector of the original levels in a lump and returns the name of
+#'  the new lumped level. Default: concatenating the original levels with a "+" in between.
+#'
+#' @returns An ordered factor vector with the lumped levels.
+#'
+#' @examples
+
+#'
+#' @seealso
+#'  [maximum_mutual_information_ordinal_supervised()] for the underlying algorithm that this function wraps.
+#'
+#' @author Daan Koning
+#' @export
+lump_ordinal_supervised <- function(data, outcome, threshold, levels = NULL, verbose = FALSE, level_namer = default_level_namer) {
+  if (is.ordered(data)) {
+    levels <- levels(data)
+  } else {
+    if (is.null(levels)) {
+      stop("For ordinal data, 'data' must be an ordered factor, or 'levels' must be provided to define the hierarchy.")
+    }
+  }
+
+  data <- ordered(data, levels = levels)
+  outcome <- as.factor(outcome)
+  counts <- table(data, outcome)
+
+  res <- maximum_mutual_information_ordinal_supervised(counts, threshold)
 
   lumping <- transform_lumping(res$lumping, levels, level_namer)
   levels(data) <- lumping
