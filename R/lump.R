@@ -237,7 +237,10 @@ lump_ordinal <- function(data, threshold, levels = NULL, verbose = FALSE, altern
 #' @returns A factor vector with the lumped levels.
 #'
 #' @examples
-
+#' data    <- c("NL", "NL", "DE", "DE", "FR", "FR", "FR", "BE")
+#' outcome <- c(  1,    0,    1,    1,    0,    0,    1,    1)
+#' lump_nominal_supervised(data, outcome, threshold = 3)
+#'
 #' @seealso
 #'  [maximum_mutual_information_nominal_supervised()] for the underlying algorithm that this function wraps.
 #'
@@ -278,7 +281,16 @@ lump_nominal_supervised <- function(data, outcome, threshold, adj_matrix = NULL,
 #' @returns A factor vector with the lumped levels.
 #'
 #' @examples
-
+#' data <- c("Utrecht", "Utrecht", "Friesland",
+#'           "Friesland", "Friesland", "Bayern",
+#'           "Bayern", "Bayern", "Sachsen")
+#' outcome <- c(1, 0, 1, 1, 0, 0, 0, 1, 1)
+#' clusters <- list(
+#'   c("Utrecht", "Friesland"),
+#'   c("Bayern", "Sachsen")
+#' )
+#' lump_hierarchical_supervised(data, outcome, threshold = 3, clusters = clusters)
+#'
 #' @seealso
 #'  [maximum_mutual_information_hierarchical_supervised()] for the underlying algorithm that this function wraps.
 #'
@@ -319,7 +331,12 @@ lump_hierarchical_supervised <- function(data, outcome, threshold, clusters, ver
 #' @returns An ordered factor vector with the lumped levels.
 #'
 #' @examples
-
+#' data    <- c("Low", "Medium", "Low", "High", "Medium",
+#'              "Medium", "High", "High", "Low", "High")
+#' outcome <- c(  0,      1,       0,     1,      1,
+#'                0,      1,       1,     0,      1)
+#' lump_ordinal_supervised(data, outcome, threshold = 3,
+#'                         levels = c("Low", "Medium", "High"))
 #'
 #' @seealso
 #'  [maximum_mutual_information_ordinal_supervised()] for the underlying algorithm that this function wraps.

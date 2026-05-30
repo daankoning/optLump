@@ -95,8 +95,6 @@ maximum_mutual_information_ordinal_supervised <- function(joint_counts, threshol
   )
 }
 
-# TODO: test all below
-
 #' Maximum information preservable by supervised nominal lumping
 #'
 #' Calculates the maximum amount of mutual information between a lumped nominal

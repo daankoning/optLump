@@ -2,9 +2,12 @@
 
 export(adjacency_from_edge_list)
 export(lump_hierarchical)
+export(lump_hierarchical_supervised)
 export(lump_nominal)
 export(lump_nominal_heuristic)
+export(lump_nominal_supervised)
 export(lump_ordinal)
+export(lump_ordinal_supervised)
 export(maximum_mutual_information_hierarchical)
 export(maximum_mutual_information_hierarchical_supervised)
 export(maximum_mutual_information_nominal)
