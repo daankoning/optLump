@@ -35,7 +35,9 @@ maximum_mutual_information_ordinal_supervised <- function(joint_counts, threshol
   if (any(is.na(joint_counts)) || any(joint_counts < 0)) {
     stop("Input 'joint_counts' must have no missing or negative values.")
   }
-  if (length(threshold) != 1 || !is.numeric(threshold) || threshold <= 0) {
+  if (length(threshold) != 1 ||
+    !is.numeric(threshold) ||
+    threshold <= 0) {
     stop("Input 'threshold' must be a single positive numeric value.")
   }
 
@@ -148,7 +150,9 @@ maximum_mutual_information_nominal_supervised <- function(joint_counts, threshol
   if (is.null(rownames(joint_counts))) {
     stop("Input 'joint_counts' must have row names identifying the levels.")
   }
-  if (length(threshold) != 1 || !is.numeric(threshold) || threshold <= 0) {
+  if (length(threshold) != 1 ||
+    !is.numeric(threshold) ||
+    threshold <= 0) {
     stop("Input 'threshold' must be a single positive numeric value.")
   }
 
@@ -157,22 +161,18 @@ maximum_mutual_information_nominal_supervised <- function(joint_counts, threshol
   n <- sum(joint_counts)
   m <- nrow(joint_counts)
 
+  if (n < threshold) {
+    stop("Total sample size must be greater than threshold for lumping to be possible.")
+  }
+
   # default to complete preference graph
   if (is.null(adj_matrix)) {
     adj_matrix <- matrix(1, nrow = m, ncol = m, dimnames = list(L, L))
   }
-  adj_matrix <- adj_matrix[L, L, drop = FALSE]
-
-  if (n < threshold) {
-    stop("Total sample size must be greater than threshold for lumping to be possible.")
-  }
   if (!all(L %in% rownames(adj_matrix)) || !all(L %in% colnames(adj_matrix))) {
     stop("Adjacency matrix must contain row and column names matching all levels in 'joint_counts'.")
   }
-
-  mi_unlumped <- empirical_entropy(marginal_counts) +
-                 empirical_entropy(colSums(joint_counts)) -
-                 empirical_entropy(as.vector(joint_counts))
+  adj_matrix <- adj_matrix[L, L, drop = FALSE]
 
   # v_i = w_i + sum_y N_y(C_i)/n * log(N_y(C_i)/n)
   weight_function <- function(clique_indices) {
@@ -217,12 +217,12 @@ maximum_mutual_information_nominal_supervised <- function(joint_counts, threshol
 
   if (verbose) message("Executing ILP...")
   res <- lpSolve::lp(
-    direction    = "max",
+    direction = "max",
     objective.in = weights,
-    const.mat    = constraint_matrix,
-    const.dir    = rep("==", m),
-    const.rhs    = rep(1, m),
-    all.bin      = TRUE
+    const.mat = constraint_matrix,
+    const.dir = rep("==", m),
+    const.rhs = rep(1, m),
+    all.bin = TRUE
   )
 
   if (res$status != 0) {
@@ -233,12 +233,15 @@ maximum_mutual_information_nominal_supervised <- function(joint_counts, threshol
   used_cliques <- valid_cliques[res$solution == 1]
   lumping <- lapply(used_cliques, function(clique) L[as.numeric(clique$clique)])
 
-  lumped_mi <- sum(weights[res$solution == 1])
+  lumped_mi <- empirical_entropy(colSums(joint_counts)) + sum(weights[res$solution == 1])
+  mi_unlumped <- empirical_entropy(marginal_counts) +
+    empirical_entropy(colSums(joint_counts)) -
+    empirical_entropy(as.vector(joint_counts))
 
   list(
     mutual_information = lumped_mi,
-    loss               = mi_unlumped - lumped_mi,
-    lumping            = lumping
+    loss = mi_unlumped - lumped_mi,
+    lumping = lumping
   )
 }
 
@@ -270,7 +273,9 @@ maximum_mutual_information_hierarchical_supervised <- function(joint_counts, thr
   if (is.null(rownames(joint_counts))) {
     stop("Input 'joint_counts' must have row names identifying the levels.")
   }
-  if (length(threshold) != 1 || !is.numeric(threshold) || threshold <= 0) {
+  if (length(threshold) != 1 ||
+    !is.numeric(threshold) ||
+    threshold <= 0) {
     stop("Input 'threshold' must be a single positive numeric value.")
   }
 
@@ -281,10 +286,6 @@ maximum_mutual_information_hierarchical_supervised <- function(joint_counts, thr
 
   marginal_counts <- rowSums(joint_counts)
 
-  mi_unlumped <- empirical_entropy(marginal_counts) +
-                 empirical_entropy(colSums(joint_counts)) -
-                 empirical_entropy(as.vector(joint_counts))
-
   lumping <- list()
   for (cluster in clusters) {
     if (verbose) message(paste("Examining cluster", paste(cluster, collapse = ", ")))
@@ -292,15 +293,18 @@ maximum_mutual_information_hierarchical_supervised <- function(joint_counts, thr
     lumping <- append(lumping, res$lumping)
   }
 
-  lumped_marginals   <- sapply(lumping, \(lump) sum(marginal_counts[lump]))
-  lumped_joint       <- do.call(rbind, lapply(lumping, \(lump) colSums(joint_counts[lump, , drop = FALSE])))
+  lumped_marginals <- sapply(lumping, \(lump) sum(marginal_counts[lump]))
+  lumped_joint <- do.call(rbind, lapply(lumping, \(lump) colSums(joint_counts[lump, , drop = FALSE])))
   mutual_information <- empirical_entropy(lumped_marginals) +
-                        empirical_entropy(colSums(joint_counts)) -
-                        empirical_entropy(as.vector(lumped_joint))
+    empirical_entropy(colSums(joint_counts)) -
+    empirical_entropy(as.vector(lumped_joint))
+  mi_unlumped <- empirical_entropy(marginal_counts) +
+    empirical_entropy(colSums(joint_counts)) -
+    empirical_entropy(as.vector(joint_counts))
 
   list(
     mutual_information = mutual_information,
-    loss               = mi_unlumped - mutual_information,
-    lumping            = lumping
+    loss = mi_unlumped - mutual_information,
+    lumping = lumping
   )
 }
