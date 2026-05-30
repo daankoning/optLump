@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{adjacency_from_edge_list}
 \alias{adjacency_from_edge_list}
-\title{Transforms the edge list representation of a graph into an adjacency matrix}
+\title{Transform the edge list representation of a graph into an adjacency matrix}
 \usage{
 adjacency_from_edge_list(levels, allow = NULL, disallow = NULL)
 }

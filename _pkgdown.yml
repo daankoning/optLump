@@ -3,4 +3,18 @@ template:
   bootstrap: 5
   math-rendering: katex
   light-switch: yes
-
+reference:
+  - title: "Lumping Functions"
+    desc: >
+        User-friendly wrappers to lump a vector of factors. These functions are the main interface for users of the package.
+    contents:
+      - starts_with('lump_')
+  - title: "Helper Functions"
+    contents:
+      - adjacency_from_edge_list
+  - title: "Optimizers"
+    desc: >
+      Underlying functions that compute the optimal lumping.
+      Used internally by the lumping functions, but can be used by the user to get additional information.
+    contents:
+      - starts_with('maximum_mutual_information_')
