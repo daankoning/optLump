@@ -1,4 +1,4 @@
-# Transforms the edge list representation of a graph into an adjacency matrix
+# Transform the edge list representation of a graph into an adjacency matrix
 
 This helper is useful for generating the inputs for functions that
 expect preference graphs.

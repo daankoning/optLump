@@ -1,23 +1,48 @@
 # Package index
 
-## All functions
+## Lumping Functions
 
-- [`adjacency_from_edge_list()`](https://daankoning.github.io/optLump/reference/adjacency_from_edge_list.md)
-  : Transforms the edge list representation of a graph into an adjacency
-  matrix
+User-friendly wrappers to lump a vector of factors. These functions are
+the main interface for users of the package.
+
 - [`lump_hierarchical()`](https://daankoning.github.io/optLump/reference/lump_hierarchical.md)
+  : Perform lumping on a hierarchical nominal variable
+- [`lump_hierarchical_supervised()`](https://daankoning.github.io/optLump/reference/lump_hierarchical_supervised.md)
   : Perform lumping on a hierarchical nominal variable
 - [`lump_nominal()`](https://daankoning.github.io/optLump/reference/lump_nominal.md)
   : Perform lumping on a nominal variable
 - [`lump_nominal_heuristic()`](https://daankoning.github.io/optLump/reference/lump_nominal_heuristic.md)
   : Approximate the lumping on a nominal variable
+- [`lump_nominal_supervised()`](https://daankoning.github.io/optLump/reference/lump_nominal_supervised.md)
+  : Perform supvervised lumping on a nominal variable
 - [`lump_ordinal()`](https://daankoning.github.io/optLump/reference/lump_ordinal.md)
   : Perform lumping on an ordinal variable
+- [`lump_ordinal_supervised()`](https://daankoning.github.io/optLump/reference/lump_ordinal_supervised.md)
+  : Perform lumping on an ordinal variable
+
+## Helper Functions
+
+- [`adjacency_from_edge_list()`](https://daankoning.github.io/optLump/reference/adjacency_from_edge_list.md)
+  : Transform the edge list representation of a graph into an adjacency
+  matrix
+
+## Optimizers
+
+Underlying functions that compute the optimal lumping. Used internally
+by the lumping functions, but can be used by the user to get additional
+information.
+
 - [`maximum_mutual_information_hierarchical()`](https://daankoning.github.io/optLump/reference/maximum_mutual_information_hierarchical.md)
   : Maximum information preservable by hierarchical lumping
+- [`maximum_mutual_information_hierarchical_supervised()`](https://daankoning.github.io/optLump/reference/maximum_mutual_information_hierarchical_supervised.md)
+  : Maximum information preservable by supervised hierarchical lumping
 - [`maximum_mutual_information_nominal()`](https://daankoning.github.io/optLump/reference/maximum_mutual_information_nominal.md)
   : Maximum information preservable by nominal lumping
 - [`maximum_mutual_information_nominal_heuristic()`](https://daankoning.github.io/optLump/reference/maximum_mutual_information_nominal_heuristic.md)
   : Approximate maximum information preservable by nominal lumping
+- [`maximum_mutual_information_nominal_supervised()`](https://daankoning.github.io/optLump/reference/maximum_mutual_information_nominal_supervised.md)
+  : Maximum information preservable by supervised nominal lumping
 - [`maximum_mutual_information_ordinal()`](https://daankoning.github.io/optLump/reference/maximum_mutual_information_ordinal.md)
   : Maximum information preservable by ordinal lumping
+- [`maximum_mutual_information_ordinal_supervised()`](https://daankoning.github.io/optLump/reference/maximum_mutual_information_ordinal_supervised.md)
+  : Maximum information preservable by supervised ordinal lumping

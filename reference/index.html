@@ -41,9 +41,9 @@
     </div>
 
     <div class="section level2">
-      <h2 id="all-functions">All functions<a class="anchor" aria-label="anchor" href="#all-functions"></a></h2>
+      <h2 id="lumping-functions">Lumping Functions<a class="anchor" aria-label="anchor" href="#lumping-functions"></a></h2>
 
-
+      <div class="section-desc"><p>User-friendly wrappers to lump a vector of factors. These functions are the main interface for users of the package.</p></div>
 
       <dl></dl></div><div class="section level2">
 
@@ -52,14 +52,14 @@
 
       <dl><dt>
 
-          <code><a href="adjacency_from_edge_list.html">adjacency_from_edge_list()</a></code>
+          <code><a href="lump_hierarchical.html">lump_hierarchical()</a></code>
 
         </dt>
-        <dd>Transforms the edge list representation of a graph into an adjacency matrix</dd>
+        <dd>Perform lumping on a hierarchical nominal variable</dd>
 
         <dt>
 
-          <code><a href="lump_hierarchical.html">lump_hierarchical()</a></code>
+          <code><a href="lump_hierarchical_supervised.html">lump_hierarchical_supervised()</a></code>
 
         </dt>
         <dd>Perform lumping on a hierarchical nominal variable</dd>
@@ -80,6 +80,13 @@
 
         <dt>
 
+          <code><a href="lump_nominal_supervised.html">lump_nominal_supervised()</a></code>
+
+        </dt>
+        <dd>Perform supvervised lumping on a nominal variable</dd>
+
+        <dt>
+
           <code><a href="lump_ordinal.html">lump_ordinal()</a></code>
 
         </dt>
@@ -87,10 +94,49 @@
 
         <dt>
 
+          <code><a href="lump_ordinal_supervised.html">lump_ordinal_supervised()</a></code>
+
+        </dt>
+        <dd>Perform lumping on an ordinal variable</dd>
+      </dl></div><div class="section level2">
+      <h2 id="helper-functions">Helper Functions<a class="anchor" aria-label="anchor" href="#helper-functions"></a></h2>
+
+
+
+      <dl></dl></div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
+          <code><a href="adjacency_from_edge_list.html">adjacency_from_edge_list()</a></code>
+
+        </dt>
+        <dd>Transform the edge list representation of a graph into an adjacency matrix</dd>
+      </dl></div><div class="section level2">
+      <h2 id="optimizers">Optimizers<a class="anchor" aria-label="anchor" href="#optimizers"></a></h2>
+
+      <div class="section-desc"><p>Underlying functions that compute the optimal lumping. Used internally by the lumping functions, but can be used by the user to get additional information.</p></div>
+
+      <dl></dl></div><div class="section level2">
+
+
+
+
+      <dl><dt>
+
           <code><a href="maximum_mutual_information_hierarchical.html">maximum_mutual_information_hierarchical()</a></code>
 
         </dt>
         <dd>Maximum information preservable by hierarchical lumping</dd>
+
+        <dt>
+
+          <code><a href="maximum_mutual_information_hierarchical_supervised.html">maximum_mutual_information_hierarchical_supervised()</a></code>
+
+        </dt>
+        <dd>Maximum information preservable by supervised hierarchical lumping</dd>
 
         <dt>
 
@@ -108,12 +154,27 @@
 
         <dt>
 
+          <code><a href="maximum_mutual_information_nominal_supervised.html">maximum_mutual_information_nominal_supervised()</a></code>
+
+        </dt>
+        <dd>Maximum information preservable by supervised nominal lumping</dd>
+
+        <dt>
+
           <code><a href="maximum_mutual_information_ordinal.html">maximum_mutual_information_ordinal()</a></code>
 
         </dt>
         <dd>Maximum information preservable by ordinal lumping</dd>
+
+        <dt>
+
+          <code><a href="maximum_mutual_information_ordinal_supervised.html">maximum_mutual_information_ordinal_supervised()</a></code>
+
+        </dt>
+        <dd>Maximum information preservable by supervised ordinal lumping</dd>
       </dl></div>
-  </main></div>
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside></div>
 
 
     <footer><div class="pkgdown-footer-left">
