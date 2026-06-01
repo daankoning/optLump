@@ -12,6 +12,13 @@ the original data distribution. For an (abridged) explanation of mutual
 information, see
 [`vignette("metrics")`](https://daankoning.github.io/optLump/articles/metrics.md).
 
+> **Note**
+>
+> This vignette only covers the primary usecase of optLump, looking
+> purely at the distribution of the variable of interest. To take into
+> account more information, see
+> [`vignette("supervised")`](https://daankoning.github.io/optLump/articles/supervised.md).
+
 ## Handling Different Types of Variables
 
 Suppose we are given some data containing a response variable `outcome`,
