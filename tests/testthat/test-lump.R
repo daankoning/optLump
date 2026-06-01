@@ -77,3 +77,36 @@ test_that("Hierarchical (complete) happy path", {
 
   expect_true(result_equal(res1, res2))
 })
+
+test_that("Ordinal supervised happy path", {
+  data <- ordered(
+    c(rep("Low", 20), rep("Medium", 5), rep("High", 20)),
+    levels = c("Low", "Medium", "High")
+  )
+  outcome <- factor(c(rep(0, 20), rep(0, 5), rep(1, 20)))
+
+  res <- lump_ordinal_supervised(data, outcome, threshold = 10)
+
+  expect_true(result_equal(res, c("Low+Medium" = 25, "High" = 20)))
+})
+
+test_that("Nominal supervised happy path", {
+  data    <- c(rep("A", 10), rep("B", 10), rep("C", 15))
+  outcome <- factor(c(rep(0, 10), rep(0, 10), rep(1, 15)))
+
+  res <- lump_nominal_supervised(data, outcome, threshold = 15)
+
+  expect_true(result_equal(res, c("A+B" = 20, "C" = 15)))
+})
+
+test_that("Hierarchical supervised happy path", {
+  data <- c(rep("A", 8), rep("B", 8), rep("C", 15),
+            rep("D", 8), rep("E", 8), rep("F", 15))
+  outcome <- factor(c(rep(0, 8), rep(0, 8), rep(1, 15),
+                      rep(0, 8), rep(0, 8), rep(1, 15)))
+  clusters <- list(c("A", "B", "C"), c("D", "E", "F"))
+
+  res <- lump_hierarchical_supervised(data, outcome, threshold = 15, clusters = clusters)
+
+  expect_true(result_equal(res, c("A+B" = 16, "C" = 15, "D+E" = 16, "F" = 15)))
+})
