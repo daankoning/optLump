@@ -56,6 +56,10 @@ lump_hierarchical <- function(data, threshold, clusters, verbose = FALSE, altern
   lumping <- res$lumping
   names(lumping) <- sapply(lumping, level_namer)
 
+  # Hack to preserve level order by sorting the lumping
+  first_indices <- sapply(lumping, function(lvls) min(match(lvls, levels(data))))
+  lumping <- lumping[order(first_indices)]
+
   levels(data) <- lumping
 
   if (verbose) {
@@ -104,6 +108,10 @@ lump_nominal <- function(data, threshold, adj_matrix = NULL, verbose = FALSE, al
   lumping <- res$lumping
   names(lumping) <- sapply(lumping, level_namer)
 
+  # Hack to preserve level order by sorting the lumping
+  first_indices <- sapply(lumping, function(lvls) min(match(lvls, levels(data))))
+  lumping <- lumping[order(first_indices)]
+
   levels(data) <- lumping
 
   if (verbose) {
@@ -136,6 +144,10 @@ lump_nominal_heuristic <- function(data, threshold, adj_matrix = NULL, verbose =
 
   lumping <- res$lumping
   names(lumping) <- sapply(lumping, level_namer)
+
+  # Hack to preserve level order by sorting the lumping
+  first_indices <- sapply(lumping, function(lvls) min(match(lvls, levels(data))))
+  lumping <- lumping[order(first_indices)]
 
   levels(data) <- lumping
 
@@ -222,7 +234,7 @@ lump_ordinal <- function(data, threshold, levels = NULL, verbose = FALSE, altern
 
 # Supervised methods
 
-#TODO: examples + implement continuous variables
+#TODO: implement continuous variables
 #TODO: reorder reference index
 #' Perform supvervised lumping on a nominal variable
 #'
@@ -257,6 +269,10 @@ lump_nominal_supervised <- function(data, outcome, threshold, adj_matrix = NULL,
 
   lumping <- res$lumping
   names(lumping) <- sapply(lumping, level_namer)
+
+  # Hack to preserve level order by sorting the lumping
+  first_indices <- sapply(lumping, function(lvls) min(match(lvls, levels(data))))
+  lumping <- lumping[order(first_indices)]
 
   levels(data) <- lumping
 
@@ -307,6 +323,10 @@ lump_hierarchical_supervised <- function(data, outcome, threshold, clusters, ver
 
   lumping <- res$lumping
   names(lumping) <- sapply(lumping, level_namer)
+
+  # Hack to preserve level order by sorting the lumping
+  first_indices <- sapply(lumping, function(lvls) min(match(lvls, levels(data))))
+  lumping <- lumping[order(first_indices)]
 
   levels(data) <- lumping
 
