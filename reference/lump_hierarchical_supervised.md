@@ -77,5 +77,5 @@ lump_hierarchical_supervised(data, outcome, threshold = 3, clusters = clusters)
 #> [1] Utrecht+Friesland Utrecht+Friesland Utrecht+Friesland Utrecht+Friesland
 #> [5] Utrecht+Friesland Bayern+Sachsen    Bayern+Sachsen    Bayern+Sachsen   
 #> [9] Bayern+Sachsen   
-#> Levels: Utrecht+Friesland Bayern+Sachsen
+#> Levels: Bayern+Sachsen Utrecht+Friesland
 ```

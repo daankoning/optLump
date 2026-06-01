@@ -77,5 +77,5 @@ lump_nominal(data, q)
 #>  [1] E   A+D E   A+D A+D E   E   E   B   C   C   E   E   A+D E   B   A+D B   C  
 #> [20] A+D C   E   A+D B   E   B   A+D A+D A+D B   C   A+D A+D B   E   A+D A+D C  
 #> [39] A+D A+D C   B   C   B   B   C   A+D B   A+D C  
-#> Levels: E C B A+D
+#> Levels: A+D B C E
 ```

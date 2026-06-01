@@ -83,10 +83,10 @@ be lumped with all other levels. This is the default behaviour:
 
 lumped_levels <- lump_nominal(data$diagnosis, 15)
 summary(lumped_levels)
-#>                       None Heart Disease+Hypertension 
-#>                         49                         29 
-#>                   Diabetes 
-#>                         22
+#>                   Diabetes Heart Disease+Hypertension 
+#>                         22                         29 
+#>                       None 
+#>                         49
 ```
 
 A less common situation is when we have some prior knowledge about which
@@ -104,8 +104,8 @@ preference_graph <- adjacency_from_edge_list(
 )
 lumped_levels <- lump_nominal(data$diagnosis, 15, preference_graph)
 summary(lumped_levels)
-#>                   None           Hypertension Diabetes+Heart Disease 
-#>                     49                     19                     32
+#> Diabetes+Heart Disease           Hypertension                   None 
+#>                     32                     19                     49
 ```
 
 Of course, if the preference graph is more sparse, corresponding to a
@@ -133,10 +133,10 @@ clusters <- list(
 )
 lumped_levels <- lump_hierarchical(data$country_of_origin, 15, clusters)
 summary(lumped_levels)
-#>    US+Canada+Mexico      France+Germany South Korea+Vietnam               Japan 
-#>                  30                  17                  21                  15 
-#>               China 
-#>                  17
+#>    US+Canada+Mexico               China      France+Germany               Japan 
+#>                  30                  17                  17                  15 
+#> South Korea+Vietnam 
+#>                  21
 ```
 
 The reason this function exists separately from

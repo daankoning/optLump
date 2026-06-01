@@ -152,10 +152,10 @@ be lumped with all other levels. This is the default behaviour:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">lumped_levels</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lump_nominal.html">lump_nominal</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">diagnosis</span>, <span class="fl">15</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">lumped_levels</span><span class="op">)</span></span>
-<span><span class="co">#&gt;                       None Heart Disease+Hypertension </span></span>
-<span><span class="co">#&gt;                         49                         29 </span></span>
-<span><span class="co">#&gt;                   Diabetes </span></span>
-<span><span class="co">#&gt;                         22</span></span></code></pre></div>
+<span><span class="co">#&gt;                   Diabetes Heart Disease+Hypertension </span></span>
+<span><span class="co">#&gt;                         22                         29 </span></span>
+<span><span class="co">#&gt;                       None </span></span>
+<span><span class="co">#&gt;                         49</span></span></code></pre></div>
 <p>A less common situation is when we have some prior knowledge about
 which levels can be lumped together. Suppose we know based on domain
 knowledge that <code>Heart Disease</code> should not be lumped with
@@ -172,8 +172,8 @@ its adjacency matrix.</p>
 <span><span class="op">)</span></span>
 <span><span class="va">lumped_levels</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lump_nominal.html">lump_nominal</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">diagnosis</span>, <span class="fl">15</span>, <span class="va">preference_graph</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">lumped_levels</span><span class="op">)</span></span>
-<span><span class="co">#&gt;                   None           Hypertension Diabetes+Heart Disease </span></span>
-<span><span class="co">#&gt;                     49                     19                     32</span></span></code></pre></div>
+<span><span class="co">#&gt; Diabetes+Heart Disease           Hypertension                   None </span></span>
+<span><span class="co">#&gt;                     32                     19                     49</span></span></code></pre></div>
 <p>Of course, if the preference graph is more sparse, corresponding to a
 situation in which only a small number of pairings are admissible, it
 would make more sense to build the graph the other way around, by
@@ -197,10 +197,10 @@ pass this knowledge in:</p>
 <span><span class="op">)</span></span>
 <span><span class="va">lumped_levels</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/lump_hierarchical.html">lump_hierarchical</a></span><span class="op">(</span><span class="va">data</span><span class="op">$</span><span class="va">country_of_origin</span>, <span class="fl">15</span>, <span class="va">clusters</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">lumped_levels</span><span class="op">)</span></span>
-<span><span class="co">#&gt;    US+Canada+Mexico      France+Germany South Korea+Vietnam               Japan </span></span>
-<span><span class="co">#&gt;                  30                  17                  21                  15 </span></span>
-<span><span class="co">#&gt;               China </span></span>
-<span><span class="co">#&gt;                  17</span></span></code></pre></div>
+<span><span class="co">#&gt;    US+Canada+Mexico               China      France+Germany               Japan </span></span>
+<span><span class="co">#&gt;                  30                  17                  17                  15 </span></span>
+<span><span class="co">#&gt; South Korea+Vietnam </span></span>
+<span><span class="co">#&gt;                  21</span></span></code></pre></div>
 <p>The reason this function exists separately from
 <code><a href="../reference/lump_nominal.html">lump_nominal()</a></code> – which can achieve the exact same behaviour
 by passing an appropriate preference graph – is, in addition to the

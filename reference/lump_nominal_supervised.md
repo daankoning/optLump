@@ -69,5 +69,5 @@ data    <- c("NL", "NL", "DE", "DE", "FR", "FR", "FR", "BE")
 outcome <- c(  1,    0,    1,    1,    0,    0,    1,    1)
 lump_nominal_supervised(data, outcome, threshold = 3)
 #> [1] FR+NL FR+NL BE+DE BE+DE FR+NL FR+NL FR+NL BE+DE
-#> Levels: FR+NL BE+DE
+#> Levels: BE+DE FR+NL
 ```

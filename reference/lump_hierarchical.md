@@ -79,5 +79,5 @@ lump_hierarchical(
 #>  [7] China                      China                     
 #>  [9] Vietnam+Japan              Vietnam+Japan             
 #> [11] Vietnam+Japan              Vietnam+Japan             
-#> Levels: Germany+Netherlands+France Vietnam+Japan China
+#> Levels: China Germany+Netherlands+France Vietnam+Japan
 ```
