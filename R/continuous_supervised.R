@@ -1,21 +1,10 @@
-ross_cluster_counts <- function(y, k = 3L) {
-  if (!is.numeric(y)) {
-    stop("Input 'y' must be numeric.")
-  }
-  if (length(y) <= k) {
-    stop("Each lump must contain more than 'k' samples for the Ross estimator.")
-  }
+ross_cluster_counts <- function(y_class, y_full, k = 3L) {
+  dmat_class <- abs(outer(y_class, y_class, "-"))
+  d_vals <- vapply(seq_along(y_class), function(i)
+    sort.int(dmat_class[i, ], partial = k + 1)[k + 1], numeric(1))
 
-  n <- length(y)
-  dmat <- abs(outer(y, y, "-"))
-  c_vals <- integer(n)
-
-  for (i in seq_len(n)) {
-    d_i <- sort.int(dmat[i, ], partial = k + 1)[k + 1]
-    c_vals[i] <- sum(dmat[i, ] <= d_i)
-  }
-
-  c_vals
+  vapply(seq_along(y_class), function(i)
+    sum(abs(y_full - y_class[i]) <= d_vals[i]), integer(1))
 }
 
 ross_mutual_information <- function(x_idx, y, k = 3L) {
@@ -34,7 +23,7 @@ ross_mutual_information <- function(x_idx, y, k = 3L) {
   for (lev in sort(unique(x_idx))) {
     idx <- which(x_idx == lev)
     counts[idx] <- length(idx)
-    c_vals[idx] <- ross_cluster_counts(y[idx], k = k)
+    c_vals[idx] <- ross_cluster_counts(y[idx], y, k = k)
   }
 
   digamma(n) + digamma(k) - (sum(digamma(counts)) + sum(digamma(c_vals))) / n
@@ -98,7 +87,7 @@ maximum_mutual_information_ordinal_supervised_continuous <- function(x, y, thres
   c_original <- integer(n)
   for (lev in seq_len(m)) {
     idx <- which(x_idx == lev)
-    c_original[idx] <- ross_cluster_counts(y[idx], k = k)
+    c_original[idx] <- ross_cluster_counts(y[idx], y, k = k)
   }
 
   mi_unlumped <- ross_mutual_information(x_idx, y, k = k)
@@ -107,12 +96,12 @@ maximum_mutual_information_ordinal_supervised_continuous <- function(x, y, thres
     segment_idx <- which(x_idx >= i & x_idx <= j)
     segment_count <- length(segment_idx)
 
-    if (sum(level_counts[i:j]) < threshold || segment_count <= k) {
+    if (sum(level_counts[i:j]) < threshold) {
       return(Inf)
     }
 
     y_segment <- y[segment_idx]
-    c_segment <- ross_cluster_counts(y_segment, k = k)
+    c_segment <- ross_cluster_counts(y_segment, y, k = k)
 
     post_term <- segment_count * digamma(segment_count) + sum(digamma(c_segment))
     pre_term <- sum(level_counts[i:j] * digamma(level_counts[i:j])) + sum(digamma(c_original[segment_idx]))
@@ -233,7 +222,7 @@ maximum_mutual_information_nominal_supervised_continuous <- function(x, y, thres
     if (clique_n <= k) {
       return(NA_real_)
     }
-    c_vals <- ross_cluster_counts(y[idx], k = k)
+    c_vals <- ross_cluster_counts(y[idx], y, k = k)
     -(clique_n * digamma(clique_n) + sum(digamma(c_vals))) / n
   }
 

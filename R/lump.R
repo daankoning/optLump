@@ -245,6 +245,7 @@ lump_ordinal <- function(data, threshold, levels = NULL, verbose = FALSE, altern
 #' @param verbose Logical value dictating if values should be printed. Default: `FALSE`.
 #' @param level_namer Function that takes a character vector of the original levels in a lump and returns the name of
 #'  the new lumped level. Default: concatenating the original levels with a "+" in between.
+#' @param outcome_mode Whether to treat the outcome as discrete or continuous. Default: inferred based on the type of `outcome`.
 #'
 #' @returns A factor vector with the lumped levels.
 #'
@@ -260,12 +261,27 @@ lump_ordinal <- function(data, threshold, levels = NULL, verbose = FALSE, altern
 #'
 #' @author Daan Koning
 #' @export
-lump_nominal_supervised <- function(data, outcome, threshold, adj_matrix = NULL, verbose = FALSE, level_namer = default_level_namer) {
+lump_nominal_supervised <- function(data, outcome, threshold, adj_matrix = NULL, verbose = FALSE, level_namer = default_level_namer, outcome_mode = c('auto', 'discrete', 'continuous')) {
   data <- as.factor(data)
-  outcome <- as.factor(outcome)
-  counts <- table(data, outcome)
 
-  res <- maximum_mutual_information_nominal_supervised(counts, threshold, adj_matrix, verbose = verbose)
+  outcome_mode <- match.arg(outcome_mode)
+  if (outcome_mode == 'auto') {
+    if (is.factor(outcome)) {
+      outcome_mode <- 'discrete'
+    } else if (is.numeric(outcome)) {
+      outcome_mode <- 'continuous'
+    } else {
+      stop("Could not infer outcome mode based on the type of the outcome. Is it a factor or numeric vector?")
+    }
+  }
+
+  if (outcome_mode == 'discrete') {
+    outcome <- as.factor(outcome)
+    counts <- table(data, outcome)
+    res <- maximum_mutual_information_nominal_supervised(counts, threshold, adj_matrix, verbose = verbose)
+  } else if (outcome_mode == 'continuous') {
+    res <- maximum_mutual_information_nominal_supervised_continuous(data, outcome, threshold, adj_matrix, verbose = verbose)
+  }
 
   lumping <- res$lumping
   names(lumping) <- sapply(lumping, level_namer)
@@ -285,6 +301,9 @@ lump_nominal_supervised <- function(data, outcome, threshold, adj_matrix = NULL,
 }
 
 #' Perform lumping on a hierarchical nominal variable
+#'
+#' Note that, unlike [lump_nominal_supervised()] and [lump_ordinal_supervised()], this function does not support
+#' continuous outcomes.
 #'
 #' @param data Factor or character vector of the categorical data.
 #' @param outcome Factor or character vector. Variable to be used as a source of information about `data`.
@@ -341,12 +360,14 @@ lump_hierarchical_supervised <- function(data, outcome, threshold, clusters, ver
 #' Perform lumping on an ordinal variable
 #'
 #' @param data Factor or character vector of the categorical data.
-#' @param outcome Factor or character vector. Variable to be used as a source of information about `data`.
+#' @param outcome Vector to be used as a source of information about `data`.
+#' @param thresholFactor or character vector. Variable to be used as a source of information about `data`.
 #' @param threshold The minimum number of samples each lumped level should contain.
 #' @param levels Character vector specifying the strict ordinal hierarchy of the levels (from lowest to highest). Required if `data` is not already an ordered factor.
 #' @param verbose Logical value dictating if values should be printed. Default: `FALSE`.
 #' @param level_namer Function that takes a character vector of the original levels in a lump and returns the name of
 #'  the new lumped level. Default: concatenating the original levels with a "+" in between.
+#' @param outcome_mode Whether to treat the outcome as discrete or continuous. Default: inferred based on the type of `outcome`.
 #'
 #' @returns An ordered factor vector with the lumped levels.
 #'
@@ -363,7 +384,7 @@ lump_hierarchical_supervised <- function(data, outcome, threshold, clusters, ver
 #'
 #' @author Daan Koning
 #' @export
-lump_ordinal_supervised <- function(data, outcome, threshold, levels = NULL, verbose = FALSE, level_namer = default_level_namer) {
+lump_ordinal_supervised <- function(data, outcome, threshold, levels = NULL, verbose = FALSE, level_namer = default_level_namer, outcome_mode = c('auto', 'discrete', 'continuous')) {
   if (is.ordered(data)) {
     levels <- levels(data)
   } else {
@@ -372,11 +393,30 @@ lump_ordinal_supervised <- function(data, outcome, threshold, levels = NULL, ver
     }
   }
 
-  data <- ordered(data, levels = levels)
-  outcome <- as.factor(outcome)
-  counts <- table(data, outcome)
+  if (length(data) != length(outcome)) {
+    stop("Length of data and outcome must be identical.")
+  }
 
-  res <- maximum_mutual_information_ordinal_supervised(counts, threshold)
+  data <- ordered(data, levels = levels)
+
+  outcome_mode <- match.arg(outcome_mode)
+  if (outcome_mode == 'auto') {
+    if (is.factor(outcome)) {
+      outcome_mode <- 'discrete'
+    } else if (is.numeric(outcome)) {
+      outcome_mode <- 'continuous'
+    } else {
+      stop("Could not infer outcome mode based on the type of the outcome. Is it a factor or numeric vector?")
+    }
+  }
+
+  if (outcome_mode == 'discrete') {
+    outcome <- as.factor(outcome)
+    counts <- table(data, outcome)
+    res <- maximum_mutual_information_ordinal_supervised(counts, threshold)
+  } else if (outcome_mode == 'continuous') {
+    res <- maximum_mutual_information_ordinal_supervised_continuous(data, outcome, threshold)
+  }
 
   lumping <- transform_lumping(res$lumping, levels, level_namer)
   levels(data) <- lumping

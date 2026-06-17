@@ -465,7 +465,7 @@ test_that("Do not lump at all when all ordinal levels already meet threshold", {
 
   res <- maximum_mutual_information_ordinal_supervised_continuous(x, y, threshold = 4, k = 3)
 
-  expect_equal(res$mutual_information, 1.151562, tolerance = tolerance)
+  expect_equal(res$mutual_information, 0.2689144, tolerance = tolerance)
   expect_equal(res$loss, 0, tolerance = tolerance)
   expect_equal(res$lumping, 1:5)
 })
@@ -482,7 +482,7 @@ test_that("Lump all ordinal levels together when threshold is high", {
   res <- maximum_mutual_information_ordinal_supervised_continuous(x, y, threshold = 16, k = 3)
 
   expect_equal(res$mutual_information, -0.5208333, tolerance = tolerance)
-  expect_equal(res$loss, 1.672396, tolerance = tolerance)
+  expect_equal(res$loss, 0.7897478, tolerance = tolerance)
   expect_equal(res$lumping, c(1, 5))
 })
 
@@ -536,7 +536,7 @@ test_that("Nominal continuous keeps singleton levels when the graph forbids merg
 
   res <- maximum_mutual_information_nominal_supervised_continuous(x, y, threshold = 4, adj_matrix = adj, k = 3)
 
-  expect_equal(res$mutual_information, 0.853210, tolerance = tolerance)
+  expect_equal(res$mutual_information, 0.1920996, tolerance = tolerance)
   expect_equal(res$loss, 0, tolerance = tolerance)
   expect_true(lumping_equal(res$lumping, list("A", "B", "C")))
 })
@@ -552,8 +552,9 @@ test_that("Lump all nominal continuous levels together when threshold is high", 
 
   res <- maximum_mutual_information_nominal_supervised_continuous(x, y, threshold = 12, adj_matrix = adj, k = 3)
 
+
   expect_equal(res$mutual_information, -0.4375, tolerance = tolerance)
-  expect_equal(res$loss, 1.290711, tolerance = tolerance)
+  expect_equal(res$loss, 0.6295996, tolerance = tolerance)
   expect_true(lumping_equal(res$lumping, list(c("A", "B", "C"))))
 })
 

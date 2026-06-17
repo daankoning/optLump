@@ -110,3 +110,52 @@ test_that("Hierarchical supervised happy path", {
 
   expect_true(result_equal(res, c("A+B" = 16, "C" = 15, "D+E" = 16, "F" = 15)))
 })
+
+test_that("Continuous ordinal supervised happy path", {
+  data <- ordered(
+    c(rep("Low", 20), rep("Medium", 5), rep("High", 20)),
+    levels = c("Low", "Medium", "High")
+  )
+  outcome <- c(rnorm(20, mean = 0), rnorm(5, mean = 0), rnorm(20, mean = 100))
+  res <- lump_ordinal_supervised(data, outcome, threshold = 10)
+
+  expect_true(result_equal(res, c("Low+Medium" = 25, "High" = 20)))
+})
+
+test_that("Continuous ordinal supervised happy path survives shuffling", {
+  data <- ordered(
+    c(rep("Low", 20), rep("Medium", 5), rep("High", 20)),
+    levels = c("Low", "Medium", "High")
+  )
+  outcome <- c(rnorm(20, mean = 0), rnorm(5, mean = 0), rnorm(20, mean = 100))
+
+  shufffle_indices <- sample(1:length(data))
+  data <- data[shufffle_indices]
+  outcome <- outcome[shufffle_indices]
+
+  res <- lump_ordinal_supervised(data, outcome, threshold = 10)
+
+  expect_true(result_equal(res, c("Low+Medium" = 25, "High" = 20)))
+})
+
+test_that("Continuous nominal supervised happy path", {
+  data    <- c(rep("A", 15), rep("B", 10), rep("C", 15))
+  outcome <- c(rnorm(15, mean = 0), rnorm(10, mean = 0), rnorm(15, mean = 100))
+
+  res <- lump_nominal_supervised(data, outcome, threshold = 15)
+
+  expect_true(result_equal(res, c("A+B" = 25, "C" = 15)))
+})
+
+test_that("Continuous nominal supervised happy path survives shuffle", {
+  data    <- c(rep("A", 15), rep("B", 10), rep("C", 15))
+  outcome <- c(rnorm(15, mean = 0), rnorm(10, mean = 0), rnorm(15, mean = 100))
+
+  shufffle_indices <- sample(1:length(data))
+  data <- data[shufffle_indices]
+  outcome <- outcome[shufffle_indices]
+
+  res <- lump_nominal_supervised(data, outcome, threshold = 15)
+
+  expect_true(result_equal(res, c("A+B" = 25, "C" = 15)))
+})
