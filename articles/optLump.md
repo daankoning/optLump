@@ -14,8 +14,7 @@ information, see
 
 The figure below shows the basic idea for an ordinal variable: levels
 whose count falls below a threshold `q` (red dashed line) are absorbed
-into an adjacent level. The interactive slider lets you explore how
-different values of `q` change the result.
+into an adjacent level.
 
 > **Note**
 >
