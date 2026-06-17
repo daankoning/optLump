@@ -86,6 +86,11 @@ heuristic_other <- function(counts, pref_graph, threshold) {
 #'
 #' @inherit maximum_mutual_information_nominal return
 #'
+#' @examples
+#' counts = c(A = 3, B = 1, C = 3, D = 2, E = 2)
+#' threshold <- 3
+#' maximum_mutual_information_nominal_heuristic(counts, threshold)
+#'
 #' @seealso
 #'  [maximum_mutual_information_nominal()] for the non-approximate version of this function.
 #'

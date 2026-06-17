@@ -10,7 +10,8 @@ lump_nominal_supervised(
   threshold,
   adj_matrix = NULL,
   verbose = FALSE,
-  level_namer = default_level_namer
+  level_namer = default_level_namer,
+  outcome_mode = c("auto", "discrete", "continuous")
 )
 }
 \arguments{
@@ -26,6 +27,8 @@ lump_nominal_supervised(
 
 \item{level_namer}{Function that takes a character vector of the original levels in a lump and returns the name of
 the new lumped level. Default: concatenating the original levels with a "+" in between.}
+
+\item{outcome_mode}{Whether to treat the outcome as discrete or continuous. Default: inferred based on the type of \code{outcome}.}
 }
 \value{
 A factor vector with the lumped levels.
@@ -34,8 +37,8 @@ A factor vector with the lumped levels.
 Perform supvervised lumping on a nominal variable
 }
 \examples{
-data    <- c("NL", "NL", "DE", "DE", "FR", "FR", "FR", "BE")
-outcome <- c(  1,    0,    1,    1,    0,    0,    1,    1)
+data    <-        c("NL", "NL", "DE", "DE", "FR", "FR", "FR", "BE")
+outcome <- factor(c(  1,    0,    1,    1,    0,    0,    1,    1))
 lump_nominal_supervised(data, outcome, threshold = 3)
 
 }

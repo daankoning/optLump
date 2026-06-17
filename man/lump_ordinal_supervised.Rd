@@ -10,13 +10,14 @@ lump_ordinal_supervised(
   threshold,
   levels = NULL,
   verbose = FALSE,
-  level_namer = default_level_namer
+  level_namer = default_level_namer,
+  outcome_mode = c("auto", "discrete", "continuous")
 )
 }
 \arguments{
 \item{data}{Factor or character vector of the categorical data.}
 
-\item{outcome}{Factor or character vector. Variable to be used as a source of information about \code{data}.}
+\item{outcome}{Vector to be used as a source of information about \code{data}.}
 
 \item{threshold}{The minimum number of samples each lumped level should contain.}
 
@@ -26,6 +27,8 @@ lump_ordinal_supervised(
 
 \item{level_namer}{Function that takes a character vector of the original levels in a lump and returns the name of
 the new lumped level. Default: concatenating the original levels with a "+" in between.}
+
+\item{outcome_mode}{Whether to treat the outcome as discrete or continuous. Default: inferred based on the type of \code{outcome}.}
 }
 \value{
 An ordered factor vector with the lumped levels.
@@ -34,11 +37,24 @@ An ordered factor vector with the lumped levels.
 Perform lumping on an ordinal variable
 }
 \examples{
+# Discrete outcomes:
 data    <- c("Low", "Medium", "Low", "High", "Medium",
              "Medium", "High", "High", "Low", "High")
 outcome <- c(  0,      1,       0,     1,      1,
                0,      1,       1,     0,      1)
-lump_ordinal_supervised(data, outcome, threshold = 3,
+outcome <- factor(outcome)
+lump_ordinal_supervised(data, outcome, threshold = 4,
+                        levels = c("Low", "Medium", "High"))
+
+# It is also possible to directly pass ordered data:
+data <- ordered(data, levels = c("Low", "Medium", "High"))
+lump_ordinal_supervised(data, outcome, threshold = 4)
+
+# Alternatively, use a continuous outcome variable:
+data <- c(rep("Low", 10), rep("Medium", 4), rep("High", 5))
+n <- length(data)
+outcome <- rnorm(n, mean = ifelse(data == "High", 10, 0))
+lump_ordinal_supervised(data, outcome, threshold = 5,
                         levels = c("Low", "Medium", "High"))
 
 }

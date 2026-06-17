@@ -31,7 +31,8 @@ the new lumped level. Default: concatenating the original levels with a "+" in b
 A factor vector with the lumped levels.
 }
 \description{
-Perform lumping on a hierarchical nominal variable
+Note that, unlike \code{\link[=lump_nominal_supervised]{lump_nominal_supervised()}} and \code{\link[=lump_ordinal_supervised]{lump_ordinal_supervised()}}, this function does not support
+continuous outcomes.
 }
 \examples{
 data <- c("Utrecht", "Utrecht", "Friesland",
