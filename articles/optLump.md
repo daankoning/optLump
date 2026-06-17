@@ -12,6 +12,11 @@ the original data distribution. For an (abridged) explanation of mutual
 information, see
 [`vignette("metrics")`](https://daankoning.github.io/optLump/articles/metrics.md).
 
+The figure below shows the basic idea for an ordinal variable: levels
+whose count falls below a threshold `q` (red dashed line) are absorbed
+into an adjacent level. The interactive slider lets you explore how
+different values of `q` change the result.
+
 > **Note**
 >
 > This vignette only covers the primary usecase of optLump, looking

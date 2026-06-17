@@ -76,6 +76,9 @@ carries out the lumping.
 [`maximum_mutual_information_nominal()`](https://daankoning.github.io/optLump/reference/maximum_mutual_information_nominal.md)
 for the fully general version of this function, which this one wraps.
 
+[`maximum_mutual_information_hierarchical_supervised()`](https://daankoning.github.io/optLump/reference/maximum_mutual_information_hierarchical_supervised.md)
+for a supervised version of this function.
+
 ## Author
 
 Daan Koning

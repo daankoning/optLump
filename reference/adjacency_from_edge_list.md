@@ -26,6 +26,16 @@ adjacency_from_edge_list(levels, allow = NULL, disallow = NULL)
 
 The adjacency matrix.
 
+## See also
+
+[`maximum_mutual_information_nominal()`](https://daankoning.github.io/optLump/reference/maximum_mutual_information_nominal.md)
+and
+[`maximum_mutual_information_nominal_heuristic()`](https://daankoning.github.io/optLump/reference/maximum_mutual_information_nominal_heuristic.md)
+for functions that accept an `adj_matrix`.
+
+[`maximum_mutual_information_nominal_supervised()`](https://daankoning.github.io/optLump/reference/maximum_mutual_information_nominal_supervised.md)
+for the supervised analogue that also accepts an `adj_matrix`.
+
 ## Author
 
 Daan Koning

@@ -56,6 +56,9 @@ An ordered factor vector with the lumped levels.
 [`maximum_mutual_information_ordinal()`](https://daankoning.github.io/optLump/reference/maximum_mutual_information_ordinal.md)
 for the underlying algorithm that this function wraps.
 
+[`lump_ordinal_supervised()`](https://daankoning.github.io/optLump/reference/lump_ordinal_supervised.md)
+for a supervised version of this function.
+
 ## Author
 
 Daan Koning

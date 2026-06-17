@@ -65,6 +65,9 @@ The runtime complexity is cubic in the number of levels.
 for a more user-friendly wrapper around this function that actually
 carries out the lumping.
 
+[`maximum_mutual_information_ordinal_supervised()`](https://daankoning.github.io/optLump/reference/maximum_mutual_information_ordinal_supervised.md)
+for a supervised version of this function.
+
 ## Author
 
 Daan Koning

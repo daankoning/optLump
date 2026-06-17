@@ -1,4 +1,4 @@
-# supervised
+# Supervised Lumping
 
 TODO: write
 

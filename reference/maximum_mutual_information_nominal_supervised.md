@@ -69,6 +69,9 @@ for the unsupervised version.
 for a version that exploits hierarchical structure to speed up
 execution.
 
+[`maximum_mutual_information_nominal_supervised_continuous()`](https://daankoning.github.io/optLump/reference/maximum_mutual_information_nominal_supervised_continuous.md)
+for a version that accepts a continuous outcome.
+
 ## Author
 
 Daan Koning

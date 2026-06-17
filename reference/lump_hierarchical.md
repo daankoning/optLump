@@ -59,6 +59,9 @@ for the underlying algorithm that this function wraps.
 for a more general version of this function that does not need the
 hierarchical structure in the data, but may be slower.
 
+[`lump_hierarchical_supervised()`](https://daankoning.github.io/optLump/reference/lump_hierarchical_supervised.md)
+for a supervised version of this function.
+
 ## Author
 
 Daan Koning

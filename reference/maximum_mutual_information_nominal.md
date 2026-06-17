@@ -82,6 +82,9 @@ to approximate this function when the number of levels is too large.
 for a version of this function that takes advantage of hierarchical
 structure to speed up the execution time.
 
+[`maximum_mutual_information_nominal_supervised()`](https://daankoning.github.io/optLump/reference/maximum_mutual_information_nominal_supervised.md)
+for a supervised version of this function.
+
 ## Author
 
 Daan Koning

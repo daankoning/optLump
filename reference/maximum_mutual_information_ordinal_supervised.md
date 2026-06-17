@@ -51,6 +51,9 @@ The runtime complexity is cubic in the number of levels.
 [`maximum_mutual_information_ordinal()`](https://daankoning.github.io/optLump/reference/maximum_mutual_information_ordinal.md)
 for the unsupervised version.
 
+[`maximum_mutual_information_ordinal_supervised_continuous()`](https://daankoning.github.io/optLump/reference/maximum_mutual_information_ordinal_supervised_continuous.md)
+for a version that accepts a continuous outcome.
+
 ## Author
 
 Daan Koning

@@ -50,3 +50,37 @@ A list containing information about the optimal lumping:
 
   Integer vector containing the cut points of the optimal lumping, in
   the same convention as the ordinal discrete implementation.
+
+## See also
+
+[`maximum_mutual_information_ordinal_supervised()`](https://daankoning.github.io/optLump/reference/maximum_mutual_information_ordinal_supervised.md)
+for the discrete-outcome version.
+
+[`maximum_mutual_information_nominal_supervised_continuous()`](https://daankoning.github.io/optLump/reference/maximum_mutual_information_nominal_supervised_continuous.md)
+for the nominal analogue.
+
+[`lump_ordinal_supervised()`](https://daankoning.github.io/optLump/reference/lump_ordinal_supervised.md)
+for a user-friendly wrapper that applies the lumping.
+
+## Author
+
+Daan Koning
+
+## Examples
+
+``` r
+set.seed(1)
+x <- ordered(rep(c("Low", "Medium", "High"), each = 5),
+             levels = c("Low", "Medium", "High"))
+y <- c(rnorm(5, 0), rnorm(5, 2), rnorm(5, 4))
+maximum_mutual_information_ordinal_supervised_continuous(x, y, threshold = 5)
+#> $mutual_information
+#> [1] 0.4307968
+#> 
+#> $loss
+#> [1] 0
+#> 
+#> $lumping
+#> [1] 1 2 3 4
+#> 
+```

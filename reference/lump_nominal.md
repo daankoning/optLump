@@ -62,6 +62,9 @@ structure in the data to speed up the execution time.
 [`lump_nominal_heuristic()`](https://daankoning.github.io/optLump/reference/lump_nominal_heuristic.md)
 to approximate this function when the runtime becomes infeasible.
 
+[`lump_nominal_supervised()`](https://daankoning.github.io/optLump/reference/lump_nominal_supervised.md)
+for a supervised version of this function.
+
 ## Author
 
 Daan Koning

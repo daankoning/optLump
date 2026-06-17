@@ -6,4 +6,5 @@
   Metrics](https://daankoning.github.io/optLump/articles/metrics.md):
 - [Introduction to
   optLump](https://daankoning.github.io/optLump/articles/optLump.md):
-- [supervised](https://daankoning.github.io/optLump/articles/supervised.md):
+- [Supervised
+  Lumping](https://daankoning.github.io/optLump/articles/supervised.md):
