@@ -1,8 +1,8 @@
 ---
-title: "supervised"
+title: "Supervised Lumping"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{supervised}
+  %\VignetteIndexEntry{Supervised Lumping}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

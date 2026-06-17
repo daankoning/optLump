@@ -24,6 +24,113 @@ find the combinations that preserve the maximum amount of mutual
 information from the original data distribution.
 For an (abridged) explanation of mutual information, see `vignette("metrics")`.
 
+The figure below shows the basic idea for an ordinal variable: levels whose
+count falls below a threshold `q` (red dashed line) are absorbed into an
+adjacent level. The interactive slider lets you explore how different values
+of `q` change the result.
+
+```{r, eval=knitr::is_html_output(), echo=FALSE, message=FALSE, warning=FALSE}
+library(plotly)
+library(optLump)
+library(dplyr)
+
+counts <- c(12, 1, 8, 6, 1, 4, 2, 5)
+orig_levels <- LETTERS[1:8]
+x <- factor(rep(orig_levels, counts), levels = orig_levels, ordered = TRUE)
+
+make_bars <- function(q) {
+  lumped_x <- as.character(lump_ordinal(x, q))
+  labels <- sapply(orig_levels, function(lv) lumped_x[which(as.character(x) == lv)[1]])
+  data.frame(orig = orig_levels, pos = seq_along(orig_levels), lumped = labels, count = counts) |>
+    group_by(lumped) |>
+    summarise(x_pos = mean(pos), width = n() - 0.2, n = sum(count), .groups = "drop")
+}
+
+slider_step <- function(q) {
+  agg <- make_bars(q)
+  list(
+    method = "update",
+    args = list(
+      list(x = list(I(agg$x_pos)), y = list(I(agg$n)), width = list(I(agg$width))),
+      list(
+        shapes = list(list(
+          type = "line", x0 = 0, x1 = 1, xref = "paper",
+          y0 = q, y1 = q,
+          line = list(color = "red", dash = "dash", width = 2)
+        ))
+      )
+    ),
+    label = as.character(q),
+    value = q
+  )
+}
+
+init <- make_bars(6)
+
+plot_ly() |>
+  add_bars(x = I(init$x_pos), y = I(init$n), width = I(init$width),
+           marker = list(color = "#7F77DD")) |>
+  layout(
+    xaxis = list(
+      title = "Level",
+      tickmode = "array",
+      tickvals = I(seq_along(orig_levels)),
+      ticktext = I(orig_levels),
+      range = c(0.5, length(orig_levels) + 0.5)
+    ),
+    yaxis = list(title = "Count", range = c(0, 40)),
+    bargap = 0,
+    shapes = list(list(
+      type = "line", x0 = 0, x1 = 1, xref = "paper",
+      y0 = 6, y1 = 6,
+      line = list(color = "red", dash = "dash", width = 2)
+    )),
+    sliders = list(list(
+      active = 5,
+      currentvalue = list(prefix = "Threshold q = "),
+      steps = lapply(1:30, slider_step)
+    ))
+  ) |>
+  config(displayModeBar = FALSE)
+```
+
+```{r, eval=!knitr::is_html_output(), echo=FALSE, message=FALSE, warning=FALSE}
+library(ggplot2)
+library(optLump)
+library(dplyr)
+
+counts <- c(12, 1, 8, 6, 1, 4, 2, 5)
+orig_levels <- LETTERS[1:8]
+x <- factor(rep(orig_levels, counts), levels = orig_levels, ordered = TRUE)
+q <- 6
+
+lumped_x <- as.character(lump_ordinal(x, q))
+labels <- sapply(orig_levels, function(lv) lumped_x[which(as.character(x) == lv)[1]])
+level_df <- data.frame(orig = orig_levels, pos = seq_along(orig_levels),
+                       lumped = labels, count = counts)
+
+before <- data.frame(xmin = seq_along(orig_levels) - 0.4,
+                     xmax = seq_along(orig_levels) + 0.4,
+                     n = counts, panel = "Before")
+after  <- level_df |>
+  group_by(lumped) |>
+  summarise(xmin = min(pos) - 0.4, xmax = max(pos) + 0.4, n = sum(count), .groups = "drop") |>
+  mutate(panel = sprintf("After (q = %d)", q))
+
+rbind(before, after[, c("xmin", "xmax", "n", "panel")]) |>
+  mutate(panel = factor(panel, levels = c("Before", sprintf("After (q = %d)", q)))) |>
+  ggplot(aes(xmin = xmin, xmax = xmax, ymin = 0, ymax = n)) +
+  geom_rect(fill = "#7F77DD", colour = "white", linewidth = 0.3) +
+  geom_hline(yintercept = q, colour = "red", linetype = "dashed") +
+  scale_x_continuous(breaks = seq_along(orig_levels), labels = orig_levels,
+                     limits = c(0.5, length(orig_levels) + 0.5)) +
+  facet_wrap(~panel) +
+  theme_minimal() +
+  labs(x = "Level", y = "Count") +
+  theme(panel.grid.major.x = element_blank(),
+        strip.text = element_text(face = "bold"))
+```
+
 > **Note**
 >
 > This vignette only covers the primary usecase of optLump, looking purely at the distribution of
