@@ -26,8 +26,7 @@ For an (abridged) explanation of mutual information, see `vignette("metrics")`.
 
 The figure below shows the basic idea for an ordinal variable: levels whose
 count falls below a threshold `q` (red dashed line) are absorbed into an
-adjacent level. The interactive slider lets you explore how different values
-of `q` change the result.
+adjacent level.
 
 ```{r, eval=knitr::is_html_output(), echo=FALSE, message=FALSE, warning=FALSE}
 library(plotly)
@@ -72,7 +71,6 @@ plot_ly() |>
            marker = list(color = "#7F77DD")) |>
   layout(
     xaxis = list(
-      title = "Level",
       tickmode = "array",
       tickvals = I(seq_along(orig_levels)),
       ticktext = I(orig_levels),
@@ -126,7 +124,7 @@ rbind(before, after[, c("xmin", "xmax", "n", "panel")]) |>
                      limits = c(0.5, length(orig_levels) + 0.5)) +
   facet_wrap(~panel) +
   theme_minimal() +
-  labs(x = "Level", y = "Count") +
+  labs(y = "Count") +
   theme(panel.grid.major.x = element_blank(),
         strip.text = element_text(face = "bold"))
 ```
