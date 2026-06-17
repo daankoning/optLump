@@ -13,6 +13,11 @@ lumping_equal <- function(A, B) {
 #'
 #' @returns The adjacency matrix.
 #'
+#' @seealso
+#'  [maximum_mutual_information_nominal()] and [maximum_mutual_information_nominal_heuristic()] for functions that accept an `adj_matrix`.
+#'
+#'  [maximum_mutual_information_nominal_supervised()] for the supervised analogue that also accepts an `adj_matrix`.
+#'
 #' @examples
 #' levels <- c("A", "B", "C", "D")
 #' edges <- list(c("A", "C"), c("D", "B"))

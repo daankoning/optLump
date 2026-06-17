@@ -69,6 +69,8 @@ maximum_mutual_information_nominal(counts, threshold, preference_graph)
 \code{\link[=maximum_mutual_information_nominal_heuristic]{maximum_mutual_information_nominal_heuristic()}} to approximate this function when the number of levels is too large.
 
 \code{\link[=maximum_mutual_information_hierarchical]{maximum_mutual_information_hierarchical()}} for a version of this function that takes advantage of hierarchical structure to speed up the execution time.
+
+\code{\link[=maximum_mutual_information_nominal_supervised]{maximum_mutual_information_nominal_supervised()}} for a supervised version of this function.
 }
 \author{
 Daan Koning

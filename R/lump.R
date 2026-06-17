@@ -45,6 +45,8 @@ lumping_printer <- function(lumping) {
 #'
 #'  [lump_nominal()] for a more general version of this function that does not need the hierarchical structure in the data, but may be slower.
 #'
+#'  [lump_hierarchical_supervised()] for a supervised version of this function.
+#'
 #' @author Daan Koning
 #' @export
 lump_hierarchical <- function(data, threshold, clusters, verbose = FALSE, alternative_metric = c("mutual information", "bin count", "surplus"), level_namer = default_level_namer) {
@@ -95,7 +97,9 @@ lump_hierarchical <- function(data, threshold, clusters, verbose = FALSE, altern
 #'
 #'  [lump_hierarchical()] for a version of this function that can take advantage of hierarchical structure in the data to speed up the execution time.
 #'
-#' [lump_nominal_heuristic()] to approximate this function when the runtime becomes infeasible.
+#'  [lump_nominal_heuristic()] to approximate this function when the runtime becomes infeasible.
+#'
+#'  [lump_nominal_supervised()] for a supervised version of this function.
 #'
 #' @author Daan Koning
 #' @export
@@ -211,6 +215,8 @@ transform_lumping <- function(lumping, orig_levels, level_namer) {
 #'
 #' @seealso
 #'  [maximum_mutual_information_ordinal()] for the underlying algorithm that this function wraps.
+#'
+#'  [lump_ordinal_supervised()] for a supervised version of this function.
 #'
 #' @author Daan Koning
 #' @export
@@ -400,6 +406,8 @@ lump_hierarchical_supervised <- function(data, outcome, threshold, clusters, ver
 #'
 #' @seealso
 #'  [maximum_mutual_information_ordinal_supervised()] for the underlying algorithm that this function wraps.
+#'
+#'  [lump_ordinal()] for the unsupervised version of this function.
 #'
 #' @author Daan Koning
 #' @export

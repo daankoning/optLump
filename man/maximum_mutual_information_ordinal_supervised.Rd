@@ -38,6 +38,8 @@ maximum_mutual_information_ordinal_supervised(joint_counts, threshold = 10)
 }
 \seealso{
 \code{\link[=maximum_mutual_information_ordinal]{maximum_mutual_information_ordinal()}} for the unsupervised version.
+
+\code{\link[=maximum_mutual_information_ordinal_supervised_continuous]{maximum_mutual_information_ordinal_supervised_continuous()}} for a version that accepts a continuous outcome.
 }
 \author{
 Daan Koning

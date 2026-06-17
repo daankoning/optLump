@@ -49,6 +49,21 @@ ross_mutual_information <- function(x_idx, y, k = 3L) {
 #'     lumping, in the same convention as the ordinal discrete implementation.}
 #' }
 #'
+#' @seealso
+#'   [maximum_mutual_information_ordinal_supervised()] for the discrete-outcome version.
+#'
+#'   [maximum_mutual_information_nominal_supervised_continuous()] for the nominal analogue.
+#'
+#'   [lump_ordinal_supervised()] for a user-friendly wrapper that applies the lumping.
+#'
+#' @examples
+#' set.seed(1)
+#' x <- ordered(rep(c("Low", "Medium", "High"), each = 5),
+#'              levels = c("Low", "Medium", "High"))
+#' y <- c(rnorm(5, 0), rnorm(5, 2), rnorm(5, 4))
+#' maximum_mutual_information_ordinal_supervised_continuous(x, y, threshold = 5)
+#'
+#' @author Daan Koning
 #' @export
 maximum_mutual_information_ordinal_supervised_continuous <- function(x, y, threshold, k = 3L) {
   if (length(x) != length(y)) {
@@ -172,6 +187,20 @@ maximum_mutual_information_ordinal_supervised_continuous <- function(x, y, thres
 #'     names of the original levels that have been lumped together.}
 #' }
 #'
+#' @seealso
+#'   [maximum_mutual_information_nominal_supervised()] for the discrete-outcome version.
+#'
+#'   [maximum_mutual_information_ordinal_supervised_continuous()] for the ordinal analogue.
+#'
+#'   [lump_nominal_supervised()] for a user-friendly wrapper that applies the lumping.
+#'
+#' @examples
+#' set.seed(1)
+#' x <- factor(rep(c("A", "B", "C"), each = 5))
+#' y <- c(rnorm(5, 0), rnorm(5, 0), rnorm(5, 3))
+#' maximum_mutual_information_nominal_supervised_continuous(x, y, threshold = 5)
+#'
+#' @author Daan Koning
 #' @export
 maximum_mutual_information_nominal_supervised_continuous <- function(x, y, threshold, adj_matrix = NULL, verbose = FALSE, k = 3L) {
   if (length(x) != length(y)) {

@@ -28,6 +28,11 @@ adjacency_from_edge_list(levels, allow = edges)
 adjacency_from_edge_list(levels, disallow = edges)
 
 }
+\seealso{
+\code{\link[=maximum_mutual_information_nominal]{maximum_mutual_information_nominal()}} and \code{\link[=maximum_mutual_information_nominal_heuristic]{maximum_mutual_information_nominal_heuristic()}} for functions that accept an \code{adj_matrix}.
+
+\code{\link[=maximum_mutual_information_nominal_supervised]{maximum_mutual_information_nominal_supervised()}} for the supervised analogue that also accepts an \code{adj_matrix}.
+}
 \author{
 Daan Koning
 }

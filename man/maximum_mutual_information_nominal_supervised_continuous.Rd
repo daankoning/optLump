@@ -42,3 +42,20 @@ names of the original levels that have been lumped together.}
 Calculates the maximum Ross-estimated mutual information between a lumped
 nominal covariate and a numeric outcome.
 }
+\examples{
+set.seed(1)
+x <- factor(rep(c("A", "B", "C"), each = 5))
+y <- c(rnorm(5, 0), rnorm(5, 0), rnorm(5, 3))
+maximum_mutual_information_nominal_supervised_continuous(x, y, threshold = 5)
+
+}
+\seealso{
+\code{\link[=maximum_mutual_information_nominal_supervised]{maximum_mutual_information_nominal_supervised()}} for the discrete-outcome version.
+
+\code{\link[=maximum_mutual_information_ordinal_supervised_continuous]{maximum_mutual_information_ordinal_supervised_continuous()}} for the ordinal analogue.
+
+\code{\link[=lump_nominal_supervised]{lump_nominal_supervised()}} for a user-friendly wrapper that applies the lumping.
+}
+\author{
+Daan Koning
+}

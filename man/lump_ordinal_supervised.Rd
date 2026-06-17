@@ -60,6 +60,8 @@ lump_ordinal_supervised(data, outcome, threshold = 5,
 }
 \seealso{
 \code{\link[=maximum_mutual_information_ordinal_supervised]{maximum_mutual_information_ordinal_supervised()}} for the underlying algorithm that this function wraps.
+
+\code{\link[=lump_ordinal]{lump_ordinal()}} for the unsupervised version of this function.
 }
 \author{
 Daan Koning

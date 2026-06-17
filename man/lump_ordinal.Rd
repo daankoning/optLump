@@ -49,6 +49,8 @@ lump_ordinal(risk_ordered, 3)
 }
 \seealso{
 \code{\link[=maximum_mutual_information_ordinal]{maximum_mutual_information_ordinal()}} for the underlying algorithm that this function wraps.
+
+\code{\link[=lump_ordinal_supervised]{lump_ordinal_supervised()}} for a supervised version of this function.
 }
 \author{
 Daan Koning

@@ -44,6 +44,8 @@ maximum_mutual_information_ordinal(c(10, 5, 2, 8, 15), 15)
 }
 \seealso{
 \code{\link[=lump_ordinal]{lump_ordinal()}} for a more user-friendly wrapper around this function that actually carries out the lumping.
+
+\code{\link[=maximum_mutual_information_ordinal_supervised]{maximum_mutual_information_ordinal_supervised()}} for a supervised version of this function.
 }
 \author{
 Daan Koning

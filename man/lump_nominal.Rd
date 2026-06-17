@@ -48,6 +48,8 @@ lump_nominal(data, q)
 \code{\link[=lump_hierarchical]{lump_hierarchical()}} for a version of this function that can take advantage of hierarchical structure in the data to speed up the execution time.
 
 \code{\link[=lump_nominal_heuristic]{lump_nominal_heuristic()}} to approximate this function when the runtime becomes infeasible.
+
+\code{\link[=lump_nominal_supervised]{lump_nominal_supervised()}} for a supervised version of this function.
 }
 \author{
 Daan Koning

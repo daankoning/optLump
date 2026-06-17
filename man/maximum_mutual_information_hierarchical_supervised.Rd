@@ -36,6 +36,16 @@ names of the original levels that have been lumped together.}
 Supervised analogue of \code{\link[=maximum_mutual_information_hierarchical]{maximum_mutual_information_hierarchical()}}, exploiting
 hierarchical structure to divide the problem into independent sub-problems.
 }
+\examples{
+joint_counts <- matrix(
+  c(1, 1, 2, 0, 1, 2, 1, 1),
+  nrow = 4,
+  dimnames = list(c("Utrecht", "Friesland", "Bayern", "Sachsen"), c("y0", "y1"))
+)
+clusters <- list(c("Utrecht", "Friesland"), c("Bayern", "Sachsen"))
+maximum_mutual_information_hierarchical_supervised(joint_counts, threshold = 3, clusters = clusters)
+
+}
 \seealso{
 \code{\link[=maximum_mutual_information_hierarchical]{maximum_mutual_information_hierarchical()}} for the unsupervised version.
 

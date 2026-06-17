@@ -55,6 +55,8 @@ maximum_mutual_information_hierarchical(
 \code{\link[=lump_hierarchical]{lump_hierarchical()}} for a more user-friendly wrapper around this function that actually carries out the lumping.
 
 \code{\link[=maximum_mutual_information_nominal]{maximum_mutual_information_nominal()}} for the fully general version of this function, which this one wraps.
+
+\code{\link[=maximum_mutual_information_hierarchical_supervised]{maximum_mutual_information_hierarchical_supervised()}} for a supervised version of this function.
 }
 \author{
 Daan Koning

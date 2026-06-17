@@ -57,6 +57,8 @@ maximum_mutual_information_nominal_supervised(joint_counts, threshold = 3)
 
 \code{\link[=maximum_mutual_information_hierarchical_supervised]{maximum_mutual_information_hierarchical_supervised()}} for a version that
 exploits hierarchical structure to speed up execution.
+
+\code{\link[=maximum_mutual_information_nominal_supervised_continuous]{maximum_mutual_information_nominal_supervised_continuous()}} for a version that accepts a continuous outcome.
 }
 \author{
 Daan Koning

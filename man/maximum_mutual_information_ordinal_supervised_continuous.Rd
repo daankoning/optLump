@@ -35,3 +35,21 @@ lumping, in the same convention as the ordinal discrete implementation.}
 Calculates the lumping of an ordinal covariate that preserves the maximum
 Ross-estimated mutual information with a numeric outcome.
 }
+\examples{
+set.seed(1)
+x <- ordered(rep(c("Low", "Medium", "High"), each = 5),
+             levels = c("Low", "Medium", "High"))
+y <- c(rnorm(5, 0), rnorm(5, 2), rnorm(5, 4))
+maximum_mutual_information_ordinal_supervised_continuous(x, y, threshold = 5)
+
+}
+\seealso{
+\code{\link[=maximum_mutual_information_ordinal_supervised]{maximum_mutual_information_ordinal_supervised()}} for the discrete-outcome version.
+
+\code{\link[=maximum_mutual_information_nominal_supervised_continuous]{maximum_mutual_information_nominal_supervised_continuous()}} for the nominal analogue.
+
+\code{\link[=lump_ordinal_supervised]{lump_ordinal_supervised()}} for a user-friendly wrapper that applies the lumping.
+}
+\author{
+Daan Koning
+}

@@ -20,7 +20,10 @@
 #'                      levels correspond to the levels [a_1, a_2), ..., [a_(k-1), a_k).}
 #'  }
 #'
-#' @seealso [maximum_mutual_information_ordinal()] for the unsupervised version.
+#' @seealso
+#'   [maximum_mutual_information_ordinal()] for the unsupervised version.
+#'
+#'   [maximum_mutual_information_ordinal_supervised_continuous()] for a version that accepts a continuous outcome.
 #'
 #' @examples
 #' joint_counts <- matrix(c(10, 2, 5, 8, 1, 9, 3, 7, 4, 6), nrow = 5)
@@ -127,6 +130,8 @@ maximum_mutual_information_ordinal_supervised <- function(joint_counts, threshol
 #'
 #'   [maximum_mutual_information_hierarchical_supervised()] for a version that
 #'   exploits hierarchical structure to speed up execution.
+#'
+#'   [maximum_mutual_information_nominal_supervised_continuous()] for a version that accepts a continuous outcome.
 #'
 #' @examples
 #' joint_counts <- matrix(
@@ -261,6 +266,15 @@ maximum_mutual_information_nominal_supervised <- function(joint_counts, threshol
 #'   [maximum_mutual_information_hierarchical()] for the unsupervised version.
 #'
 #'   [maximum_mutual_information_nominal_supervised()] for the general version.
+#'
+#' @examples
+#' joint_counts <- matrix(
+#'   c(1, 1, 2, 0, 1, 2, 1, 1),
+#'   nrow = 4,
+#'   dimnames = list(c("Utrecht", "Friesland", "Bayern", "Sachsen"), c("y0", "y1"))
+#' )
+#' clusters <- list(c("Utrecht", "Friesland"), c("Bayern", "Sachsen"))
+#' maximum_mutual_information_hierarchical_supervised(joint_counts, threshold = 3, clusters = clusters)
 #'
 #' @author Daan Koning
 #' @export

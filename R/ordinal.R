@@ -36,6 +36,8 @@ empirical_entropy <- function(counts) {
 #' @seealso
 #'  [lump_ordinal()] for a more user-friendly wrapper around this function that actually carries out the lumping.
 #'
+#'  [maximum_mutual_information_ordinal_supervised()] for a supervised version of this function.
+#'
 #' @examples
 #' maximum_mutual_information_ordinal(c(10, 5, 2, 8, 15), 15)
 #'

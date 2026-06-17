@@ -30,6 +30,8 @@
 #'
 #'  [maximum_mutual_information_hierarchical()] for a version of this function that takes advantage of hierarchical structure to speed up the execution time.
 #'
+#'  [maximum_mutual_information_nominal_supervised()] for a supervised version of this function.
+#'
 #' @examples
 #' counts = c(A = 3, B = 1, C = 3, D = 2, E = 2)
 #' threshold <- 3
@@ -180,6 +182,8 @@ maximum_mutual_information_nominal <- function(counts, threshold, adj_matrix = N
 #'  [lump_hierarchical()] for a more user-friendly wrapper around this function that actually carries out the lumping.
 #'
 #'  [maximum_mutual_information_nominal()] for the fully general version of this function, which this one wraps.
+#'
+#'  [maximum_mutual_information_hierarchical_supervised()] for a supervised version of this function.
 #'
 #' @examples
 #' maximum_mutual_information_hierarchical(
