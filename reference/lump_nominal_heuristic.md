@@ -60,3 +60,17 @@ for a non-approximate version of this function.
 ## Author
 
 Daan Koning
+
+## Examples
+
+``` r
+m <- 5
+n <- 50
+q <- 10
+data <- sample(LETTERS[1:m], n, replace = TRUE)
+lump_nominal_heuristic(data, q)
+#>  [1] A   B+C A   D+E A   D+E A   B+C B+C D+E B+C D+E D+E B+C D+E A   D+E A   D+E
+#> [20] A   A   D+E B+C D+E B+C A   D+E B+C A   B+C A   B+C D+E D+E D+E A   D+E B+C
+#> [39] D+E B+C D+E B+C D+E B+C A   B+C B+C D+E B+C A  
+#> Levels: A B+C D+E
+```

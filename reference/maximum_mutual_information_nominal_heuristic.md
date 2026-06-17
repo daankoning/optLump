@@ -81,3 +81,28 @@ carries out the lumping.
 ## Author
 
 Daan Koning
+
+## Examples
+
+``` r
+counts = c(A = 3, B = 1, C = 3, D = 2, E = 2)
+threshold <- 3
+maximum_mutual_information_nominal_heuristic(counts, threshold)
+#> $mutual_information
+#> [1] 1.06709
+#> 
+#> $loss
+#> [1] 0.4795092
+#> 
+#> $lumping
+#> $lumping[[1]]
+#> [1] "C"
+#> 
+#> $lumping[[2]]
+#> [1] "B" "D"
+#> 
+#> $lumping[[3]]
+#> [1] "A" "E"
+#> 
+#> 
+```

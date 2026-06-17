@@ -11,7 +11,8 @@ lump_ordinal_supervised(
   threshold,
   levels = NULL,
   verbose = FALSE,
-  level_namer = default_level_namer
+  level_namer = default_level_namer,
+  outcome_mode = c("auto", "discrete", "continuous")
 )
 ```
 
@@ -23,8 +24,7 @@ lump_ordinal_supervised(
 
 - outcome:
 
-  Factor or character vector. Variable to be used as a source of
-  information about `data`.
+  Vector to be used as a source of information about `data`.
 
 - threshold:
 
@@ -46,6 +46,11 @@ lump_ordinal_supervised(
   lump and returns the name of the new lumped level. Default:
   concatenating the original levels with a "+" in between.
 
+- outcome_mode:
+
+  Whether to treat the outcome as discrete or continuous. Default:
+  inferred based on the type of `outcome`.
+
 ## Value
 
 An ordered factor vector with the lumped levels.
@@ -62,12 +67,34 @@ Daan Koning
 ## Examples
 
 ``` r
+# Discrete outcomes:
 data    <- c("Low", "Medium", "Low", "High", "Medium",
              "Medium", "High", "High", "Low", "High")
 outcome <- c(  0,      1,       0,     1,      1,
                0,      1,       1,     0,      1)
-lump_ordinal_supervised(data, outcome, threshold = 3,
+outcome <- factor(outcome)
+lump_ordinal_supervised(data, outcome, threshold = 4,
                         levels = c("Low", "Medium", "High"))
-#>  [1] Low    Medium Low    High   Medium Medium High   High   Low    High  
-#> Levels: Low < Medium < High
+#>  [1] Low+Medium Low+Medium Low+Medium High       Low+Medium Low+Medium
+#>  [7] High       High       Low+Medium High      
+#> Levels: Low+Medium < High
+
+# It is also possible to directly pass ordered data:
+data <- ordered(data, levels = c("Low", "Medium", "High"))
+lump_ordinal_supervised(data, outcome, threshold = 4)
+#>  [1] Low+Medium Low+Medium Low+Medium High       Low+Medium Low+Medium
+#>  [7] High       High       Low+Medium High      
+#> Levels: Low+Medium < High
+
+# Alternatively, use a continuous outcome variable:
+data <- c(rep("Low", 10), rep("Medium", 4), rep("High", 5))
+n <- length(data)
+outcome <- rnorm(n, mean = ifelse(data == "High", 10, 0))
+lump_ordinal_supervised(data, outcome, threshold = 5,
+                        levels = c("Low", "Medium", "High"))
+#>  [1] Low+Medium Low+Medium Low+Medium Low+Medium Low+Medium Low+Medium
+#>  [7] Low+Medium Low+Medium Low+Medium Low+Medium Low+Medium Low+Medium
+#> [13] Low+Medium Low+Medium High       High       High       High      
+#> [19] High      
+#> Levels: Low+Medium < High
 ```

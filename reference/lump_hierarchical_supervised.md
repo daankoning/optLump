@@ -1,6 +1,10 @@
 # Perform lumping on a hierarchical nominal variable
 
-Perform lumping on a hierarchical nominal variable
+Note that, unlike
+[`lump_nominal_supervised()`](https://daankoning.github.io/optLump/reference/lump_nominal_supervised.md)
+and
+[`lump_ordinal_supervised()`](https://daankoning.github.io/optLump/reference/lump_ordinal_supervised.md),
+this function does not support continuous outcomes.
 
 ## Usage
 

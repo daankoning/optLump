@@ -55,7 +55,8 @@
 <span>  <span class="va">threshold</span>,</span>
 <span>  levels <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  verbose <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  level_namer <span class="op">=</span> <span class="va">default_level_namer</span></span>
+<span>  level_namer <span class="op">=</span> <span class="va">default_level_namer</span>,</span>
+<span>  outcome_mode <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"auto"</span>, <span class="st">"discrete"</span>, <span class="st">"continuous"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -68,7 +69,7 @@
 
 
 <dt id="arg-outcome">outcome<a class="anchor" aria-label="anchor" href="#arg-outcome"></a></dt>
-<dd><p>Factor or character vector. Variable to be used as a source of information about <code>data</code>.</p></dd>
+<dd><p>Vector to be used as a source of information about <code>data</code>.</p></dd>
 
 
 <dt id="arg-threshold">threshold<a class="anchor" aria-label="anchor" href="#arg-threshold"></a></dt>
@@ -87,6 +88,10 @@
 <dd><p>Function that takes a character vector of the original levels in a lump and returns the name of
 the new lumped level. Default: concatenating the original levels with a "+" in between.</p></dd>
 
+
+<dt id="arg-outcome-mode">outcome_mode<a class="anchor" aria-label="anchor" href="#arg-outcome-mode"></a></dt>
+<dd><p>Whether to treat the outcome as discrete or continuous. Default: inferred based on the type of <code>outcome</code>.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
@@ -103,14 +108,36 @@ the new lumped level. Default: concatenating the original levels with a "+" in b
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">data</span>    <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Low"</span>, <span class="st">"Medium"</span>, <span class="st">"Low"</span>, <span class="st">"High"</span>, <span class="st">"Medium"</span>,</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Discrete outcomes:</span></span></span>
+<span class="r-in"><span><span class="va">data</span>    <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Low"</span>, <span class="st">"Medium"</span>, <span class="st">"Low"</span>, <span class="st">"High"</span>, <span class="st">"Medium"</span>,</span></span>
 <span class="r-in"><span>             <span class="st">"Medium"</span>, <span class="st">"High"</span>, <span class="st">"High"</span>, <span class="st">"Low"</span>, <span class="st">"High"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">outcome</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span>  <span class="fl">0</span>,      <span class="fl">1</span>,       <span class="fl">0</span>,     <span class="fl">1</span>,      <span class="fl">1</span>,</span></span>
 <span class="r-in"><span>               <span class="fl">0</span>,      <span class="fl">1</span>,       <span class="fl">1</span>,     <span class="fl">0</span>,      <span class="fl">1</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">lump_ordinal_supervised</span><span class="op">(</span><span class="va">data</span>, <span class="va">outcome</span>, threshold <span class="op">=</span> <span class="fl">3</span>,</span></span>
+<span class="r-in"><span><span class="va">outcome</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">outcome</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">lump_ordinal_supervised</span><span class="op">(</span><span class="va">data</span>, <span class="va">outcome</span>, threshold <span class="op">=</span> <span class="fl">4</span>,</span></span>
 <span class="r-in"><span>                        levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Low"</span>, <span class="st">"Medium"</span>, <span class="st">"High"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] Low    Medium Low    High   Medium Medium High   High   Low    High  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Levels: Low &lt; Medium &lt; High</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] Low+Medium Low+Medium Low+Medium High       Low+Medium Low+Medium</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [7] High       High       Low+Medium High      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Levels: Low+Medium &lt; High</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># It is also possible to directly pass ordered data:</span></span></span>
+<span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">ordered</a></span><span class="op">(</span><span class="va">data</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Low"</span>, <span class="st">"Medium"</span>, <span class="st">"High"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">lump_ordinal_supervised</span><span class="op">(</span><span class="va">data</span>, <span class="va">outcome</span>, threshold <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] Low+Medium Low+Medium Low+Medium High       Low+Medium Low+Medium</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [7] High       High       Low+Medium High      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Levels: Low+Medium &lt; High</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Alternatively, use a continuous outcome variable:</span></span></span>
+<span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"Low"</span>, <span class="fl">10</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"Medium"</span>, <span class="fl">4</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="st">"High"</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">n</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">outcome</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="va">n</span>, mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">data</span> <span class="op">==</span> <span class="st">"High"</span>, <span class="fl">10</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">lump_ordinal_supervised</span><span class="op">(</span><span class="va">data</span>, <span class="va">outcome</span>, threshold <span class="op">=</span> <span class="fl">5</span>,</span></span>
+<span class="r-in"><span>                        levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Low"</span>, <span class="st">"Medium"</span>, <span class="st">"High"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] Low+Medium Low+Medium Low+Medium Low+Medium Low+Medium Low+Medium</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [7] Low+Medium Low+Medium Low+Medium Low+Medium Low+Medium Low+Medium</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [13] Low+Medium Low+Medium High       High       High       High      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [19] High      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Levels: Low+Medium &lt; High</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>

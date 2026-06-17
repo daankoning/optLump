@@ -42,7 +42,13 @@ information.
   : Approximate maximum information preservable by nominal lumping
 - [`maximum_mutual_information_nominal_supervised()`](https://daankoning.github.io/optLump/reference/maximum_mutual_information_nominal_supervised.md)
   : Maximum information preservable by supervised nominal lumping
+- [`maximum_mutual_information_nominal_supervised_continuous()`](https://daankoning.github.io/optLump/reference/maximum_mutual_information_nominal_supervised_continuous.md)
+  : Maximum information preservable by supervised continuous nominal
+  lumping
 - [`maximum_mutual_information_ordinal()`](https://daankoning.github.io/optLump/reference/maximum_mutual_information_ordinal.md)
   : Maximum information preservable by ordinal lumping
 - [`maximum_mutual_information_ordinal_supervised()`](https://daankoning.github.io/optLump/reference/maximum_mutual_information_ordinal_supervised.md)
   : Maximum information preservable by supervised ordinal lumping
+- [`maximum_mutual_information_ordinal_supervised_continuous()`](https://daankoning.github.io/optLump/reference/maximum_mutual_information_ordinal_supervised_continuous.md)
+  : Maximum information preservable by supervised continuous ordinal
+  lumping
