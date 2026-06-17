@@ -37,8 +37,8 @@ A factor vector with the lumped levels.
 Perform supvervised lumping on a nominal variable
 }
 \examples{
-data    <- c("NL", "NL", "DE", "DE", "FR", "FR", "FR", "BE")
-outcome <- c(  1,    0,    1,    1,    0,    0,    1,    1)
+data    <-        c("NL", "NL", "DE", "DE", "FR", "FR", "FR", "BE")
+outcome <- factor(c(  1,    0,    1,    1,    0,    0,    1,    1))
 lump_nominal_supervised(data, outcome, threshold = 3)
 
 }

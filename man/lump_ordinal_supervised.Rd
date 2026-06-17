@@ -29,8 +29,6 @@ lump_ordinal_supervised(
 the new lumped level. Default: concatenating the original levels with a "+" in between.}
 
 \item{outcome_mode}{Whether to treat the outcome as discrete or continuous. Default: inferred based on the type of \code{outcome}.}
-
-\item{thresholFactor}{or character vector. Variable to be used as a source of information about \code{data}.}
 }
 \value{
 An ordered factor vector with the lumped levels.
@@ -39,11 +37,24 @@ An ordered factor vector with the lumped levels.
 Perform lumping on an ordinal variable
 }
 \examples{
+# Discrete outcomes:
 data    <- c("Low", "Medium", "Low", "High", "Medium",
              "Medium", "High", "High", "Low", "High")
 outcome <- c(  0,      1,       0,     1,      1,
                0,      1,       1,     0,      1)
-lump_ordinal_supervised(data, outcome, threshold = 3,
+outcome <- factor(outcome)
+lump_ordinal_supervised(data, outcome, threshold = 4,
+                        levels = c("Low", "Medium", "High"))
+
+# It is also possible to directly pass ordered data:
+data <- ordered(data, levels = c("Low", "Medium", "High"))
+lump_ordinal_supervised(data, outcome, threshold = 4)
+
+# Alternatively, use a continuous outcome variable:
+data <- c(rep("Low", 10), rep("Medium", 4), rep("High", 5))
+n <- length(data)
+outcome <- rnorm(n, mean = ifelse(data == "High", 10, 0))
+lump_ordinal_supervised(data, outcome, threshold = 5,
                         levels = c("Low", "Medium", "High"))
 
 }

@@ -33,6 +33,14 @@ A factor vector with the lumped levels.
 \description{
 Approximate the lumping on a nominal variable
 }
+\examples{
+m <- 5
+n <- 50
+q <- 10
+data <- sample(LETTERS[1:m], n, replace = TRUE)
+lump_nominal_heuristic(data, q)
+
+}
 \seealso{
 \code{\link[=maximum_mutual_information_nominal_heuristic]{maximum_mutual_information_nominal_heuristic()}} for the underlying algorithm that this function wraps.
 

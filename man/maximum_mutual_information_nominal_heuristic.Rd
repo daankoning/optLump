@@ -41,6 +41,12 @@ The lumping returned is guaranteed to satisfy the constraints, but the mutual in
 Additionally, since the the clique cover problem is itself NP-complete, it is not guaranteed that a lumping is found at all,
 even when it exists.
 }
+\examples{
+counts = c(A = 3, B = 1, C = 3, D = 2, E = 2)
+threshold <- 3
+maximum_mutual_information_nominal_heuristic(counts, threshold)
+
+}
 \seealso{
 \code{\link[=maximum_mutual_information_nominal]{maximum_mutual_information_nominal()}} for the non-approximate version of this function.
 

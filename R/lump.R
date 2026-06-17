@@ -129,6 +129,13 @@ lump_nominal <- function(data, threshold, adj_matrix = NULL, verbose = FALSE, al
 #'
 #' @inherit lump_nominal return
 #'
+#' @examples
+#' m <- 5
+#' n <- 50
+#' q <- 10
+#' data <- sample(LETTERS[1:m], n, replace = TRUE)
+#' lump_nominal_heuristic(data, q)
+#'
 #' @seealso
 #'  [maximum_mutual_information_nominal_heuristic()] for the underlying algorithm that this function wraps.
 #'
@@ -250,8 +257,8 @@ lump_ordinal <- function(data, threshold, levels = NULL, verbose = FALSE, altern
 #' @returns A factor vector with the lumped levels.
 #'
 #' @examples
-#' data    <- c("NL", "NL", "DE", "DE", "FR", "FR", "FR", "BE")
-#' outcome <- c(  1,    0,    1,    1,    0,    0,    1,    1)
+#' data    <-        c("NL", "NL", "DE", "DE", "FR", "FR", "FR", "BE")
+#' outcome <- factor(c(  1,    0,    1,    1,    0,    0,    1,    1))
 #' lump_nominal_supervised(data, outcome, threshold = 3)
 #'
 #' @seealso
@@ -361,7 +368,6 @@ lump_hierarchical_supervised <- function(data, outcome, threshold, clusters, ver
 #'
 #' @param data Factor or character vector of the categorical data.
 #' @param outcome Vector to be used as a source of information about `data`.
-#' @param thresholFactor or character vector. Variable to be used as a source of information about `data`.
 #' @param threshold The minimum number of samples each lumped level should contain.
 #' @param levels Character vector specifying the strict ordinal hierarchy of the levels (from lowest to highest). Required if `data` is not already an ordered factor.
 #' @param verbose Logical value dictating if values should be printed. Default: `FALSE`.
@@ -372,11 +378,24 @@ lump_hierarchical_supervised <- function(data, outcome, threshold, clusters, ver
 #' @returns An ordered factor vector with the lumped levels.
 #'
 #' @examples
+#' # Discrete outcomes:
 #' data    <- c("Low", "Medium", "Low", "High", "Medium",
 #'              "Medium", "High", "High", "Low", "High")
 #' outcome <- c(  0,      1,       0,     1,      1,
 #'                0,      1,       1,     0,      1)
-#' lump_ordinal_supervised(data, outcome, threshold = 3,
+#' outcome <- factor(outcome)
+#' lump_ordinal_supervised(data, outcome, threshold = 4,
+#'                         levels = c("Low", "Medium", "High"))
+#'
+#' # It is also possible to directly pass ordered data:
+#' data <- ordered(data, levels = c("Low", "Medium", "High"))
+#' lump_ordinal_supervised(data, outcome, threshold = 4)
+#'
+#' # Alternatively, use a continuous outcome variable:
+#' data <- c(rep("Low", 10), rep("Medium", 4), rep("High", 5))
+#' n <- length(data)
+#' outcome <- rnorm(n, mean = ifelse(data == "High", 10, 0))
+#' lump_ordinal_supervised(data, outcome, threshold = 5,
 #'                         levels = c("Low", "Medium", "High"))
 #'
 #' @seealso
