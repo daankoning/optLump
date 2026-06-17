@@ -1,6 +1,6 @@
 tolerance <- 1e-6
 
-# ordinal:
+# discrete ordinal:
 
 test_that("Happy path: levels with matching conditional Y distributions incur zero MI loss", {
   joint_counts <- matrix(
@@ -146,7 +146,7 @@ test_that("Input validation catches bad data", {
   )
 })
 
-# nominal:
+# discrete nominal:
 
 test_that("Happy path: merging levels with identical Y costs zero MI", {
   counts <- matrix(c(1, 0,
@@ -449,5 +449,181 @@ test_that("Input validation catches bad data", {
   expect_error(
     maximum_mutual_information_hierarchical_supervised(counts, c(1, 1), list(c("A", "B", "C"))),
     "Input 'threshold' must"
+  )
+})
+
+# continuous ordinal:
+
+test_that("Do not lump at all when all ordinal levels already meet threshold", {
+  x <- ordered(rep(c("A", "B", "C", "D"), each = 4), levels = c("A", "B", "C", "D"))
+  y <- c(
+    1, 2, 3, 4,
+    1.5, 2.5, 3.5, 4.5,
+    5, 6, 7, 8,
+    5.5, 6.5, 7.5, 8.5
+  )
+
+  res <- maximum_mutual_information_ordinal_supervised_continuous(x, y, threshold = 4, k = 3)
+
+  expect_equal(res$mutual_information, 1.151562, tolerance = tolerance)
+  expect_equal(res$loss, 0, tolerance = tolerance)
+  expect_equal(res$lumping, 1:5)
+})
+
+test_that("Lump all ordinal levels together when threshold is high", {
+  x <- ordered(rep(c("A", "B", "C", "D"), each = 4), levels = c("A", "B", "C", "D"))
+  y <- c(
+    1, 2, 3, 4,
+    1.5, 2.5, 3.5, 4.5,
+    5, 6, 7, 8,
+    5.5, 6.5, 7.5, 8.5
+  )
+
+  res <- maximum_mutual_information_ordinal_supervised_continuous(x, y, threshold = 16, k = 3)
+
+  expect_equal(res$mutual_information, -0.5208333, tolerance = tolerance)
+  expect_equal(res$loss, 1.672396, tolerance = tolerance)
+  expect_equal(res$lumping, c(1, 5))
+})
+
+test_that("Continuous ordinal implementation rejects invalid inputs", {
+  x <- factor(rep(c("A", "B", "C"), each = 3), levels = c("A", "B", "C"), ordered = TRUE)
+  y <- c(1, 2, 3, 4, 5, 6, 7, 8, 9)
+
+  expect_error(
+    maximum_mutual_information_ordinal_supervised_continuous(x[1:8], y, threshold = 3, k = 3),
+    "must have the same length"
+  )
+  expect_error(
+    maximum_mutual_information_ordinal_supervised_continuous(x, as.character(y), threshold = 3, k = 3),
+    "Input 'y' must be a numeric vector"
+  )
+  expect_error(
+    maximum_mutual_information_ordinal_supervised_continuous(x, y, threshold = c(1, 2), k = 3),
+    "Input 'threshold' must"
+  )
+  expect_error(
+    maximum_mutual_information_ordinal_supervised_continuous(x, y, threshold = -1, k = 3),
+    "Input 'threshold' must"
+  )
+  expect_error(
+    maximum_mutual_information_ordinal_supervised_continuous(x, y, threshold = 3, k = 0),
+    "Input 'k' must"
+  )
+})
+
+test_that("Continuous ordinal implementation rejects levels with too few samples for Ross", {
+  x <- factor(rep(c("A", "B", "C"), each = 3), levels = c("A", "B", "C"), ordered = TRUE)
+  y <- c(1, 2, 3, 4, 5, 6, 7, 8, 9)
+
+  expect_error(
+    maximum_mutual_information_ordinal_supervised_continuous(x, y, threshold = 3, k = 3),
+    "Every original ordinal level must contain more than 'k' samples"
+  )
+})
+
+# continuous nominal:
+
+test_that("Nominal continuous keeps singleton levels when the graph forbids merges", {
+  x <- factor(rep(c("A", "B", "C"), each = 4), levels = c("A", "B", "C"))
+  y <- c(
+    1, 2, 3, 4,
+    1.5, 2.5, 3.5, 4.5,
+    5, 6, 7, 8
+  )
+  adj <- diag(3)
+  dimnames(adj) <- list(levels(x), levels(x))
+
+  res <- maximum_mutual_information_nominal_supervised_continuous(x, y, threshold = 4, adj_matrix = adj, k = 3)
+
+  expect_equal(res$mutual_information, 0.853210, tolerance = tolerance)
+  expect_equal(res$loss, 0, tolerance = tolerance)
+  expect_true(lumping_equal(res$lumping, list("A", "B", "C")))
+})
+
+test_that("Lump all nominal continuous levels together when threshold is high", {
+  x <- factor(rep(c("A", "B", "C"), each = 4), levels = c("A", "B", "C"))
+  y <- c(
+    1, 2, 3, 4,
+    1.5, 2.5, 3.5, 4.5,
+    5, 6, 7, 8
+  )
+  adj <- matrix(1, 3, 3, dimnames = list(levels(x), levels(x)))
+
+  res <- maximum_mutual_information_nominal_supervised_continuous(x, y, threshold = 12, adj_matrix = adj, k = 3)
+
+  expect_equal(res$mutual_information, -0.4375, tolerance = tolerance)
+  expect_equal(res$loss, 1.290711, tolerance = tolerance)
+  expect_true(lumping_equal(res$lumping, list(c("A", "B", "C"))))
+})
+
+test_that("Order of columns in continuous nominal adjacency matrix does not matter", {
+  x <- factor(rep(c("A", "B", "C"), each = 4), levels = c("A", "B", "C"))
+  y <- c(
+    1, 2, 3, 4,
+    1.5, 2.5, 3.5, 4.5,
+    5, 6, 7, 8
+  )
+  adj1 <- matrix(1, 3, 3, dimnames = list(c("A", "B", "C"), c("A", "B", "C")))
+  adj2 <- matrix(1, 3, 3, dimnames = list(c("A", "B", "C"), c("B", "C", "A")))
+
+  res1 <- maximum_mutual_information_nominal_supervised_continuous(x, y, threshold = 12, adj_matrix = adj1, k = 3)
+  res2 <- maximum_mutual_information_nominal_supervised_continuous(x, y, threshold = 12, adj_matrix = adj2, k = 3)
+
+  expect_equal(res1$mutual_information, res2$mutual_information, tolerance = tolerance)
+  expect_equal(res1$loss, res2$loss, tolerance = tolerance)
+  expect_true(lumping_equal(res1$lumping, res2$lumping))
+})
+
+test_that("Default to complete graph works for continuous nominal lumping", {
+  x <- factor(rep(c("A", "B", "C"), each = 4), levels = c("A", "B", "C"))
+  y <- c(
+    1, 2, 3, 4,
+    1.5, 2.5, 3.5, 4.5,
+    5, 6, 7, 8
+  )
+  adj <- matrix(1, 3, 3, dimnames = list(levels(x), levels(x)))
+
+  res1 <- maximum_mutual_information_nominal_supervised_continuous(x, y, threshold = 12, adj_matrix = adj, k = 3)
+  res2 <- maximum_mutual_information_nominal_supervised_continuous(x, y, threshold = 12, k = 3)
+
+  expect_equal(res1$mutual_information, res2$mutual_information, tolerance = tolerance)
+  expect_equal(res1$loss, res2$loss, tolerance = tolerance)
+  expect_true(lumping_equal(res1$lumping, res2$lumping))
+})
+
+test_that("Continuous nominal implementation rejects invalid inputs", {
+  x <- factor(rep(c("A", "B", "C"), each = 3), levels = c("A", "B", "C"))
+  y <- c(1, 2, 3, 4, 5, 6, 7, 8, 9)
+
+  expect_error(
+    maximum_mutual_information_nominal_supervised_continuous(x[1:8], y, threshold = 3, k = 3),
+    "must have the same length"
+  )
+  expect_error(
+    maximum_mutual_information_nominal_supervised_continuous(x, as.character(y), threshold = 3, k = 3),
+    "Input 'y' must be a numeric vector"
+  )
+  expect_error(
+    maximum_mutual_information_nominal_supervised_continuous(x, y, threshold = c(1, 2), k = 3),
+    "Input 'threshold' must"
+  )
+  expect_error(
+    maximum_mutual_information_nominal_supervised_continuous(x, y, threshold = -1, k = 3),
+    "Input 'threshold' must"
+  )
+  expect_error(
+    maximum_mutual_information_nominal_supervised_continuous(x, y, threshold = 3, k = 0),
+    "Input 'k' must"
+  )
+})
+
+test_that("Continuous nominal implementation rejects levels with too few samples for Ross", {
+  x <- factor(rep(c("A", "B", "C"), each = 3), levels = c("A", "B", "C"))
+  y <- c(1, 2, 3, 4, 5, 6, 7, 8, 9)
+
+  expect_error(
+    maximum_mutual_information_nominal_supervised_continuous(x, y, threshold = 3, k = 3),
+    "Every original nominal level must contain more than 'k' samples"
   )
 })
