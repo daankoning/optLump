@@ -79,10 +79,182 @@
 
     
     
-<p>TODO: write</p>
+<p>In the introductory vignette (<code><a href="../articles/optLump.html">vignette("optLump")</a></code>) we
+lumped a categorical variable by looking only at its own distribution.
+This is the right thing to do when the variable is all we have. More
+often, however, we are lumping a predictor because we eventually want to
+model some outcome based on it. In that case we do not really care about
+the predictor on its own; we care about what it tells us about the
+outcome.</p>
+<p>Supervised lumping takes this into account. Instead of preserving the
+mutual information between the variable before and after lumping, it
+preserves the mutual information between the lumped variable and an
+outcome that we supply.<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content='&lt;p&gt;For an explanation of mutual information, see
+&lt;code&gt;&lt;a href="../articles/metrics.html"&gt;vignette("metrics")&lt;/a&gt;&lt;/code&gt;.&lt;/p&gt;'><sup>1</sup></a> In practice this means that two small
+levels are lumped together when they say similar things about the
+outcome, rather than simply when doing so keeps the distribution
+balanced.</p>
+<p>Each of the supervised functions corresponds to one of the
+unsupervised functions from <code><a href="../articles/optLump.html">vignette("optLump")</a></code>. They take
+the same arguments, with one addition: the <code>outcome</code> that
+supervises the lumping.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://daankoning.github.io/optLump/">optLump</a></span><span class="op">)</span></span></code></pre></div>
-  </main>
+<div class="section level2">
+<h2 id="lumping-with-an-outcome">Lumping with an Outcome<a class="anchor" aria-label="anchor" href="#lumping-with-an-outcome"></a>
+</h2>
+<p>Suppose we are given some data on hospital admissions. For each
+patient we know a triage <code>severity</code>, the
+<code>admission</code> route they came in through, and the
+<code>hospital</code> that treated them. What we would like to model is
+whether the patient was <code>readmitted</code> within a month, as well
+as their <code>length_of_stay</code> in days.</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">patients</span><span class="op">)</span></span>
+<span><span class="co">#&gt;      severity           admission         hospital  readmitted length_of_stay  </span></span>
+<span><span class="co">#&gt;  Minimal :22   GP            :51   St Thomas' :66   0:108      Min.   : 0.600  </span></span>
+<span><span class="co">#&gt;  Mild    :60   Specialist    :58   Guy's      :59   1: 92      1st Qu.: 2.800  </span></span>
+<span><span class="co">#&gt;  Moderate:14   Emergency     :56   Whittington:28              Median : 4.200  </span></span>
+<span><span class="co">#&gt;  Severe  :48   Self-referral :15   Royal Free :24              Mean   : 5.937  </span></span>
+<span><span class="co">#&gt;  Critical:56   Walk-in clinic:20   Homerton   :23              3rd Qu.: 8.325  </span></span>
+<span><span class="co">#&gt;                                                                Max.   :30.100</span></span></code></pre></div>
+<p>As before, we want to lump the categories of the predictors together
+so that every level meets some minimum sample size. The difference is
+that we now want to do this without throwing away what the predictors
+tell us about the outcome.</p>
+<div class="section level3">
+<h3 id="ordinal-variables">Ordinal Variables<a class="anchor" aria-label="anchor" href="#ordinal-variables"></a>
+</h3>
+<p>Just like in the unsupervised case, <code>severity</code> is ordinal,
+so we are only allowed to lump levels that are next to each other in the
+ordering. Suppose we want every level to contain at least 30 patients.
+Lumping without the outcome looks only at the counts:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="fu"><a href="../reference/lump_ordinal.html">lump_ordinal</a></span><span class="op">(</span><span class="va">severity</span>, <span class="fl">30</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt;    Minimal+Mild Moderate+Severe        Critical </span></span>
+<span><span class="co">#&gt;              82              62              56</span></span></code></pre></div>
+<p>To meet the threshold, the algorithm has lumped the small
+<code>Moderate</code> level in with <code>Severe</code>. This is a
+sensible choice if all we know are the counts, but it is an unfortunate
+one here: <code>Moderate</code> patients are rarely readmitted, whereas
+<code>Severe</code> patients usually are.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tapply.html" class="external-link">tapply</a></span><span class="op">(</span><span class="va">readmitted</span> <span class="op">==</span> <span class="st">"1"</span>, <span class="va">severity</span>, <span class="va">mean</span><span class="op">)</span>, <span class="fl">2</span><span class="op">)</span></span>
+<span><span class="co">#&gt;  Minimal     Mild Moderate   Severe Critical </span></span>
+<span><span class="co">#&gt;     0.27     0.17     0.21     0.75     0.66</span></span></code></pre></div>
+<p>If we supervise the lumping with the outcome, the algorithm can take
+this into account. We simply pass the outcome in as the second
+argument:</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="fu"><a href="../reference/lump_ordinal_supervised.html">lump_ordinal_supervised</a></span><span class="op">(</span><span class="va">severity</span>, <span class="va">readmitted</span>, <span class="fl">30</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Minimal+Mild+Moderate                Severe              Critical </span></span>
+<span><span class="co">#&gt;                    96                    48                    56</span></span></code></pre></div>
+<p>This time <code>Moderate</code> is lumped with the lower-severity
+levels that it actually resembles, and <code>Severe</code> is left on
+its own. The resulting levels make a lot more sense if we are about to
+use them to predict readmission.</p>
+<div class="section level4">
+<h4 id="continuous-outcomes">Continuous Outcomes<a class="anchor" aria-label="anchor" href="#continuous-outcomes"></a>
+</h4>
+<p>The outcome does not have to be discrete. If we give it a numeric
+outcome such as <code>length_of_stay</code>, the same function instead
+preserves the mutual information between the lumped variable and that
+continuous outcome, estimated using a nearest-neighbour approach <span class="citation">(Ross 2014)</span>. By default, optLump infers the type
+of the outcome from its class—a factor is treated as discrete, a numeric
+vector as continuous—so there is nothing extra to specify:</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="fu"><a href="../reference/lump_ordinal_supervised.html">lump_ordinal_supervised</a></span><span class="op">(</span><span class="va">severity</span>, <span class="va">length_of_stay</span>, <span class="fl">30</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Minimal+Mild+Moderate                Severe              Critical </span></span>
+<span><span class="co">#&gt;                    96                    48                    56</span></span></code></pre></div>
+<p>Since longer stays go hand in hand with higher severity, we end up
+with the same grouping as before. Of course, if the automatic choice is
+ever wrong – say the outcome is stored as integers but is really
+categorical – we can set it by hand through the
+<code>outcome_mode</code> argument.</p>
+</div>
+</div>
+<div class="section level3">
+<h3 id="nominal-variables">Nominal Variables<a class="anchor" aria-label="anchor" href="#nominal-variables"></a>
+</h3>
+<p>For nominal variables we lose the ordering, so in principle any two
+levels can be lumped together. <code>admission</code> is such a
+variable. Asking once more for at least 25 patients per level, the
+unsupervised method lumps together the two smallest levels:</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="fu"><a href="../reference/lump_nominal.html">lump_nominal</a></span><span class="op">(</span><span class="va">admission</span>, <span class="fl">25</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt;                           GP                   Specialist </span></span>
+<span><span class="co">#&gt;                           51                           58 </span></span>
+<span><span class="co">#&gt;                    Emergency Self-referral+Walk-in clinic </span></span>
+<span><span class="co">#&gt;                           56                           35</span></span></code></pre></div>
+<p><code>Self-referral</code> and <code>Walk-in clinic</code> are indeed
+the two rarest routes. The trouble is that they disagree about the
+outcome: self-referred patients are readmitted often, whereas walk-in
+patients hardly ever are.</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tapply.html" class="external-link">tapply</a></span><span class="op">(</span><span class="va">readmitted</span> <span class="op">==</span> <span class="st">"1"</span>, <span class="va">admission</span>, <span class="va">mean</span><span class="op">)</span>, <span class="fl">2</span><span class="op">)</span></span>
+<span><span class="co">#&gt;             GP     Specialist      Emergency  Self-referral Walk-in clinic </span></span>
+<span><span class="co">#&gt;           0.47           0.50           0.39           0.67           0.35</span></span></code></pre></div>
+<p>The supervised version keeps them apart, and instead lumps each rare
+level in with a larger one that behaves like it:</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="fu"><a href="../reference/lump_nominal_supervised.html">lump_nominal_supervised</a></span><span class="op">(</span><span class="va">admission</span>, <span class="va">readmitted</span>, <span class="fl">25</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt;                       GP Specialist+Self-referral Emergency+Walk-in clinic </span></span>
+<span><span class="co">#&gt;                       51                       73                       76</span></span></code></pre></div>
+<p>Just as in the unsupervised case, we can supply a preference graph
+through the <code>adj_matrix</code> argument to forbid certain pairings,
+and a continuous outcome is handled exactly as it was for ordinal
+variables. See <code><a href="../articles/optLump.html">vignette("optLump")</a></code> for how to build a
+preference graph.</p>
+<div class="section level4">
+<h4 id="hierarchical-variables">Hierarchical Variables<a class="anchor" aria-label="anchor" href="#hierarchical-variables"></a>
+</h4>
+<p>When the levels come with a known grouping,
+<code><a href="../reference/lump_hierarchical_supervised.html">lump_hierarchical_supervised()</a></code> can take advantage of it,
+just like <code><a href="../reference/lump_hierarchical.html">lump_hierarchical()</a></code> does in the unsupervised
+case. Suppose our five hospitals belong to two networks, and that we
+only want to lump patients together within the same network:</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">networks</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"St Thomas'"</span>, <span class="st">"Guy's"</span><span class="op">)</span>,</span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Whittington"</span>, <span class="st">"Royal Free"</span>, <span class="st">"Homerton"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="fu"><a href="../reference/lump_hierarchical_supervised.html">lump_hierarchical_supervised</a></span><span class="op">(</span><span class="va">hospital</span>, <span class="va">readmitted</span>, <span class="fl">25</span>, clusters <span class="op">=</span> <span class="va">networks</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt;          St Thomas'               Guy's         Whittington Royal Free+Homerton </span></span>
+<span><span class="co">#&gt;                  66                  59                  28                  47</span></span></code></pre></div>
+<p>Within each network, the rarest hospitals are lumped together in the
+way that holds on to the most information about readmission. Unlike the
+ordinal and nominal versions, the hierarchical function only supports
+discrete outcomes.</p>
+</div>
+</div>
+</div>
+<div class="section level2">
+<h2 id="computation-and-large-datasets">Computation and Large Datasets<a class="anchor" aria-label="anchor" href="#computation-and-large-datasets"></a>
+</h2>
+<p>The supervised functions behave computationally much like their
+unsupervised counterparts. <code><a href="../reference/lump_ordinal_supervised.html">lump_ordinal_supervised()</a></code> runs
+in time cubic in the number of levels.
+<code><a href="../reference/lump_nominal_supervised.html">lump_nominal_supervised()</a></code>, on the other hand, solves an
+NP-hard problem, so it is only practical for a modest number of levels.
+When the data has a hierarchy,
+<code><a href="../reference/lump_hierarchical_supervised.html">lump_hierarchical_supervised()</a></code> is substantially faster,
+since it only ever works on one cluster at a time. For more on these
+trade-offs, and on the heuristics available when the nominal problem
+becomes too slow, see <code><a href="../articles/optLump.html">vignette("optLump")</a></code>.</p>
+</div>
+<div class="section level2">
+<h2 class="unnumbered" id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
+</h2>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-ross2014" class="csl-entry">
+Ross, Brian C. 2014. <span>“Mutual Information Between Discrete and
+Continuous Data Sets.”</span> <em>PLOS ONE</em> 9 (2): e87357. <a href="https://doi.org/10.1371/journal.pone.0087357" class="external-link">https://doi.org/10.1371/journal.pone.0087357</a>.
+</div>
+</div>
+</div>
+
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside>
 </div>
 
 
