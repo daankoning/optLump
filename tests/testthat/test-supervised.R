@@ -486,6 +486,24 @@ test_that("Lump all ordinal levels together when threshold is high", {
   expect_equal(res$lumping, c(1, 5))
 })
 
+test_that("Intermediate threshold lumps some ordinal levels but not all", {
+  x <- ordered(rep(c("A", "B", "C", "D"), each = 4), levels = c("A", "B", "C", "D"))
+  y <- c(
+    1, 2, 3, 4,
+    1.5, 2.5, 3.5, 4.5,
+    5, 6, 7, 8,
+    5.5, 6.5, 7.5, 8.5
+  )
+
+  # Each level has 4 samples, so a threshold of 8 forces adjacent levels to be
+  # merged in pairs without collapsing everything into a single level.
+  res <- maximum_mutual_information_ordinal_supervised_continuous(x, y, threshold = 8, k = 3)
+
+  expect_equal(res$mutual_information, 0.1587052, tolerance = tolerance)
+  expect_equal(res$loss, 0.1102092, tolerance = tolerance)
+  expect_equal(res$lumping, c(1, 3, 5))
+})
+
 test_that("Continuous ordinal implementation rejects invalid inputs", {
   x <- factor(rep(c("A", "B", "C"), each = 3), levels = c("A", "B", "C"), ordered = TRUE)
   y <- c(1, 2, 3, 4, 5, 6, 7, 8, 9)
@@ -556,6 +574,23 @@ test_that("Lump all nominal continuous levels together when threshold is high", 
   expect_equal(res$mutual_information, -0.4375, tolerance = tolerance)
   expect_equal(res$loss, 0.6295996, tolerance = tolerance)
   expect_true(lumping_equal(res$lumping, list(c("A", "B", "C"))))
+})
+
+test_that("Intermediate threshold lumps some nominal continuous levels but not all", {
+  x <- factor(rep(c("A", "B", "C", "D"), each = 4), levels = c("A", "B", "C", "D"))
+  y <- c(
+    1, 2, 3, 4,
+    1.5, 2.5, 3.5, 4.5,
+    5, 6, 7, 8,
+    5.5, 6.5, 7.5, 8.5
+  )
+  adj <- matrix(1, 4, 4, dimnames = list(levels(x), levels(x)))
+
+  res <- maximum_mutual_information_nominal_supervised_continuous(x, y, threshold = 8, adj_matrix = adj, k = 3)
+
+  expect_equal(res$mutual_information, 0.1587052, tolerance = tolerance)
+  expect_equal(res$loss, 0.1102092, tolerance = tolerance)
+  expect_true(lumping_equal(res$lumping, list(c("A", "B"), c("C", "D"))))
 })
 
 test_that("Order of columns in continuous nominal adjacency matrix does not matter", {
