@@ -203,3 +203,27 @@ test_that("Verbose generates messages", {
 
   suppressMessages(expect_message(maximum_mutual_information_nominal(counts, 2, adj, verbose = TRUE)))
 })
+
+test_that("Bin count metric returns a valid lumping that can differ from the MI optimum", {
+  counts <- c(A = 10, B = 5, C = 2, D = 8, E = 15)
+
+  mi_res <- maximum_mutual_information_nominal(counts, 15)
+  res <- maximum_mutual_information_nominal(counts, 15, alternative_metric = "bin count")
+
+  expect_true(lumping_equal(res$lumping, list("E", c("A", "B", "C", "D"))))
+  expect_false(lumping_equal(res$lumping, mi_res$lumping))
+
+  expect_equal(res$mutual_information, 0.6615632, tolerance = tolerance)
+  expect_equal(res$loss, 0.7844257, tolerance = tolerance)
+  expect_equal(res$mutual_information + res$loss, empirical_entropy(counts), tolerance = tolerance)
+})
+
+test_that("Surplus metric returns a valid lumping that can differ from the MI optimum", {
+  counts <- c(A = 10, B = 5, C = 2, D = 8, E = 15)
+
+  res <- maximum_mutual_information_nominal(counts, 15, alternative_metric = "surplus")
+
+  expect_true(lumping_equal(res$lumping, list("E", c("A", "B", "C", "D"))))
+  expect_equal(res$mutual_information, 0.6615632, tolerance = tolerance)
+  expect_equal(res$loss, 0.7844257, tolerance = tolerance)
+})

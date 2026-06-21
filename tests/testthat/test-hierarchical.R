@@ -60,3 +60,21 @@ test_that("Input validation catches bad data", {
         "Input 'threshold' must"
     )
 })
+
+test_that("Alternative metric is passed through to each cluster", {
+  counts <- c(A = 10, B = 5, C = 2, D = 8, E = 15, F = 20, G = 20)
+  clusters <- list(c("A", "B", "C", "D", "E"), c("F", "G"))
+
+  mi_res <- maximum_mutual_information_hierarchical(counts, 15, clusters)
+  bin_res <- maximum_mutual_information_hierarchical(counts, 15, clusters, alternative_metric = "bin count")
+  surplus_res <- maximum_mutual_information_hierarchical(counts, 15, clusters, alternative_metric = "surplus")
+
+  expected <- list("E", c("A", "B", "C", "D"), "F", "G")
+  expect_true(lumping_equal(bin_res$lumping, expected))
+  expect_true(lumping_equal(surplus_res$lumping, expected))
+  expect_false(lumping_equal(bin_res$lumping, mi_res$lumping))
+
+  expect_equal(bin_res$mutual_information, 1.370502, tolerance = tolerance)
+  expect_equal(bin_res$loss, 0.3922129, tolerance = tolerance)
+  expect_equal(bin_res$mutual_information, surplus_res$mutual_information, tolerance = tolerance)
+})

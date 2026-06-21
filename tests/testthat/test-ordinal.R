@@ -92,3 +92,28 @@ test_that("Input validation catches bad data", {
     "Input 'threshold' must"
   )
 })
+
+
+test_that("Bin count metric returns a valid lumping that can differ from the MI optimum", {
+  counts <- c(10, 5, 2, 8, 15)
+
+  mi_res <- maximum_mutual_information_ordinal(counts, 15)
+  res <- maximum_mutual_information_ordinal(counts, 15, alternative_metric = "bin count")
+
+  expect_equal(res$lumping, c(1, 3, 6))
+  expect_false(isTRUE(all.equal(res$lumping, mi_res$lumping)))
+
+  expect_equal(res$mutual_information, 0.6615632, tolerance = tolerance)
+  expect_equal(res$loss, 0.7844257, tolerance = tolerance)
+  expect_equal(res$mutual_information + res$loss, empirical_entropy(counts), tolerance = tolerance)
+})
+
+test_that("Surplus metric returns a valid lumping that can differ from the MI optimum", {
+  counts <- c(10, 5, 2, 8, 15)
+
+  res <- maximum_mutual_information_ordinal(counts, 15, alternative_metric = "surplus")
+
+  expect_equal(res$lumping, c(1, 3, 6))
+  expect_equal(res$mutual_information, 0.6615632, tolerance = tolerance)
+  expect_equal(res$loss, 0.7844257, tolerance = tolerance)
+})
