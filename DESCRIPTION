@@ -24,6 +24,6 @@ Imports:
     igraph,
     lpSolve
 VignetteBuilder: knitr
-URL: https://daankoning.github.io/optLump/, https://daankoning.github.io/optLump/
+URL: https://daankoning.github.io/optLump/, https://github.com/daankoning/optLump
 BugReports: https://github.com/daankoning/optLump/issues
 Config/roxygen2/version: 8.0.0
