@@ -5,6 +5,7 @@
 
 <!-- badges: start -->
 
+[![GitHub-release](https://img.shields.io/github/v/release/daankoning/optLump)](https://github.com/daankoning/optLump/releases/latest)
 [![R-CMD-check](https://github.com/daankoning/optLump/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/daankoning/optLump/actions/workflows/R-CMD-check.yaml)
 [![pages-build-deployment](https://github.com/daankoning/optLump/actions/workflows/pages/pages-build-deployment/badge.svg)](https://daankoning.github.io/optLump/)
 <!-- badges: end -->

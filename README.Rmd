@@ -16,6 +16,7 @@ knitr::opts_chunk$set(
 # optLump <a href="https://daankoning.github.io/optLump/"><img src="man/figures/logo.png" align="right" height="139" alt="optLump website" /></a>
 
 <!-- badges: start -->
+[![GitHub-release](https://img.shields.io/github/v/release/daankoning/optLump)](https://github.com/daankoning/optLump/releases/latest)
 [![R-CMD-check](https://github.com/daankoning/optLump/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/daankoning/optLump/actions/workflows/R-CMD-check.yaml)
 [![pages-build-deployment](https://github.com/daankoning/optLump/actions/workflows/pages/pages-build-deployment/badge.svg)](https://daankoning.github.io/optLump/)
 <!-- badges: end -->
