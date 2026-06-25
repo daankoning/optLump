@@ -12,6 +12,7 @@ reference:
   - title: "Helper Functions"
     contents:
       - adjacency_from_edge_list
+      - threshold_diagnostic
   - title: "Optimizers"
     desc: >
       Underlying functions that compute the optimal lumping.
