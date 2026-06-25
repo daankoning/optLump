@@ -183,7 +183,7 @@ threshold_diagnostic <- function(X, y = NULL, thresholds = NULL, lumping_mode = 
   )
 
   if (is.null(thresholds)) {
-    thresholds <- seq_len(floor(length(X) / 2))
+    thresholds <- 1:(floor(length(X) / 2))
   }
 
   tested <- numeric(0)
