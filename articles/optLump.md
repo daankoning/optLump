@@ -59,7 +59,7 @@ have a natural ordering of the categories. In our example, the variable
 `education_level` is an ordinal variable. We might decide that the
 smaller levels, `<High School` and `PhD` are too small to be useful, and
 that we want to lump them together with other levels. We would do this
-by specifying a threshold value, in this instance 15, which is the
+by specifying a threshold value, in this instance 15,[^1] which is the
 minimum number of observations that we want in each level after lumping.
 
 ``` r
@@ -97,7 +97,7 @@ A less common situation is when we have some prior knowledge about which
 levels can be lumped together. Suppose we know based on domain knowledge
 that `Heart Disease` should not be lumped with `Hypertension`, since
 they are too different. This information can also be encoded in the
-preference graph,[^1] by disallowing the corresponding pairing. Notice
+preference graph,[^2] by disallowing the corresponding pairing. Notice
 that the preference graph is taken in as its adjacency matrix.
 
 ``` r
@@ -181,7 +181,7 @@ data |>
 
 ## Computation and Large Datasets
 
-Due to inherent computational constraints,[^2]
+Due to inherent computational constraints,[^3]
 [`lump_nominal()`](https://daankoning.github.io/optLump/reference/lump_nominal.md)
 might be very slow. In fact, the algorithm has O\left(2^{2^m}\right)
 runtime, where m is the number of levels. To partially remedy this,
@@ -200,8 +200,11 @@ Note that
 [`lump_ordinal()`](https://daankoning.github.io/optLump/reference/lump_ordinal.md)
 does not suffer from the same issue and runs in polynomial time.
 
-[^1]: The preference graph is a graph that encodes what lumpings are
+[^1]: For help choosing this threshold, see
+    [`threshold_diagnostic()`](https://daankoning.github.io/optLump/reference/threshold_diagnostic.md).
+
+[^2]: The preference graph is a graph that encodes what lumpings are
     allowed; it has an edge between two levels if and only if those
     levels are allowed to be lumped together.
 
-[^2]: being that the nominal problem is NP-hard
+[^3]: being that the nominal problem is NP-hard

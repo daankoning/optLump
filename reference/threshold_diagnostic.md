@@ -96,13 +96,9 @@ Daan Koning
 ## Examples
 
 ``` r
-country <- c("Germany", "Netherlands", "France", "France", "China", "China",
-             "China", "China", "Vietnam", "Vietnam", "Japan", "Japan")
-info <- threshold_diagnostic(country, thresholds = 1:4)
-info
-#>   threshold information
-#> 1         1    1.676235
-#> 2         2    1.560710
-#> 3         3    1.098612
-#> 4         4    1.098612
+n <- 100
+m <- 10
+data <- sample(LETTERS[1:m], n, replace = TRUE)
+threshold_diagnostic(data, plot = TRUE)
+
 ```
