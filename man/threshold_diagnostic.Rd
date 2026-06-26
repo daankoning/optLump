@@ -61,10 +61,10 @@ This is useful for determining the correct value to use, in order
 to not lose too much information.
 }
 \examples{
-country <- c("Germany", "Netherlands", "France", "France", "China", "China",
-             "China", "China", "Vietnam", "Vietnam", "Japan", "Japan")
-info <- threshold_diagnostic(country, thresholds = 1:4)
-info
+n <- 100
+m <- 10
+data <- sample(LETTERS[1:m], n, replace = TRUE)
+threshold_diagnostic(data, plot = TRUE)
 
 }
 \author{

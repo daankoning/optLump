@@ -183,7 +183,8 @@ In our example, the variable `education_level` is an ordinal variable.
 We might decide that the smaller levels, `<High School` and `PhD` are too
 small to be useful, and
 that we want to lump them together with other levels.
-We would do this by specifying a threshold value, in this instance 15,
+We would do this by specifying a threshold value, in this instance 15,^[For help choosing
+this threshold, see `threshold_diagnostic()`.]
 which is the minimum number of observations that we want in each level after lumping.
 ```{r}
 lumped_levels <- lump_ordinal(data$education_level, 15)
