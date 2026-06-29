@@ -1,6 +1,6 @@
 Package: optLump
 Title: Lumping Categorical Covariates in a Way that Preserves Information
-Version: 0.0.3.9000
+Version: 1.0.0
 Authors@R: c(
     person(given = "Daan Olivier", family = "Koning", email = "daanolivierkoning@gmail.com", role = c("aut", "cre")),
     person(given = "Martijn", family = "Ruppert", email = "m.ruppert@lapp.nl", role = "rev"),
