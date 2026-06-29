@@ -1,6 +1,10 @@
 # Perform lumping on a nominal variable
 
-Perform lumping on a nominal variable
+Lumps the levels of an unordered categorical variable so that every
+resulting level meets the sample-size `threshold`, choosing the
+combination that preserves the most mutual information with the original
+variable. An optional preference graph restricts which levels may be
+combined.
 
 ## Usage
 

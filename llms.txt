@@ -18,7 +18,30 @@ pak::pkg_install("daankoning/optLump")
 
 ## Usage
 
-For usage instructions, see
+Pass a categorical vector and a threshold (the minimum number of
+observations each level should contain after lumping):
+
+``` r
+
+library(optLump)
+
+education <- factor(
+  c("<High School", "High School", "High School", "Bachelor's",
+    "Bachelor's", "Master's", "PhD"),
+  levels = c("<High School", "High School", "Bachelor's", "Master's", "PhD"),
+  ordered = TRUE
+)
+
+# Lump so that every level holds at least 2 observations.
+lump_ordinal(education, threshold = 2)
+#> [1] <High School+High School <High School+High School <High School+High School
+#> [4] Bachelor's               Bachelor's               Master's+PhD            
+#> [7] Master's+PhD            
+#> Levels: <High School+High School < Bachelor's < Master's+PhD
+```
+
+The smallest levels are merged into their most informative neighbours.
+For more detailed instructions, see
 [`vignette("optLump")`](https://daankoning.github.io/optLump/articles/optLump.md).
 
 # Package index
@@ -31,17 +54,17 @@ the main interface for users of the package.
 - [`lump_hierarchical()`](https://daankoning.github.io/optLump/reference/lump_hierarchical.md)
   : Perform lumping on a hierarchical nominal variable
 - [`lump_hierarchical_supervised()`](https://daankoning.github.io/optLump/reference/lump_hierarchical_supervised.md)
-  : Perform lumping on a hierarchical nominal variable
+  : Perform supervised lumping on a hierarchical nominal variable
 - [`lump_nominal()`](https://daankoning.github.io/optLump/reference/lump_nominal.md)
   : Perform lumping on a nominal variable
 - [`lump_nominal_heuristic()`](https://daankoning.github.io/optLump/reference/lump_nominal_heuristic.md)
   : Approximate the lumping on a nominal variable
 - [`lump_nominal_supervised()`](https://daankoning.github.io/optLump/reference/lump_nominal_supervised.md)
-  : Perform supvervised lumping on a nominal variable
+  : Perform supervised lumping on a nominal variable
 - [`lump_ordinal()`](https://daankoning.github.io/optLump/reference/lump_ordinal.md)
   : Perform lumping on an ordinal variable
 - [`lump_ordinal_supervised()`](https://daankoning.github.io/optLump/reference/lump_ordinal_supervised.md)
-  : Perform lumping on an ordinal variable
+  : Perform supervised lumping on an ordinal variable
 
 ## Helper Functions
 
@@ -49,7 +72,7 @@ the main interface for users of the package.
   : Transform the edge list representation of a graph into an adjacency
   matrix
 - [`threshold_diagnostic()`](https://daankoning.github.io/optLump/reference/threshold_diagnostic.md)
-  : Visually help decide the correct threshold paramater
+  : Visually help decide the correct threshold parameter
 
 ## Optimizers
 

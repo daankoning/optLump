@@ -1,4 +1,4 @@
-# Visually help decide the correct threshold paramater
+# Visually help decide the correct threshold parameter
 
 Plots the information content of the variable to be lumped for various
 values of the threshold. This is useful for determining the correct
@@ -88,6 +88,21 @@ threshold_diagnostic(
 Invisibly, a `data.frame` with columns `threshold` and `information`
 (the mutual information preserved at each tested threshold), for the
 feasible part of the range.
+
+## See also
+
+[`lump_ordinal()`](https://daankoning.github.io/optLump/reference/lump_ordinal.md),
+[`lump_nominal()`](https://daankoning.github.io/optLump/reference/lump_nominal.md),
+and
+[`lump_hierarchical()`](https://daankoning.github.io/optLump/reference/lump_hierarchical.md)
+for the unsupervised lumping functions whose `threshold` argument this
+helps choose.
+
+[`lump_ordinal_supervised()`](https://daankoning.github.io/optLump/reference/lump_ordinal_supervised.md),
+[`lump_nominal_supervised()`](https://daankoning.github.io/optLump/reference/lump_nominal_supervised.md),
+and
+[`lump_hierarchical_supervised()`](https://daankoning.github.io/optLump/reference/lump_hierarchical_supervised.md)
+for the supervised counterparts, used when an outcome `y` is supplied.
 
 ## Author
 

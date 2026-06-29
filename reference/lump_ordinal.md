@@ -1,6 +1,10 @@
 # Perform lumping on an ordinal variable
 
-Perform lumping on an ordinal variable
+Lumps the levels of an ordered categorical variable, combining only
+adjacent levels so that the ordering is respected. Each resulting level
+meets the sample-size `threshold` while preserving as much mutual
+information as possible. Unlike the nominal case, this runs in
+polynomial time.
 
 ## Usage
 

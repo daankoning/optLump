@@ -8,17 +8,17 @@ the main interface for users of the package.
 - [`lump_hierarchical()`](https://daankoning.github.io/optLump/reference/lump_hierarchical.md)
   : Perform lumping on a hierarchical nominal variable
 - [`lump_hierarchical_supervised()`](https://daankoning.github.io/optLump/reference/lump_hierarchical_supervised.md)
-  : Perform lumping on a hierarchical nominal variable
+  : Perform supervised lumping on a hierarchical nominal variable
 - [`lump_nominal()`](https://daankoning.github.io/optLump/reference/lump_nominal.md)
   : Perform lumping on a nominal variable
 - [`lump_nominal_heuristic()`](https://daankoning.github.io/optLump/reference/lump_nominal_heuristic.md)
   : Approximate the lumping on a nominal variable
 - [`lump_nominal_supervised()`](https://daankoning.github.io/optLump/reference/lump_nominal_supervised.md)
-  : Perform supvervised lumping on a nominal variable
+  : Perform supervised lumping on a nominal variable
 - [`lump_ordinal()`](https://daankoning.github.io/optLump/reference/lump_ordinal.md)
   : Perform lumping on an ordinal variable
 - [`lump_ordinal_supervised()`](https://daankoning.github.io/optLump/reference/lump_ordinal_supervised.md)
-  : Perform lumping on an ordinal variable
+  : Perform supervised lumping on an ordinal variable
 
 ## Helper Functions
 
@@ -26,7 +26,7 @@ the main interface for users of the package.
   : Transform the edge list representation of a graph into an adjacency
   matrix
 - [`threshold_diagnostic()`](https://daankoning.github.io/optLump/reference/threshold_diagnostic.md)
-  : Visually help decide the correct threshold paramater
+  : Visually help decide the correct threshold parameter
 
 ## Optimizers
 

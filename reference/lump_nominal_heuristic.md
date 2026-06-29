@@ -1,6 +1,12 @@
 # Approximate the lumping on a nominal variable
 
-Approximate the lumping on a nominal variable
+A drop-in approximation to
+[`lump_nominal()`](https://daankoning.github.io/optLump/reference/lump_nominal.md)
+for when the exact solver becomes too slow. It applies a greedy
+heuristic that runs in polynomial time but does not guarantee the
+optimal lumping. See
+[`vignette("metrics")`](https://daankoning.github.io/optLump/articles/metrics.md)
+for the available heuristics.
 
 ## Usage
 

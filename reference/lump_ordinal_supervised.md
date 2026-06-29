@@ -1,6 +1,11 @@
-# Perform lumping on an ordinal variable
+# Perform supervised lumping on an ordinal variable
 
-Perform lumping on an ordinal variable
+Lumps the levels of an ordered categorical variable, combining only
+adjacent levels, so as to preserve as much mutual information as
+possible with a supplied `outcome`. The outcome may be discrete (a
+factor) or continuous (numeric); see
+[`vignette("supervised")`](https://daankoning.github.io/optLump/articles/supervised.md)
+for the distinction.
 
 ## Usage
 

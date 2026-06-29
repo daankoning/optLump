@@ -1,6 +1,11 @@
-# Perform supvervised lumping on a nominal variable
+# Perform supervised lumping on a nominal variable
 
-Perform supvervised lumping on a nominal variable
+Lumps the levels of a nominal variable so as to preserve as much mutual
+information as possible between the lumped variable and a supplied
+`outcome`. The outcome may be discrete (a factor) or continuous
+(numeric); see
+[`vignette("supervised")`](https://daankoning.github.io/optLump/articles/supervised.md)
+for the distinction.
 
 ## Usage
 

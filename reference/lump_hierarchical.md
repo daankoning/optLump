@@ -1,6 +1,10 @@
 # Perform lumping on a hierarchical nominal variable
 
-Perform lumping on a hierarchical nominal variable
+Lumps the levels of a nominal variable that carries a known hierarchy
+(for example countries grouped into continents). Only levels within the
+same cluster are combined, which preserves interpretability and lets the
+algorithm run substantially faster than the fully general
+[`lump_nominal()`](https://daankoning.github.io/optLump/reference/lump_nominal.md).
 
 ## Usage
 

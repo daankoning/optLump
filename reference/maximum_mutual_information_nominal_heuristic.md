@@ -65,9 +65,8 @@ A list containing information about the optimal lumping:
 
 The lumping returned is guaranteed to satisfy the constraints, but the
 mutual information conserved is not guaranteed to be maximal.
-Additionally, since the the clique cover problem is itself NP-complete,
-it is not guaranteed that a lumping is found at all, even when it
-exists.
+Additionally, it is not guaranteed that a lumping is found at all, even
+when it exists.
 
 ## See also
 

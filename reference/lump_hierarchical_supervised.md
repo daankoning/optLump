@@ -1,10 +1,8 @@
-# Perform lumping on a hierarchical nominal variable
+# Perform supervised lumping on a hierarchical nominal variable
 
-Note that, unlike
-[`lump_nominal_supervised()`](https://daankoning.github.io/optLump/reference/lump_nominal_supervised.md)
-and
-[`lump_ordinal_supervised()`](https://daankoning.github.io/optLump/reference/lump_ordinal_supervised.md),
-this function does not support continuous outcomes.
+Lumps a hierarchical nominal variable (combining only levels within the
+same cluster) so as to preserve as much mutual information as possible
+with a supplied `outcome`.
 
 ## Usage
 
@@ -52,6 +50,15 @@ lump_hierarchical_supervised(
 ## Value
 
 A factor vector with the lumped levels.
+
+## Details
+
+Note that, unlike
+[`lump_nominal_supervised()`](https://daankoning.github.io/optLump/reference/lump_nominal_supervised.md)
+and
+[`lump_ordinal_supervised()`](https://daankoning.github.io/optLump/reference/lump_ordinal_supervised.md),
+this function only supports discrete (factor) outcomes, not continuous
+ones.
 
 ## See also
 
