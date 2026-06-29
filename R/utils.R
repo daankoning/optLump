@@ -69,9 +69,7 @@ adjacency_from_edge_list <- function(levels, allow = NULL, disallow = NULL) {
 #' Plots the information content of the variable to be lumped for
 #' various values of the threshold.
 #' This is useful for determining the correct value to use, in order
-#' to not lose too much information: a good threshold is one that meets
-#' the desired minimum level size without discarding much information,
-#' typically just before the curve starts to drop off steeply.
+#' to not lose too much information.
 #'
 #' @param X Factor vector containing the variable to be lumped.
 #' @param y Optional. The outcome variable for use with the supervised
