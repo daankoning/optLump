@@ -78,8 +78,7 @@ heuristic_other <- function(counts, pref_graph, threshold) {
 #' this function provides a heuristic to find a good lumping in polynomial time.
 #'
 #' The lumping returned is guaranteed to satisfy the constraints, but the mutual information conserved is not guaranteed to be maximal.
-#' Additionally, since the the clique cover problem is itself NP-complete, it is not guaranteed that a lumping is found at all,
-#' even when it exists.
+#' Additionally, it is not guaranteed that a lumping is found at all, even when it exists.
 #'
 #' @inheritParams maximum_mutual_information_nominal
 #' @param heuristic Character string specifying the algorithm to use. See `vignette("metrics")` for their behaviour. Default: `"smart"`.

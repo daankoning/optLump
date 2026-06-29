@@ -2,7 +2,7 @@
 % Please edit documentation in R/lump.R
 \name{lump_nominal_supervised}
 \alias{lump_nominal_supervised}
-\title{Perform supvervised lumping on a nominal variable}
+\title{Perform supervised lumping on a nominal variable}
 \usage{
 lump_nominal_supervised(
   data,
@@ -34,7 +34,10 @@ the new lumped level. Default: concatenating the original levels with a "+" in b
 A factor vector with the lumped levels.
 }
 \description{
-Perform supvervised lumping on a nominal variable
+Lumps the levels of a nominal variable so as to preserve as much mutual
+information as possible between the lumped variable and a supplied \code{outcome}.
+The outcome may be discrete (a factor) or continuous (numeric); see
+\code{vignette("supervised")} for the distinction.
 }
 \examples{
 data    <-        c("NL", "NL", "DE", "DE", "FR", "FR", "FR", "BE")

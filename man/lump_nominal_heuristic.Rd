@@ -31,7 +31,10 @@ the new lumped level. Default: concatenating the original levels with a "+" in b
 A factor vector with the lumped levels.
 }
 \description{
-Approximate the lumping on a nominal variable
+A drop-in approximation to \code{\link[=lump_nominal]{lump_nominal()}} for when the exact solver becomes
+too slow. It applies a greedy heuristic that runs in polynomial time but does
+not guarantee the optimal lumping. See \code{vignette("metrics")} for the available
+heuristics.
 }
 \examples{
 m <- 5

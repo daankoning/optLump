@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{threshold_diagnostic}
 \alias{threshold_diagnostic}
-\title{Visually help decide the correct threshold paramater}
+\title{Visually help decide the correct threshold parameter}
 \usage{
 threshold_diagnostic(
   X,
@@ -66,6 +66,14 @@ m <- 10
 data <- sample(LETTERS[1:m], n, replace = TRUE)
 threshold_diagnostic(data, plot = TRUE)
 
+}
+\seealso{
+\code{\link[=lump_ordinal]{lump_ordinal()}}, \code{\link[=lump_nominal]{lump_nominal()}}, and \code{\link[=lump_hierarchical]{lump_hierarchical()}} for the
+unsupervised lumping functions whose \code{threshold} argument this helps choose.
+
+\code{\link[=lump_ordinal_supervised]{lump_ordinal_supervised()}}, \code{\link[=lump_nominal_supervised]{lump_nominal_supervised()}}, and
+\code{\link[=lump_hierarchical_supervised]{lump_hierarchical_supervised()}} for the supervised counterparts, used when
+an outcome \code{y} is supplied.
 }
 \author{
 Daan Koning

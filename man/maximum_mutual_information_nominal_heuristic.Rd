@@ -38,8 +38,7 @@ this function provides a heuristic to find a good lumping in polynomial time.
 }
 \details{
 The lumping returned is guaranteed to satisfy the constraints, but the mutual information conserved is not guaranteed to be maximal.
-Additionally, since the the clique cover problem is itself NP-complete, it is not guaranteed that a lumping is found at all,
-even when it exists.
+Additionally, it is not guaranteed that a lumping is found at all, even when it exists.
 }
 \examples{
 counts = c(A = 3, B = 1, C = 3, D = 2, E = 2)

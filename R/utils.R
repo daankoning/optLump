@@ -64,12 +64,14 @@ adjacency_from_edge_list <- function(levels, allow = NULL, disallow = NULL) {
 }
 
 
-#' Visually help decide the correct threshold paramater
+#' Visually help decide the correct threshold parameter
 #'
 #' Plots the information content of the variable to be lumped for
 #' various values of the threshold.
 #' This is useful for determining the correct value to use, in order
-#' to not lose too much information.
+#' to not lose too much information: a good threshold is one that meets
+#' the desired minimum level size without discarding much information,
+#' typically just before the curve starts to drop off steeply.
 #'
 #' @param X Factor vector containing the variable to be lumped.
 #' @param y Optional. The outcome variable for use with the supervised
@@ -100,6 +102,14 @@ adjacency_from_edge_list <- function(levels, allow = NULL, disallow = NULL) {
 #' m <- 10
 #' data <- sample(LETTERS[1:m], n, replace = TRUE)
 #' threshold_diagnostic(data, plot = TRUE)
+#'
+#' @seealso
+#'  [lump_ordinal()], [lump_nominal()], and [lump_hierarchical()] for the
+#'  unsupervised lumping functions whose `threshold` argument this helps choose.
+#'
+#'  [lump_ordinal_supervised()], [lump_nominal_supervised()], and
+#'  [lump_hierarchical_supervised()] for the supervised counterparts, used when
+#'  an outcome `y` is supplied.
 #'
 #' @author Daan Koning
 #' @export

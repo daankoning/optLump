@@ -2,7 +2,7 @@
 % Please edit documentation in R/lump.R
 \name{lump_hierarchical_supervised}
 \alias{lump_hierarchical_supervised}
-\title{Perform lumping on a hierarchical nominal variable}
+\title{Perform supervised lumping on a hierarchical nominal variable}
 \usage{
 lump_hierarchical_supervised(
   data,
@@ -31,8 +31,13 @@ the new lumped level. Default: concatenating the original levels with a "+" in b
 A factor vector with the lumped levels.
 }
 \description{
-Note that, unlike \code{\link[=lump_nominal_supervised]{lump_nominal_supervised()}} and \code{\link[=lump_ordinal_supervised]{lump_ordinal_supervised()}}, this function does not support
-continuous outcomes.
+Lumps a hierarchical nominal variable (combining only levels within the same
+cluster) so as to preserve as much mutual information as possible with a
+supplied \code{outcome}.
+}
+\details{
+Note that, unlike \code{\link[=lump_nominal_supervised]{lump_nominal_supervised()}} and \code{\link[=lump_ordinal_supervised]{lump_ordinal_supervised()}}, this function only supports
+discrete (factor) outcomes, not continuous ones.
 }
 \examples{
 data <- c("Utrecht", "Utrecht", "Friesland",
