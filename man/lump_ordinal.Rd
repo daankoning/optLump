@@ -32,7 +32,10 @@ the new lumped level. Default: concatenating the original levels with a "+" in b
 An ordered factor vector with the lumped levels.
 }
 \description{
-Perform lumping on an ordinal variable
+Lumps the levels of an ordered categorical variable, combining only adjacent
+levels so that the ordering is respected. Each resulting level meets the
+sample-size \code{threshold} while preserving as much mutual information as
+possible. Unlike the nominal case, this runs in polynomial time.
 }
 \examples{
 risk_group <- c("low", "medium", "very low", "high", "medium", "low",

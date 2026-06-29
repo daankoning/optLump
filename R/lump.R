@@ -20,6 +20,11 @@ lumping_printer <- function(lumping) {
 
 #' Perform lumping on a hierarchical nominal variable
 #'
+#' Lumps the levels of a nominal variable that carries a known hierarchy (for
+#' example countries grouped into continents). Only levels within the same
+#' cluster are combined, which preserves interpretability and lets the algorithm
+#' run substantially faster than the fully general [lump_nominal()].
+#'
 #' @param data Factor or character vector of the categorical data.
 #' @param threshold The minimum number of samples each lumped level should contain.
 #' @param clusters List of character vectors representing the levels that are allowed to be lumped together.
@@ -74,6 +79,11 @@ lump_hierarchical <- function(data, threshold, clusters, verbose = FALSE, altern
 
 #' Perform lumping on a nominal variable
 #'
+#' Lumps the levels of an unordered categorical variable so that every resulting
+#' level meets the sample-size `threshold`, choosing the combination that
+#' preserves the most mutual information with the original variable. An optional
+#' preference graph restricts which levels may be combined.
+#'
 #' @param data Factor or character vector of the categorical data.
 #' @param threshold The minimum number of samples each lumped level should contain.
 #' @param adj_matrix Adjancency matrix of the preference graph. Default: a complete graph, allowing all lumpings.
@@ -127,6 +137,11 @@ lump_nominal <- function(data, threshold, adj_matrix = NULL, verbose = FALSE, al
 }
 
 #' Approximate the lumping on a nominal variable
+#'
+#' A drop-in approximation to [lump_nominal()] for when the exact solver becomes
+#' too slow. It applies a greedy heuristic that runs in polynomial time but does
+#' not guarantee the optimal lumping. See `vignette("metrics")` for the available
+#' heuristics.
 #'
 #' @inheritParams lump_nominal
 #' @param heuristic Character string specifying the heuristic to use. For explanation, see [maximum_mutual_information_nominal_heuristic()].
@@ -190,6 +205,11 @@ transform_lumping <- function(lumping, orig_levels, level_namer) {
 
 #' Perform lumping on an ordinal variable
 #'
+#' Lumps the levels of an ordered categorical variable, combining only adjacent
+#' levels so that the ordering is respected. Each resulting level meets the
+#' sample-size `threshold` while preserving as much mutual information as
+#' possible. Unlike the nominal case, this runs in polynomial time.
+#'
 #' @param data Factor or character vector of the categorical data.
 #' @param threshold The minimum number of samples each lumped level should contain.
 #' @param levels Character vector specifying the strict ordinal hierarchy of the levels (from lowest to highest). Required if `data` is not already an ordered factor.
@@ -247,9 +267,12 @@ lump_ordinal <- function(data, threshold, levels = NULL, verbose = FALSE, altern
 
 # Supervised methods
 
-#TODO: implement continuous variables
-#TODO: reorder reference index
-#' Perform supvervised lumping on a nominal variable
+#' Perform supervised lumping on a nominal variable
+#'
+#' Lumps the levels of a nominal variable so as to preserve as much mutual
+#' information as possible between the lumped variable and a supplied `outcome`.
+#' The outcome may be discrete (a factor) or continuous (numeric); see
+#' `vignette("supervised")` for the distinction.
 #'
 #' @param data Factor or character vector of the categorical data.
 #' @param outcome Factor or character vector. Variable to be used as a source of information about `data`.
@@ -313,10 +336,14 @@ lump_nominal_supervised <- function(data, outcome, threshold, adj_matrix = NULL,
   data
 }
 
-#' Perform lumping on a hierarchical nominal variable
+#' Perform supervised lumping on a hierarchical nominal variable
 #'
-#' Note that, unlike [lump_nominal_supervised()] and [lump_ordinal_supervised()], this function does not support
-#' continuous outcomes.
+#' Lumps a hierarchical nominal variable (combining only levels within the same
+#' cluster) so as to preserve as much mutual information as possible with a
+#' supplied `outcome`.
+#'
+#' Note that, unlike [lump_nominal_supervised()] and [lump_ordinal_supervised()], this function only supports
+#' discrete (factor) outcomes, not continuous ones.
 #'
 #' @param data Factor or character vector of the categorical data.
 #' @param outcome Factor or character vector. Variable to be used as a source of information about `data`.
@@ -370,7 +397,12 @@ lump_hierarchical_supervised <- function(data, outcome, threshold, clusters, ver
   data
 }
 
-#' Perform lumping on an ordinal variable
+#' Perform supervised lumping on an ordinal variable
+#'
+#' Lumps the levels of an ordered categorical variable, combining only adjacent
+#' levels, so as to preserve as much mutual information as possible with a
+#' supplied `outcome`. The outcome may be discrete (a factor) or continuous
+#' (numeric); see `vignette("supervised")` for the distinction.
 #'
 #' @param data Factor or character vector of the categorical data.
 #' @param outcome Vector to be used as a source of information about `data`.

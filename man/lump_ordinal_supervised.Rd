@@ -2,7 +2,7 @@
 % Please edit documentation in R/lump.R
 \name{lump_ordinal_supervised}
 \alias{lump_ordinal_supervised}
-\title{Perform lumping on an ordinal variable}
+\title{Perform supervised lumping on an ordinal variable}
 \usage{
 lump_ordinal_supervised(
   data,
@@ -34,7 +34,10 @@ the new lumped level. Default: concatenating the original levels with a "+" in b
 An ordered factor vector with the lumped levels.
 }
 \description{
-Perform lumping on an ordinal variable
+Lumps the levels of an ordered categorical variable, combining only adjacent
+levels, so as to preserve as much mutual information as possible with a
+supplied \code{outcome}. The outcome may be discrete (a factor) or continuous
+(numeric); see \code{vignette("supervised")} for the distinction.
 }
 \examples{
 # Discrete outcomes:

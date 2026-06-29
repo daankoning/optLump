@@ -64,7 +64,7 @@ adjacency_from_edge_list <- function(levels, allow = NULL, disallow = NULL) {
 }
 
 
-#' Visually help decide the correct threshold paramater
+#' Visually help decide the correct threshold parameter
 #'
 #' Plots the information content of the variable to be lumped for
 #' various values of the threshold.
@@ -100,6 +100,14 @@ adjacency_from_edge_list <- function(levels, allow = NULL, disallow = NULL) {
 #' m <- 10
 #' data <- sample(LETTERS[1:m], n, replace = TRUE)
 #' threshold_diagnostic(data, plot = TRUE)
+#'
+#' @seealso
+#'  [lump_ordinal()], [lump_nominal()], and [lump_hierarchical()] for the
+#'  unsupervised lumping functions whose `threshold` argument this helps choose.
+#'
+#'  [lump_ordinal_supervised()], [lump_nominal_supervised()], and
+#'  [lump_hierarchical_supervised()] for the supervised counterparts, used when
+#'  an outcome `y` is supplied.
 #'
 #' @author Daan Koning
 #' @export

@@ -32,7 +32,10 @@ the new lumped level. Default: concatenating the original levels with a "+" in b
 A factor vector with the lumped levels.
 }
 \description{
-Perform lumping on a hierarchical nominal variable
+Lumps the levels of a nominal variable that carries a known hierarchy (for
+example countries grouped into continents). Only levels within the same
+cluster are combined, which preserves interpretability and lets the algorithm
+run substantially faster than the fully general \code{\link[=lump_nominal]{lump_nominal()}}.
 }
 \examples{
 country <- c("Germany", "Netherlands", "France", "France", "China", "China",
