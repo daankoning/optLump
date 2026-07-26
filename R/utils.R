@@ -2,6 +2,127 @@ lumping_equal <- function(A, B) {
   setequal(lapply(A, sort), lapply(B, sort))
 }
 
+# Check that `lumping` is a well-formed lumping and warn about the levels of
+# `data` that it does not cover, since these become NA when the lumping is applied
+validate_lumping <- function(data, lumping) {
+  if (!is.list(lumping) || length(lumping) == 0 || !all(sapply(lumping, is.character))) {
+    stop("The lumping must be a non-empty list of character vectors")
+  }
+  if (is.null(names(lumping)) || any(names(lumping) == "")) {
+    stop("Every entry of the lumping must be named")
+  }
+  if (anyDuplicated(names(lumping))) {
+    stop("Every name in the lumping must be unique")
+  }
+  if (anyDuplicated(unlist(lumping))) {
+    stop("Every level must appear in the lumping exactly once")
+  }
+
+  uncovered <- setdiff(levels(data), unlist(lumping))
+  if (length(uncovered) > 0) {
+    warning(paste0("Levels present in the data but not in the lumping are replaced by NA: ", paste(uncovered, collapse = ", ")))
+  }
+}
+
+#' Apply a lumping to a nominal variable
+#'
+#' Transforms categorical data by combining its levels according to a given
+#' lumping, such as one previously found by [maximum_mutual_information_nominal()].
+#' This makes it possible to reuse a lumping, for example one learned on
+#' training data, on new data.
+#'
+#' Levels that appear in the lumping but not in the data are kept as empty
+#' levels, so that applying the same lumping always yields the same factor
+#' levels. Conversely, levels that appear in the data but not in the lumping
+#' are replaced by `NA`, with a warning.
+#'
+#' @param data Factor or character vector of the categorical data.
+#' @param lumping Named list of character vectors, where each vector contains the original levels that are
+#'  combined into a new level named after the entry. If the list is unnamed, names are generated with `level_namer`.
+#' @param level_namer Function that takes a character vector of the original levels in a lump and returns the name of
+#'  the new lumped level. Only used when `lumping` is unnamed. Default: concatenating the original levels with a "+" in between.
+#'
+#' @returns A factor vector with the lumped levels.
+#'
+#' @examples
+#' country <- c("NL", "DE", "FR", "NL", "BE")
+#' lumping <- list(benelux = c("NL", "BE"), other = c("DE", "FR"))
+#' apply_nominal_lumping(country, lumping)
+#'
+#' @seealso
+#'  [lump_nominal()] to find and apply the optimal lumping in one step.
+#'
+#'  [apply_ordinal_lumping()] for the ordinal analogue of this function.
+#'
+#' @author Daan Koning
+#' @export
+apply_nominal_lumping <- function(data, lumping, level_namer = default_level_namer) {
+  data <- as.factor(data)
+
+  if (is.list(lumping) && is.null(names(lumping))) {
+    names(lumping) <- sapply(lumping, level_namer)
+  }
+  validate_lumping(data, lumping)
+
+  data <- factor(data, levels = unlist(lumping))
+  levels(data) <- lumping
+
+  data
+}
+
+#' Apply a lumping to an ordinal variable
+#'
+#' Transforms ordered categorical data by combining its levels according to a
+#' given lumping. The order of the entries of the lumping defines the order of
+#' the new levels, from lowest to highest. This makes it possible to reuse a
+#' lumping, for example one learned on training data, on new data.
+#'
+#' Levels that appear in the lumping but not in the data are kept as empty
+#' levels, so that applying the same lumping always yields the same factor
+#' levels. Conversely, levels that appear in the data but not in the lumping
+#' are replaced by `NA`, with a warning.
+#'
+#' @param data Factor or character vector of the categorical data. If `data` is an ordered factor, the
+#'  lumping must respect its level order.
+#' @param lumping Named list of character vectors, where each vector contains the original levels that are
+#'  combined into a new level named after the entry. If the list is unnamed, names are generated with `level_namer`.
+#' @param level_namer Function that takes a character vector of the original levels in a lump and returns the name of
+#'  the new lumped level. Only used when `lumping` is unnamed. Default: concatenating the original levels with a "+" in between.
+#'
+#' @returns An ordered factor vector with the lumped levels.
+#'
+#' @examples
+#' risk_group <- c("low", "high", "medium", "low", "very high")
+#' lumping <- list("low" = "low", "medium+" = c("medium", "high", "very high"))
+#' apply_ordinal_lumping(risk_group, lumping)
+#'
+#' @seealso
+#'  [lump_ordinal()] to find and apply the optimal lumping in one step.
+#'
+#'  [apply_nominal_lumping()] for the nominal analogue of this function.
+#'
+#' @author Daan Koning
+#' @export
+apply_ordinal_lumping <- function(data, lumping, level_namer = default_level_namer) {
+  data <- as.factor(data)
+
+  if (is.list(lumping) && is.null(names(lumping))) {
+    names(lumping) <- sapply(lumping, level_namer)
+  }
+  validate_lumping(data, lumping)
+
+  if (is.ordered(data)) {
+    if (!identical(intersect(levels(data), unlist(lumping)), intersect(unlist(lumping), levels(data)))) {
+      stop("The lumping must respect the level order of the ordered `data`")
+    }
+  }
+
+  data <- ordered(data, levels = unlist(lumping))
+  levels(data) <- lumping
+
+  data
+}
+
 #' Transform the edge list representation of a graph into an adjacency matrix
 #'
 #' This helper is useful for generating the inputs for functions
