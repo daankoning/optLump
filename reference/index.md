@@ -25,6 +25,10 @@ the main interface for users of the package.
 - [`adjacency_from_edge_list()`](https://daankoning.github.io/optLump/reference/adjacency_from_edge_list.md)
   : Transform the edge list representation of a graph into an adjacency
   matrix
+- [`apply_nominal_lumping()`](https://daankoning.github.io/optLump/reference/apply_nominal_lumping.md)
+  : Apply a lumping to a nominal variable
+- [`apply_ordinal_lumping()`](https://daankoning.github.io/optLump/reference/apply_ordinal_lumping.md)
+  : Apply a lumping to an ordinal variable
 - [`threshold_diagnostic()`](https://daankoning.github.io/optLump/reference/threshold_diagnostic.md)
   : Visually help decide the correct threshold parameter
 
