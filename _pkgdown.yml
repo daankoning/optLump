@@ -12,6 +12,8 @@ reference:
   - title: "Helper Functions"
     contents:
       - adjacency_from_edge_list
+      - apply_nominal_lumping
+      - apply_ordinal_lumping
       - threshold_diagnostic
   - title: "Optimizers"
     desc: >
